@@ -1,0 +1,33 @@
+<mat-grid-list cols="2" rowHeight="15em">
+  <mat-grid-tile
+      *ngFor="let tile of tiles; index as i"
+      [colspan]="tile.cols"
+      [rowspan]="tile.rows"
+      [style.background]="tile.color">
+      <ng-container *ngIf="i === 0">
+        <span>Mensaje de bienvenida</span>
+      </ng-container>
+      <ng-container *ngIf="i == 1"> 
+        <form class="example-form parent">
+          <mat-form-field class="example-full-width child">
+            <!-- <mat-label>email</mat-label> -->
+            <input #email type="email" onfocus="this.value=''" value="correo@example.com" matInput [formControl]="emailFormControl">
+            <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error> -->
+          </mat-form-field>
+          <mat-form-field class="example-full-width child">
+            <!-- <mat-label>password</mat-label> -->
+            <input #password type="password" onfocus="this.value=''" value="null" matInput [formControl]="passwordFormControl">
+            <!-- <mat-error *ngIf="emailFormControl.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error> -->
+          </mat-form-field>
+          <button mat-raised-button type="button" color="primary" (click)="postCredentials(email.value, password.value);">Entrar</button>
+        </form>
+      </ng-container>
+  </mat-grid-tile>
+</mat-grid-list>
