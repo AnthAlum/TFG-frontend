@@ -22,7 +22,9 @@ import { PutMerchantComponent } from './put-merchant/put-merchant.component';
 import {MatCardModule} from '@angular/material/card';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +32,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AdminPageComponent,
     GetMerchantsComponent,
     PostMerchantComponent,
-    PutMerchantComponent
+    PutMerchantComponent,
+    LoadingPageComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSelectModule,
     MatCardModule,
     LayoutModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

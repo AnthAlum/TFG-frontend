@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BackendService } from '../backend.service';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatButtonModule} from '@angular/material/button';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.component.html',
@@ -14,29 +15,18 @@ export class AdminPageComponent implements OnInit {
   merchants: any = undefined;
   postOption: boolean = false;
   putOption: boolean = false;
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  .pipe(
+    map(result => result.matches),
+    shareReplay()
+  );
 
   constructor(
-    private router:Router,
+    private breakpointObserver: BreakpointObserver,
     private backendService: BackendService
     ) { }
 
   ngOnInit(): void {
   }
 
-  getMerchants(): void{
-    this.backendService.getMerchants().subscribe(
-      merchants => { 
-        this.merchants = merchants.Merchants; 
-        this.router.navigateByUrl("/merchants/overview");
-      }
-    );
-  }
-
-  postMerchant(): void{
-    this.router.navigateByUrl("/merchants/add");
-  }
-
-  putMerchant(): void{
-    this.router.navigateByUrl("/merchants/modify");
-  }
 }

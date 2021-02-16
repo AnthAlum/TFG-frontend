@@ -29,9 +29,8 @@ export class BackendService {
   
   private idMerchant: string = "";
   //TODO: Quitar la sig linea
-  JWT : string = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3JyZW9AZXhhbXBsZS5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNjEzMzcwNzc2LCJleHAiOjE2MTQyMDc2MDB9.2VneE_y5vQkIqeU3YIaFmDZ9JCqq5_7j0jQn3MY_xNYdlXth32fVBAJ_6ueHYqUU7CqL_Vbj6w_dQc4CJSh5JA";
+  JWT = "JWT";
 
-  private jwt: string = "";
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -40,7 +39,9 @@ export class BackendService {
 
   postCredentials(credentials: JsonCredentials): Observable<any>{
     const url = `${this.backendUrl}/${this.loginUrl}`;
-    return this.httpClient
+    console.log(this.httpOptions);
+    
+    return this.httpClient //TODO: Quitar los valores definidos
       .post<any>(url, { username: 'correo@example.com', password: 'null' }, this.httpOptions)
       .pipe(
         catchError(this.handleError<any>('postCredentials'))
@@ -48,15 +49,15 @@ export class BackendService {
   }
 
   postJwt(jwt: string): void{
-    this.jwt = jwt;
-    this.httpOptions.headers = this.httpOptions.headers.append('Authorization', jwt);
+    this.JWT = jwt;
+    console.log("VALOR DE THIS.JWT" + this.JWT);
+    
   }
 
   getMerchants(): Observable<any>{
     //TODO: Quitar la siguiente linea.
-    //this.assignJwt();
-    console.log(this.httpOptions.headers);
-    
+    this.assignJwt();
+    console.log(this.httpOptions);
     const url = `${this.backendUrl}/${this.merchantsUrl}`;
     return this.httpClient
       .get<any>(url, this.httpOptions);
@@ -64,7 +65,7 @@ export class BackendService {
 
   deleteMerchant(idMerchant: string): Observable<any>{
     //TODO: Quitar la siguiente linea.
-    //this.assignJwt();
+    this.assignJwt();
     console.log(this.httpOptions.headers);
     const url = `${this.backendUrl}/${this.merchantUrl}/${idMerchant}`;
     return this.httpClient
@@ -78,7 +79,7 @@ export class BackendService {
       phone: body[3],
       email: body[4]} as MerchantBody;
     //TODO: Quitar la siguiente linea
-    //this.assignJwt();
+    this.assignJwt();
     const url = `${this.backendUrl}/${this.merchantsUrl}`;
     return this.httpClient
       .post<any>(url, newMerchant, this.httpOptions);
@@ -87,7 +88,6 @@ export class BackendService {
   putMerchant(atribute: string, newValue: string): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${this.idMerchant}/${atribute}`;
     console.log("URL target: " + url + "\n value:" + newValue);
-    
     return this.httpClient
       .put<any>(url, {"newPassword" : newValue}, this.httpOptions);
   }
@@ -117,7 +117,8 @@ export class BackendService {
   }
 
   private assignJwt():void{
-    if(this.httpOptions.headers.get('Authorization'))
+    console.log(this.httpOptions);
+    if(this.httpOptions.headers.get('Authorization') === undefined)
       this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
     else
       this.httpOptions.headers = this.httpOptions.headers.append('Authorization', this.JWT);

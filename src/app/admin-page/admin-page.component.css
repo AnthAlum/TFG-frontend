@@ -1,7 +1,22 @@
-@import '@angular/material/prebuilt-themes/purple-green.css';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-.mat-menu-item {
-  color:black;
-  background-color: rgb(64, 207, 45);
+.sidenav-container {
+  height: 100%;
+
 }
 
+.sidenav {
+  width: 200px;
+}
+
+
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.blue-toolbar{
+  background-color: #00a6ff;
+}
