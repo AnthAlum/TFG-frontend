@@ -9,11 +9,25 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIcon, MatIconModule} from '@angular/material/icon';
+import { GetMerchantsComponent } from './get-merchants/get-merchants.component';
+import {MatTableModule} from '@angular/material/table';
+import { PostMerchantComponent } from './post-merchant/post-merchant.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import { PutMerchantComponent } from './put-merchant/put-merchant.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    AdminPageComponent,
+    GetMerchantsComponent,
+    PostMerchantComponent,
+    PutMerchantComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +37,31 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatIconModule,
+    MatTableModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule
+  ],
+  exports:[
+    BrowserModule,
+    AppRoutingModule,
+    MatGridListModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    HttpClientModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatIconModule,
+    MatTableModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

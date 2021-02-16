@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="getMerchants()">Get merchants</button>
+    <button mat-menu-item (click)="postMerchant()">Post merchant</button>
+    <button mat-menu-item (click)="putMerchant()">Modify merchant</button>
+  </mat-menu>
+  <span>My Frontend Aplication</span>
+  <span class="example-spacer"></span>
+</mat-toolbar>
+<app-get-merchants *ngIf='merchants!==undefined'
+    [merchants]="merchants"></app-get-merchants>
+<app-post-merchant *ngIf='postOption===true'></app-post-merchant>
+<app-put-merchant *ngIf='putOption===true'></app-put-merchant>
+

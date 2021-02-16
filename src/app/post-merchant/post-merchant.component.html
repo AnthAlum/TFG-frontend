@@ -1,0 +1,18 @@
+<form>
+  <mat-form-field appearance="fill">
+    <input value='idRol' name="idRol" type="text" onfocus="this.value=''" matInput [(ngModel)]="idRol"/>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <input value='password' name="password" type="text" onfocus="this.value=''" matInput [(ngModel)]="password"/>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <input value='name' name="name" type="text" onfocus="this.value=''" matInput [(ngModel)]="name"/>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <input value='email' name="email" type="text" onfocus="this.value=''" matInput [(ngModel)]="email"/> 
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <input value='phone' name="phone" type="text" onfocus="this.value=''" matInput [(ngModel)]="phone"/>
+  </mat-form-field>
+</form>
+<button class="margin" (click)="postMerchant()">Post new merchant</button>

@@ -11,7 +11,7 @@
         <form class="example-form parent">
           <mat-form-field class="example-full-width child">
             <!-- <mat-label>email</mat-label> -->
-            <input #email type="email" onfocus="this.value=''" value="correo@example.com" matInput [formControl]="emailFormControl">
+            <input #email type="email" onfocus="this.value=''" matInput [formControl]="emailFormControl">
             <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
               Please enter a valid email address
             </mat-error>
@@ -21,7 +21,7 @@
           </mat-form-field>
           <mat-form-field class="example-full-width child">
             <!-- <mat-label>password</mat-label> -->
-            <input #password type="password" onfocus="this.value=''" value="null" matInput [formControl]="passwordFormControl">
+            <input #password type="password" onfocus="this.value=''"  matInput [formControl]="passwordFormControl">
             <!-- <mat-error *ngIf="emailFormControl.hasError('required')">
               Password is <strong>required</strong>
             </mat-error> -->

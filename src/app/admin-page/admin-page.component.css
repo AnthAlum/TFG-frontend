@@ -1,0 +1,7 @@
+@import '@angular/material/prebuilt-themes/purple-green.css';
+
+.mat-menu-item {
+  color:black;
+  background-color: rgb(64, 207, 45);
+}
+
