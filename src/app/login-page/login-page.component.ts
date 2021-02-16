@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatGridList } from '@angular/material/grid-list';
 import { FormControl, Validators } from '@angular/forms';
 import { BackendService, JsonCredentials } from '../backend.service';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 
 export interface Tile {
   color: string;
@@ -70,7 +67,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   navigateToAdminComponent(): void{
-    this.router.navigateByUrl('/admin');
+    this.router.navigateByUrl('/merchants');
   }
 
   navigateToUserComponent(): void{

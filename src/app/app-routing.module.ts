@@ -2,12 +2,17 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { PostMerchantComponent } from './post-merchant/post-merchant.component';
+import { PutMerchantComponent } from './put-merchant/put-merchant.component';
+import { GetMerchantsComponent } from './get-merchants/get-merchants.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: '',   redirectTo: '/login', pathMatch: 'full' },
-  { path: 'admin', component: AdminPageComponent },
-  //{ path: '/user', component: UserPageComponent }
+  { path: 'merchants', component: AdminPageComponent },
+  { path: 'merchants/overview', component: GetMerchantsComponent },
+  { path: 'merchants/add', component: PostMerchantComponent },
+  { path: 'merchants/modify', component: PutMerchantComponent },
   //{ path: '**', component: PageNotFoundComponent },
 ];
 

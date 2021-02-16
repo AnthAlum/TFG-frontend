@@ -24,35 +24,19 @@ export class AdminPageComponent implements OnInit {
   }
 
   getMerchants(): void{
-    this.resetPostOption();
-    this.resetPutOption();
     this.backendService.getMerchants().subscribe(
-      merchants => this.merchants = merchants.Merchants
+      merchants => { 
+        this.merchants = merchants.Merchants; 
+        this.router.navigateByUrl("/merchants/overview");
+      }
     );
   }
 
   postMerchant(): void{
-    this.resetMerchants();
-    this.resetPutOption();
-    this.postOption = true;
+    this.router.navigateByUrl("/merchants/add");
   }
 
   putMerchant(): void{
-    this.resetMerchants();
-    this.resetPostOption();
-    this.putOption = true;
-    
-  }
-
-  resetMerchants(): void{
-    this.merchants = undefined;
-  }
-
-  resetPostOption(): void{
-    this.postOption = false;
-  }
-
-  resetPutOption(): void{
-    this.putOption = false;
+    this.router.navigateByUrl("/merchants/modify");
   }
 }

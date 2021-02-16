@@ -19,6 +19,9 @@ import { PostMerchantComponent } from './post-merchant/post-merchant.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { PutMerchantComponent } from './put-merchant/put-merchant.component';
+import {MatCardModule} from '@angular/material/card';
+import { LayoutModule } from '@angular/cdk/layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -44,24 +47,10 @@ import { PutMerchantComponent } from './put-merchant/put-merchant.component';
     MatTableModule,
     FormsModule,
     MatFormFieldModule,
-    MatSelectModule
-  ],
-  exports:[
-    BrowserModule,
-    AppRoutingModule,
-    MatGridListModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatIconModule,
-    MatTableModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCardModule,
+    LayoutModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

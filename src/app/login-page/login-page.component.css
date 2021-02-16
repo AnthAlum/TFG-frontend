@@ -1,0 +1,15 @@
+.main-div mat-card{
+  padding: 0 px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.login-form{
+  padding: 20 px;
+}
+
+.blue-toolbar{
+  background-color: #00a6ff;
+}
