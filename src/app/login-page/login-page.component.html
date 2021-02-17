@@ -1,14 +1,7 @@
-<mat-toolbar class="blue-toolbar">
-  <span>PYMES Application</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
-</mat-toolbar>
-<div fxLayoutAlign="center center" fxFlexFill class="main-div">
-  <mat-card fxFlex="35">
-    <mat-toolbar color="primary" class="mat-toolbar-text">Welcome</mat-toolbar>
-    <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
+<div class="main-div">
+  <mat-card class="mat-card">
+    <h3>Welcome</h3>
+    <form fxLayout="column">
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input #email matInput placeholder="Username">
@@ -18,7 +11,11 @@
         <mat-label>Password</mat-label>
         <input #password type="password" matInput placeholder="Password">
       </mat-form-field>
-      <button mat-raised-button type="submit" color="primary" (click)="postCredentials(email.value, password.value);">
+      <button mat-raised-button 
+        type="submit" 
+        color="primary" 
+        (click)="postCredentials(email.value, password.value);"
+        class="half-size">
         Login
       </button>
     </form>

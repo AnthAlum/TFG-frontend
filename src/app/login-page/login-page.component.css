@@ -1,15 +1,21 @@
-.main-div mat-card{
-  padding: 0 px;
+.main-div{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center; /*Para que centrar el contenido respecto al main axis*/
+} 
+
+.mat-card{
+  width: 40%; 
+  align-self: center;
 }
 
-.example-spacer {
-  flex: 1 1 auto;
+.half-size{
+  width: 50%;
+  align-self: center; /*Para centrar el boton respecto a su posicion en el formulario*/
+  padding: 0%; /*Tenia un padding heredado*/
 }
 
-.login-form{
-  padding: 20 px;
-}
-
-.blue-toolbar{
-  background-color: #00a6ff;
+h3{
+  text-align: center;
 }

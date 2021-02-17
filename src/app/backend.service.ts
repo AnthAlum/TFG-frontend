@@ -50,8 +50,6 @@ export class BackendService {
 
   postJwt(jwt: string): void{
     this.JWT = jwt;
-    console.log("VALOR DE THIS.JWT" + this.JWT);
-    
   }
 
   getMerchants(): Observable<any>{
