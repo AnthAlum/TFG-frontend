@@ -22,9 +22,25 @@ export class GetMerchantsComponent implements OnInit {
     this.backendService.getMerchants().subscribe(
       merchants => { 
         this.merchants = merchants.Merchants;
-        console.log("Never reach this point");
       }
     );
+    this.merchants = [
+      {"idMerchant":1, 
+      "idRol": "1", 
+      "nombre":"DONAme",
+      "email":"DOEMAIL",
+      "telefono":"1234556789"},
+      {"idMerchant":2, 
+      "idRol": "1", 
+      "nombre":"DONAme",
+      "email":"DOEMAIL",
+      "telefono":"1234556789"},
+      {"idMerchant":3, 
+      "idRol": "1", 
+      "nombre":"DONAme",
+      "email":"DOEMAIL",
+      "telefono":"1234556789"},
+  ];
   }
 
   deleteMerchant(idMerchant: string):void{

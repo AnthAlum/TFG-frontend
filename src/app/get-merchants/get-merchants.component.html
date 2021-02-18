@@ -1,41 +1,54 @@
-<table mat-table [dataSource]="merchants" class="mat-elevation-z8">
+<h1 class="title-table ,center-text">Merchants
+    <button 
+    mat-raised-button type="button" color="primary" class="align-end">
+    <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
+  </button>
+</h1> 
+<table mat-table [dataSource]="merchants" class="mat-elevation-z8, center-text">
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
   <!-- Position Column -->
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> Id </th>
-    <td mat-cell *matCellDef="let element"> {{element.idMerchant}}
-      <button mat-raised-button type="button" color="primary" (click)="deleteMerchant(element.idMerchant);">Delete</button> 
-      <button mat-raised-button type="button" color="primary" (click)="putMerchant(element.idMerchant);">Modify</button> 
+    <th mat-header-cell *matHeaderCellDef class="center-text"> Id </th>
+    <td fxLayout="row" class="content-space" mat-cell *matCellDef="let element"> {{element.idMerchant}}
+      <button fxHide.lt-sm="true"
+        mat-raised-button type="button" color="primary" 
+        (click)="deleteMerchant(element.idMerchant);">
+        <mat-icon aria-label="Side nav toggle icon">mode</mat-icon>
+      </button> 
+      <button fxHide.lt-sm="true"
+        mat-raised-button type="button" color="primary" 
+        (click)="putMerchant(element.idMerchant);">
+        <mat-icon aria-label="Side nav toggle icon">delete</mat-icon>
+      </button> 
     </td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="idRol">
-    <th mat-header-cell *matHeaderCellDef> Role </th>
+    <th class="center-text" mat-header-cell *matHeaderCellDef > Role </th>
     <td mat-cell *matCellDef="let element"> {{element.idRol}} </td>
   </ng-container>
 
   <!-- Weight Column -->
   <ng-container matColumnDef="nombre">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th class="center-text" mat-header-cell *matHeaderCellDef> Name </th>
     <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
   </ng-container>
 
   <!-- Symbol Column -->
   <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <th class="center-text" mat-header-cell *matHeaderCellDef> Email </th>
     <td mat-cell *matCellDef="let element"> {{element.email}} </td>
   </ng-container>
 
   <!-- Symbol Column -->
   <ng-container matColumnDef="telefono">
-    <th mat-header-cell *matHeaderCellDef> phone </th>
+    <th class="center-text" mat-header-cell *matHeaderCellDef> phone </th>
     <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-

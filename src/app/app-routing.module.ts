@@ -9,8 +9,7 @@ import { GetMerchantsComponent } from './get-merchants/get-merchants.component';
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: '',   redirectTo: '/login', pathMatch: 'full' },
-  { path: 'merchants', component: AdminPageComponent },
-  { path: 'merchants/overview', component: GetMerchantsComponent },
+  { path: 'merchants', component: GetMerchantsComponent },
   { path: 'merchants/add', component: PostMerchantComponent },
   { path: 'merchants/modify', component: PutMerchantComponent },
   //{ path: '**', component: PageNotFoundComponent },

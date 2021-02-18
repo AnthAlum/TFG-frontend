@@ -21,26 +21,3 @@
     </form>
   </mat-card>
 </div>
-
-<!-- <mat-grid-list cols="2" rowHeight="15em">
-  <mat-grid-tile
-      *ngFor="let tile of tiles; index as i"
-      [colspan]="tile.cols"
-      [rowspan]="tile.rows"
-      [style.background]="tile.color">
-      <ng-container *ngIf="i === 0">
-        <span>Mensaje de bienvenida</span>
-      </ng-container>
-      <ng-container *ngIf="i == 1"> 
-        <form class="example-form parent">
-          <mat-form-field class="example-full-width child">
-            <input #email type="email" onfocus="this.value=''" matInput [formControl]="emailFormControl">
-          </mat-form-field>
-          <mat-form-field class="example-full-width child">
-            <input #password type="password" onfocus="this.value=''"  matInput [formControl]="passwordFormControl">
-          </mat-form-field>
-          <button mat-raised-button type="button" color="primary" (click)="postCredentials(email.value, password.value);">Entrar</button>
-        </form>
-      </ng-container>
-  </mat-grid-tile>
-</mat-grid-list> -->

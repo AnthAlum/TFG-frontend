@@ -1,3 +1,25 @@
 table {
   width: 100%;
 }
+
+.content-space{
+  justify-content: space-around;
+  padding: 10px;
+  align-items: baseline;
+}
+
+.center-text{
+  text-align: center;
+}
+
+.align-end{
+  align-self: flex-end;
+}
+.title-table{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  font-size: 2em;
+}

@@ -13,7 +13,7 @@
 .half-size{
   width: 50%;
   align-self: center; /*Para centrar el boton respecto a su posicion en el formulario*/
-  padding: 0%; /*Tenia un padding heredado*/
+  padding: 0%; /*Tenia un padding heredado de mat-raised-button*/
 }
 
 h3{
