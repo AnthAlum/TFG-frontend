@@ -48,6 +48,12 @@ export class BackendService {
       );
   }
 
+  authenticationDone(): boolean{
+    if(this.JWT.localeCompare("JWT") === 0) //Si nuestro JWT no tiene un nuevo token asignado entonces es porque no estamos autenticados.
+      return false;
+    return true;
+  }
+
   postJwt(jwt: string): void{
     this.JWT = jwt;
   }

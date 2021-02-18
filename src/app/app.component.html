@@ -39,3 +39,5 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+<!-- Para que aparezca el login -->
+<router-outlet *ngIf="!isNotLoginPage()"></router-outlet>

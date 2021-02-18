@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BackendService } from './backend.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -11,7 +11,7 @@ import { map, shareReplay } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'PYMES application';
   merchants: any = undefined;
   postOption: boolean = false;
@@ -28,10 +28,18 @@ export class AppComponent {
     private router: Router
     ) { }
 
+    ngOnInit(): void{
+      this.checkAuthenthication();
+    }
+
     isNotLoginPage(): boolean{
       if(this.router.url !== "/login")
         return true;
       return false;
     }
 
+    checkAuthenthication(): void{
+      if(!this.backendService.authenticationDone())
+        this.router.navigateByUrl("login");
+    }
 }
