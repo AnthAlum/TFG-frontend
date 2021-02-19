@@ -1,12 +1,17 @@
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
+.responsive{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.example-full-width {
-  width: 100%;
+.width40{
+  width: 40%;
+  min-width: 250px;
 }
-.margin{
-  margin: 10px;
+
+
+.width25{
+  width: 25%;
+  min-width: 175px;
 }

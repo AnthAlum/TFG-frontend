@@ -1,20 +1,13 @@
+.main-div{
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+}
+
 table {
   width: 100%;
 }
 
-.content-space{
-  justify-content: space-around;
-  padding: 10px;
-  align-items: baseline;
-}
-
-.center-text{
-  text-align: center;
-}
-
-.align-end{
-  align-self: flex-end;
-}
 .title-table{
   display: flex;
   flex-direction: row;
@@ -23,3 +16,21 @@ table {
   font-weight: 500;
   font-size: 2em;
 }
+
+.content-space{
+  justify-content: space-around;
+  padding: 0px;
+  align-items: baseline;
+}
+
+.center-text{
+  text-align: center;
+}
+
+.centered-margin{
+  text-align: center;
+  margin: 0% 3%;
+}
+
+.align-end{
+  align-self: flex-end;

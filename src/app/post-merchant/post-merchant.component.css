@@ -1,3 +1,18 @@
-.margin{
-  margin: 10px;
+
+.responsive{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.width40{
+  width: 40%;
+  min-width: 250px;
+}
+
+
+.width25{
+  width: 25%;
+  min-width: 175px;
 }

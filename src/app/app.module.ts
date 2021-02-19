@@ -25,6 +25,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +57,8 @@ import { LoadingPageComponent } from './loading-page/loading-page.component';
     LayoutModule,
     FlexLayoutModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

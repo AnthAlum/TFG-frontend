@@ -1,18 +1,30 @@
-<form>
-  <mat-form-field appearance="fill">
-    <input value='idRol' name="idRol" type="text" onfocus="this.value=''" matInput [(ngModel)]="idRol"/>
+<form class="responsive" [formGroup]="checkoutForm" (ngSubmit)="postMerchant()">
+  <mat-form-field appearance="fill" class="width40">
+    <mat-label>Role</mat-label>
+    <mat-select  formControlName="idRol">
+      <mat-option value="option">Admin</mat-option>
+      <mat-option value="option">User</mat-option>
+    </mat-select>
+    <!-- <input type="text" matInput formControlName="idRol"/> -->
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <input value='password' name="password" type="text" onfocus="this.value=''" matInput [(ngModel)]="password"/>
+  <mat-form-field appearance="fill" class="width40">
+    <mat-label>Password</mat-label>
+    <input name="password" type="text" matInput formControlName="password"/>
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <input value='name' name="name" type="text" onfocus="this.value=''" matInput [(ngModel)]="name"/>
+  <mat-form-field appearance="fill" class="width40">
+    <mat-label>Name</mat-label>
+    <input name="name" type="text" matInput formControlName="name"/>
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <input value='email' name="email" type="text" onfocus="this.value=''" matInput [(ngModel)]="email"/> 
+  <mat-form-field appearance="fill" class="width40">
+    <mat-label>Email</mat-label>
+    <input name="email" type="text" matInput formControlName="email" placeholder="email@example.com"/> 
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <input value='phone' name="phone" type="text" onfocus="this.value=''" matInput [(ngModel)]="phone"/>
+  <mat-form-field appearance="fill" class="width40">
+    <mat-label>Phone</mat-label>
+    <input name="phone" type="text" matInput formControlName="phone"/>
   </mat-form-field>
+  <button mat-raised-button type="submit" color="primary"  class="width25">Submit
+    <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
+  </button>
 </form>
-<button class="margin" (click)="postMerchant()">Post new merchant</button>
+

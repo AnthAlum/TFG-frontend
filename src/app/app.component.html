@@ -4,16 +4,18 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar id="toolbar" color="primary">
-      <span class="center-text"> Application</span>
+      <span class="center-text">Application</span>
     </mat-toolbar>
     <mat-nav-list>
-      <a class="padding20" mat-list-item routerLink="/merchants">
+      <a class="padding20" mat-list-item routerLink="/merchants" (click)="drawer.toggle()">
         <mat-icon class="padding5" aria-label="Side nav toggle icon">people_alt</mat-icon>Users
       </a>
-      <a class="padding20" mat-list-item routerLink="/merchants/add">
-        <mat-icon class="padding5" aria-label="Side nav toggle icon">people_alt</mat-icon>Add new user</a>
-      <a class="padding20" mat-list-item routerLink="/merchants/modify">
-        <mat-icon class="padding5" aria-label="Side nav toggle icon">people_alt</mat-icon>Modify user information</a>
+      <a class="padding20" mat-list-item routerLink="/merchants/add" (click)="drawer.toggle()">
+        <mat-icon class="padding5" aria-label="Side nav toggle icon">people_alt</mat-icon>Add user
+      </a>
+      <a class="padding20" mat-list-item routerLink="/merchants/modify" (click)="drawer.toggle()">
+        <mat-icon class="padding5" aria-label="Side nav toggle icon">people_alt</mat-icon>Modify user information
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -26,7 +28,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <button fxHide.xs=true fxShown
+      <button fxHide.lt-sm=true fxShown
       type="button"
       mat-icon-button
       (click)="drawer.toggle()">
@@ -34,9 +36,7 @@
     </button>
       <span>PYMES Application</span>
     </mat-toolbar> 
-    <div class="children">
-        <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
 <!-- Para que aparezca el login -->
