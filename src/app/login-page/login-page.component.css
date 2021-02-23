@@ -16,6 +16,12 @@
   padding: 0%; /*Tenia un padding heredado de mat-raised-button*/
 }
 
-h3{
-  text-align: center;
+.email-error{
+  color: red;
+  padding-bottom: 10px;
+  font-size: 20px;
+}
+
+.form-field{
+  margin-bottom: 10px;
 }

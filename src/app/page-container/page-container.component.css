@@ -1,0 +1,10 @@
+.main-page{
+  margin: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+#page-container{
+  display: flex;
+  justify-content: center;
+}

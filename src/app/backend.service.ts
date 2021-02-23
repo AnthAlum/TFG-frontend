@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 export interface JsonCredentials{
@@ -28,7 +27,6 @@ export class BackendService {
   private merchantsUrl: string = "merchants";
   
   private idMerchant: string = "";
-  //TODO: Quitar la sig linea
   JWT = "JWT";
 
   httpOptions = {
@@ -39,12 +37,10 @@ export class BackendService {
 
   postCredentials(credentials: JsonCredentials): Observable<any>{
     const url = `${this.backendUrl}/${this.loginUrl}`;
-    console.log(this.httpOptions);
-    
-    return this.httpClient //TODO: Quitar los valores definidos
-      .post<any>(url, { username: 'correo@example.com', password: 'null' }, this.httpOptions)
+    return this.httpClient
+      .post<any>(url, { username: credentials.username, password: credentials.password }, this.httpOptions)
       .pipe(
-        catchError(this.handleError<any>('postCredentials'))
+        catchError((error) => {return throwError(error);})
       );
   }
 
@@ -56,34 +52,30 @@ export class BackendService {
 
   postJwt(jwt: string): void{
     this.JWT = jwt;
+    if(this.httpOptions.headers.get('Authorization') === undefined)
+      this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
+    else
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', this.JWT);
   }
 
   getMerchants(): Observable<any>{
-    //TODO: Quitar la siguiente linea.
-    this.assignJwt();
-    console.log(this.httpOptions);
     const url = `${this.backendUrl}/${this.merchantsUrl}`;
     return this.httpClient
       .get<any>(url, this.httpOptions);
   }
 
   deleteMerchant(idMerchant: string): Observable<any>{
-    //TODO: Quitar la siguiente linea.
-    this.assignJwt();
-    console.log(this.httpOptions.headers);
     const url = `${this.backendUrl}/${this.merchantUrl}/${idMerchant}`;
     return this.httpClient
       .delete<any>(url, this.httpOptions);
   }
 
-  postMerchant(body: string[]): Observable<any>{
+  postMerchant(body: any): Observable<any>{
     const newMerchant = {role: parseInt(body[0]),
       password: body[1],
       name: body[2],
       phone: body[3],
       email: body[4]} as MerchantBody;
-    //TODO: Quitar la siguiente linea
-    this.assignJwt();
     const url = `${this.backendUrl}/${this.merchantsUrl}`;
     return this.httpClient
       .post<any>(url, newMerchant, this.httpOptions);
@@ -91,7 +83,6 @@ export class BackendService {
 
   putMerchant(atribute: string, newValue: string): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${this.idMerchant}/${atribute}`;
-    console.log("URL target: " + url + "\n value:" + newValue);
     return this.httpClient
       .put<any>(url, {"newPassword" : newValue}, this.httpOptions);
   }
@@ -100,28 +91,16 @@ export class BackendService {
     this.idMerchant = idMerchant;
   }
 
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      //this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+  private handleError(error: any) { 
+    if(error instanceof HttpErrorResponse){
+      // Error in server side
+    } else {
+      // Error in client side
+    }
+    return error;
   }
 
   private assignJwt():void{
-    console.log(this.httpOptions);
     if(this.httpOptions.headers.get('Authorization') === undefined)
       this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
     else

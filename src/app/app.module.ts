@@ -26,6 +26,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { PageContainerComponent } from './page-container/page-container.component';
+import { MerchantCardComponent } from './merchant-card/merchant-card.component';
+import { MerchantFormComponent } from './merchant-form/merchant-form.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     GetMerchantsComponent,
     PostMerchantComponent,
     PutMerchantComponent,
-    LoadingPageComponent
+    LoadingPageComponent,
+    PageContainerComponent,
+    MerchantCardComponent,
+    MerchantFormComponent
   ],
   imports: [
     BrowserModule,

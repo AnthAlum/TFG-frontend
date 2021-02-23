@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class GetMerchantsComponent implements OnInit {
 
   @Input() merchants: any = undefined;
-  displayedColumns: string[] = ['id', 'idRol', 'nombre', 'email', 'telefono'];
+  displayedColumns: string[] = ['id', 'idRol', 'nombre', 'email', 'telefono', 'modify', 'delete'];
   
   constructor(
     private backendService: BackendService,
@@ -20,11 +20,12 @@ export class GetMerchantsComponent implements OnInit {
 
   ngOnInit(): void {
     this.backendService.getMerchants().subscribe(
-      merchants => { 
-        this.merchants = merchants.Merchants;
+      merchants => {
+        this.merchants = merchants.pages;
       }
-    );
-    this.merchants = [
+    ); 
+    // TODO: Quitar la siguiente linea
+    /*this.merchants = [
       {"idMerchant":1, 
       "idRol": "1", 
       "nombre":"DONAme",
@@ -40,7 +41,7 @@ export class GetMerchantsComponent implements OnInit {
       "nombre":"DONAme",
       "email":"DOEMAIL",
       "telefono":"1234556789"},
-  ];
+  ];*/
   }
 
   deleteMerchant(idMerchant: string):void{

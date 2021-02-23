@@ -40,6 +40,6 @@ export class AppComponent implements OnInit{
 
     checkAuthenthication(): void{
       if(!this.backendService.authenticationDone())
-        this.router.navigateByUrl("login");
+        this.router.navigateByUrl("/login");
     }
 }

@@ -1,58 +1,74 @@
-<div class="main-div">
-  <h1 class="title-table ,center-text">Merchants
-    <button mat-raised-button type="button" color="primary" class="align-end">
+
+<h1>Merchants</h1>
+<div class="row-button" fxLayout="row" fxLayoutAlign="end" fxShow fxHide.xs="true" fxHide.sm="true">
+  <button mat-raised-button type="button" color="primary">
     <mat-icon aria-label="Side nav toggle icon" routerLink="add">person_add</mat-icon>
   </button>
-  </h1> 
-  <table mat-table [dataSource]="merchants" class="mat-elevation-z8, centered-margin">
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td id="display-none" fxLayout="row" class="content-space" mat-cell *matCellDef="let element"> <span class="left-aligned">{{element.idMerchant}}</span>
-        <button fxHide.lt-sm="true"
-          mat-raised-button type="button" color="primary" 
-          (click)="deleteMerchant(element.idMerchant);">
-          <mat-icon aria-label="Side nav toggle icon">mode</mat-icon>
-        </button> 
-        <button fxHide.lt-sm="true"
-          mat-raised-button type="button" color="primary" 
-          (click)="putMerchant(element.idMerchant);">
-          <mat-icon aria-label="Side nav toggle icon">delete</mat-icon>
-        </button> 
-      </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="idRol">
-      <th class="center-text" mat-header-cell *matHeaderCellDef > Role </th>
-      <td mat-cell *matCellDef="let element"> {{element.idRol}} </td>
-    </ng-container>
-
-    <!-- Weight Column -->
-    <ng-container matColumnDef="nombre">
-      <th class="center-text" mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-    </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="email">
-      <th class="center-text" mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-    </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="telefono">
-      <th class="center-text" mat-header-cell *matHeaderCellDef> phone </th>
-      <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-  </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
+<table mat-table [dataSource]="merchants">
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let element"> {{element.idMerchant}} 
+    </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="idRol">
+    <th  mat-header-cell *matHeaderCellDef > Role </th>
+    <td mat-cell *matCellDef="let element"> {{element.idRol}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="nombre">
+    <th  mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="email">
+    <th  mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="telefono">
+    <th  mat-header-cell *matHeaderCellDef> phone </th>
+    <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<!-- Button Column -->
+  <ng-container matColumnDef="modify">
+    <th  mat-header-cell *matHeaderCellDef>  </th>
+    <td class="td-button" mat-cell *matCellDef="let element"> 
+      <button 
+      mat-raised-button type="button" color="primary" 
+      routerLink="modify/{{element.idMerchant}}"
+      >
+      <mat-icon aria-label="Side nav toggle icon">mode</mat-icon>
+    </button>  
+  </td>
+  </ng-container>
+  <!-- Button Column -->
+  <ng-container matColumnDef="delete">
+    <th class="center-text" mat-header-cell *matHeaderCellDef> </th>
+    <td class="td-button" mat-cell *matCellDef="let element"> 
+      <button 
+      mat-raised-button type="button" color="primary" 
+      (click)="deleteMerchant(element.idMerchant);">
+      <mat-icon aria-label="Side nav toggle icon">delete</mat-icon>
+    </button>
+  </td>
+  </ng-container>
+      
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons fxHide fxShow.xs="true" fxShow.sm="true"></mat-paginator>
+<!-- TODO: Hay que cambiar cuando sea movil -->
+<app-merchant-card *ngFor="let merchant of merchants" [merchant]="merchant"></app-merchant-card>
 

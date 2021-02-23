@@ -1,4 +1,4 @@
-<form [formGroup]="checkoutForm" (ngSubmit)="postMerchant()">
+<form [formGroup]="checkoutForm" (ngSubmit)="doRequestPost()">
   <div  fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" >
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
@@ -21,13 +21,12 @@
   </div>
   <mat-form-field appearance="fill" >
     <mat-label>Role</mat-label>
-    <mat-select  formControlName="idRol">
+    <mat-select formControlName="idRol">
       <mat-option value="option">Admin</mat-option>
       <mat-option value="option">User</mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button type="submit" color="primary">Submit
-    <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
+  <button mat-raised-button type="submit" color="primary" *ngIf="equals(methodName, post)">Submit
+    <mat-icon aria-label="Side nav toggle icon">mode</mat-icon>
   </button>
 </form>
-
