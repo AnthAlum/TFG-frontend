@@ -5,14 +5,12 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { PostMerchantComponent } from './post-merchant/post-merchant.component';
 import { PutMerchantComponent } from './put-merchant/put-merchant.component';
 import { GetMerchantsComponent } from './get-merchants/get-merchants.component';
-import { MerchantFormComponent } from './merchant-form/merchant-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
-  { path: 'merchants/modify/:id', component: PutMerchantComponent },
-  { path: '',   redirectTo: '/login', pathMatch: 'full' },
+  { path: 'merchants-modify/:merchantId', component: PutMerchantComponent },
+  { path: 'merchants-add', component: PostMerchantComponent },
   { path: 'merchants', component: GetMerchantsComponent },
-  { path: 'merchants/add', component: PostMerchantComponent },
   //{ path: '**', component: PageNotFoundComponent },
 ];
 

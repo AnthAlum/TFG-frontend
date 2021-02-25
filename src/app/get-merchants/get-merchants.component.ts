@@ -22,33 +22,17 @@ export class GetMerchantsComponent implements OnInit {
     this.backendService.getMerchants().subscribe(
       merchants => {
         this.merchants = merchants.pages;
+      }, error => {
+        // TODO: Tratar el error
       }
-    ); 
-    // TODO: Quitar la siguiente linea
-    /*this.merchants = [
-      {"idMerchant":1, 
-      "idRol": "1", 
-      "nombre":"DONAme",
-      "email":"DOEMAIL",
-      "telefono":"1234556789"},
-      {"idMerchant":2, 
-      "idRol": "1", 
-      "nombre":"DONAme",
-      "email":"DOEMAIL",
-      "telefono":"1234556789"},
-      {"idMerchant":3, 
-      "idRol": "1", 
-      "nombre":"DONAme",
-      "email":"DOEMAIL",
-      "telefono":"1234556789"},
-  ];*/
+    );
   }
 
   deleteMerchant(idMerchant: string):void{
     this.backendService.deleteMerchant(idMerchant).subscribe(_ => console.log('Deleted!'));
   }
 
-  putMerchant(idMerchant: string): void{
-    this.backendService.setMerchantId(idMerchant);
+  goToAddMerchant(): void{
+    this.router.navigateByUrl("/merchants-add");
   }
 }

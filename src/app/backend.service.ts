@@ -34,6 +34,26 @@ export class BackendService {
   };
 
   constructor(private httpClient: HttpClient) { }
+  
+  authenticationDone(): boolean{
+    let token = localStorage.getItem('token');
+    if(token){
+      this.postJwt(token);
+      return true;
+    }
+    if(this.JWT.localeCompare("JWT") === 0) //Si nuestro JWT no tiene un nuevo token asignado entonces es porque no estamos autenticados.
+      return false;
+    return true;
+  }
+
+  postJwt(jwt: string): void{
+    localStorage.setItem('token', jwt);
+    this.JWT = jwt;
+    if(this.httpOptions.headers.get('Authorization') === undefined)
+      this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
+    else
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', this.JWT);
+  }
 
   postCredentials(credentials: JsonCredentials): Observable<any>{
     const url = `${this.backendUrl}/${this.loginUrl}`;
@@ -44,18 +64,17 @@ export class BackendService {
       );
   }
 
-  authenticationDone(): boolean{
-    if(this.JWT.localeCompare("JWT") === 0) //Si nuestro JWT no tiene un nuevo token asignado entonces es porque no estamos autenticados.
-      return false;
-    return true;
+  logout(): void{
+    localStorage.removeItem('token');
   }
 
-  postJwt(jwt: string): void{
-    this.JWT = jwt;
-    if(this.httpOptions.headers.get('Authorization') === undefined)
-      this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
-    else
-      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', this.JWT);
+  getMerchantById(id: string): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/${id}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions)
+      .pipe(
+        catchError((error) => {return throwError(error);})
+      );
   }
 
   getMerchants(): Observable<any>{
@@ -74,36 +93,40 @@ export class BackendService {
     const newMerchant = {role: parseInt(body[0]),
       password: body[1],
       name: body[2],
-      phone: body[3],
-      email: body[4]} as MerchantBody;
+      email: body[3],
+      phone: body[4]} as MerchantBody;
     const url = `${this.backendUrl}/${this.merchantsUrl}`;
     return this.httpClient
       .post<any>(url, newMerchant, this.httpOptions);
   }
 
-  putMerchant(atribute: string, newValue: string): Observable<any>{
-    const url = `${this.backendUrl}/${this.merchantsUrl}/${this.idMerchant}/${atribute}`;
+  putMerchantName(idMerchant: number, newValue: string): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/name`;
+    return this.httpClient
+      .put<any>(url, {"newName" : newValue}, this.httpOptions);
+  }
+
+  putMerchantPhone(idMerchant: number, newValue: string): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/phone`;
+    return this.httpClient
+      .put<any>(url, {"newPhone" : newValue}, this.httpOptions);
+  }
+
+  putMerchantEmail(idMerchant: number, newValue: string): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/email`;
+    return this.httpClient
+      .put<any>(url, {"newEmail" : newValue}, this.httpOptions);
+  }
+
+  putMerchantRole(idMerchant: number, newValue: string): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/role`;
+    return this.httpClient
+      .put<any>(url, {"newRole" : newValue}, this.httpOptions);
+  }
+
+  putMerchantPassword(idMerchant: number, newValue: string): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/password`;
     return this.httpClient
       .put<any>(url, {"newPassword" : newValue}, this.httpOptions);
-  }
-
-  setMerchantId(idMerchant: string): void{
-    this.idMerchant = idMerchant;
-  }
-
-  private handleError(error: any) { 
-    if(error instanceof HttpErrorResponse){
-      // Error in server side
-    } else {
-      // Error in client side
-    }
-    return error;
-  }
-
-  private assignJwt():void{
-    if(this.httpOptions.headers.get('Authorization') === undefined)
-      this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
-    else
-      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', this.JWT);
   }
 }

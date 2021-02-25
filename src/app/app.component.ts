@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { BackendService } from './backend.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit{
     ) { }
 
     ngOnInit(): void{
-      //this.checkAuthenthication();
+      this.checkAuthenthication();
     }
 
     isNotLoginPage(): boolean{
@@ -41,5 +41,11 @@ export class AppComponent implements OnInit{
     checkAuthenthication(): void{
       if(!this.backendService.authenticationDone())
         this.router.navigateByUrl("/login");
+      else
+        this.router.navigateByUrl("/merchants");
+    }
+
+    exit(): void{
+      this.backendService.logout();
     }
 }

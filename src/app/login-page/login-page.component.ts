@@ -60,34 +60,30 @@ export class LoginPageComponent implements OnInit {
       password: password
     };
     if(this.verifyCredentials(username, password)){
-      try {
-        this.backendService.postCredentials(credentials)
+      this.backendService.postCredentials(credentials)
         .subscribe(jwtAuthentication => {
-            const jwt = jwtAuthentication.replace(JWT_PREFIX, "");
-            const tokenInfo = this.helper.decodeToken(jwt);
-            this.authority = tokenInfo.authorities[0].authority;
-            this.backendService.postJwt(jwtAuthentication);
-            if(this.authority.localeCompare("ROLE_ADMIN") === 0)
-              this.navigateToAdminComponent();
-            if(this.authority.localeCompare("ROLE_USER") === 0)
-              this.navigateToUserComponent(); 
+            this.getAuthority(jwtAuthentication.JWT);
+            this.checkAuthority();
         }, (error) => {
           this.proccessError(error);
         })
-      } catch (error) {
-        console.log(error);
-      }
     } else{
       this.loginErrorMessage = "Invalid email address";
     }
   }
 
-  navigateToAdminComponent(): void{
-    this.router.navigateByUrl('/merchants');
+  //This method obtain the authority inside the JWT in the response and stores the JWT in the service for next requests.
+  getAuthority(jwt: string): void{
+    const tokenInfo = this.helper.decodeToken(jwt.replace(JWT_PREFIX, ""));
+    this.authority = tokenInfo.authorities[0].authority;
+    this.backendService.postJwt(jwt);
   }
 
-  navigateToUserComponent(): void{
-    this.router.navigateByUrl('/user');
+  checkAuthority(): void{
+    if(this.authority.localeCompare("ROLE_ADMIN") === 0)
+      this.router.navigateByUrl('/merchants');
+    if(this.authority.localeCompare("ROLE_USER") === 0)
+      this.router.navigateByUrl('/user'); 
   }
 
   //Este metodo comprueba que el email ingresado sea de la forma : correo@example.com
@@ -98,7 +94,7 @@ export class LoginPageComponent implements OnInit {
     return false;
   }
 
-  proccessError(error: HttpErrorResponse){
+  proccessError(error: HttpErrorResponse): void{
     if(error.status === 403){
       this.loginErrorMessage = "User with that email was not found";
     }

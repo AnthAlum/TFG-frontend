@@ -4,7 +4,7 @@
   max-width: 1200px;
 }
 
-#page-container{
+.page-container{
   display: flex;
   justify-content: center;
 }

@@ -66,6 +66,7 @@ import { MerchantFormComponent } from './merchant-form/merchant-form.component';
     MatListModule,
     MatPaginatorModule
   ],
+  exports:[AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })

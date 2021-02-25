@@ -7,5 +7,6 @@
 
 mat-form-field.mat-form-field{
   width: 100%;
+  max-width: 800px;
   padding: 10px;
 }

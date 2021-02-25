@@ -1,32 +1,60 @@
 
-<form class="responsive" [formGroup]="checkoutForm" (ngSubmit)="putMerchant()">
-  <mat-form-field appearance="fill" class="width40">
-    <mat-label>Role</mat-label>
-    <mat-select  formControlName="idRol">
-      <mat-option value="option">Admin</mat-option>
-      <mat-option value="option">User</mat-option>
-    </mat-select>
-    <!-- <input type="text" matInput formControlName="idRol"/> -->
-  </mat-form-field>
-  <mat-form-field appearance="fill" class="width40">
-    <mat-label>Password</mat-label>
-    <input name="password" type="text" matInput formControlName="password"/>
-  </mat-form-field>
-  <mat-form-field appearance="fill" class="width40">
-    <mat-label>Name</mat-label>
-    <input name="name" type="text" matInput formControlName="name"/>
-  </mat-form-field>
-  <mat-form-field appearance="fill" class="width40">
-    <mat-label>Email</mat-label>
-    <input name="email" type="text" matInput formControlName="email"/> 
-  </mat-form-field>
-  <mat-form-field appearance="fill" class="width40">
-    <mat-label>Phone</mat-label>
-    <input name="phone" type="text" matInput formControlName="phone"/>
-  </mat-form-field>
-  <button mat-raised-button type="submit" color="primary"  class="width25">Submit
-    <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
-  </button>
+<h1>Profile</h1>
+<form class="responsive" [formGroup]="checkoutForm">
+  <h2>Personal information</h2>
+  <div fxLayout="row" fxLayout.lt-md="column">
+    <div fxLayout="column">
+      <mat-form-field fxFlexAlign="start" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input name="name" type="text" matInput formControlName="name"/>
+      </mat-form-field>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeName()">Change
+        <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+      </button>  
+    </div>
+    <div fxLayout="column">
+      <mat-form-field fxFlexAlign="start" appearance="fill">
+        <mat-label>Phone</mat-label>
+        <input name="phone" type="text" matInput formControlName="phone"/>
+      </mat-form-field>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePhone()">Change
+        <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+      </button>
+    </div>
+  </div>
+  <h2>Credentials</h2>
+  <div fxLayout="row" fxLayout.lt-md="column"> 
+    <div fxLayout="column">
+      <mat-form-field fxFlexAlign="start" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input name="email" type="text" matInput formControlName="email"/> 
+      </mat-form-field>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeEmail()">Change
+        <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+      </button>
+    </div>
+    <div fxLayout="column">
+      <mat-form-field fxFlexAlign="start" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input name="password" type="text" matInput formControlName="password"/>
+      </mat-form-field>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePassword()">Change
+        <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <mat-form-field appearance="fill">
+      <mat-label>Role</mat-label>
+      <mat-select  formControlName="idRole">
+        <mat-option value="0">Admin</mat-option>
+        <mat-option value="1">User</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button  fxFlexAlign="center" mat-raised-button color="primary" (click)="changeRole()">Change
+      <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+    </button>
+  </div>
 </form>
 
 
