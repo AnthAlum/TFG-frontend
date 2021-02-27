@@ -1,10 +1,10 @@
 <div class="main-div">
   <mat-card class="mat-card">
     <h1>PYMES application</h1>
-    <div class="email-error">
-      <span *ngIf='loginErrorMessage==="Invalid email address"'>Invalid email address, please revise and try It again.</span>
-      <span *ngIf='loginErrorMessage==="User with that email was not found"'>Email and password not found in the registry, please revise and try It again.</span>
-      <span *ngIf='loginErrorMessage==="Server execution error"'>There has been an error proccessing your request.</span>
+    <div class="email-error" [ngSwitch]="loginErrorMessage">
+      <span *ngSwitchCase='"Invalid email address"'>Invalid email address, please revise and try It again.</span>
+      <span *ngSwitchCase='"User with that email was not found"'>Email and password not found in the registry, please revise and try It again.</span>
+      <span *ngSwitchCase='"Server execution error"'>There has been an error proccessing your request.</span>
     </div>
     <form fxLayout="column">
       <mat-form-field class="form-field">

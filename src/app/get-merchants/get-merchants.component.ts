@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { BackendService } from '../backend.service';
 import { Router } from '@angular/router';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-get-merchants',
@@ -10,8 +11,10 @@ import { Router } from '@angular/router';
 export class GetMerchantsComponent implements OnInit {
 
   @Input() merchants: any = undefined;
-  displayedColumns: string[] = ['id', 'idRol', 'nombre', 'email', 'telefono', 'modify', 'delete'];
+  displayedColumns: string[] = ['id', 'idRole', 'nombre', 'email', 'telefono', 'modify', 'delete'];
   
+  @ViewChild(MatTable) table?: MatTable<any>;
+
   constructor(
     private backendService: BackendService,
     private router:Router
@@ -28,11 +31,19 @@ export class GetMerchantsComponent implements OnInit {
     );
   }
 
-  deleteMerchant(idMerchant: string):void{
-    this.backendService.deleteMerchant(idMerchant).subscribe(_ => console.log('Deleted!'));
+  deleteMerchant(idMerchant: string, element: any):void{
+    this.backendService.deleteMerchant(idMerchant).subscribe(_ => this.deleteRow(element));
   }
 
   goToAddMerchant(): void{
     this.router.navigateByUrl("/merchants-add");
+  }
+
+  deleteRow(row: any):void {
+    const index = this.merchants.indexOf(row, 0);
+    if (index > -1) {
+      this.merchants.splice(index, 1);
+    }
+    this.table?.renderRows();
   }
 }

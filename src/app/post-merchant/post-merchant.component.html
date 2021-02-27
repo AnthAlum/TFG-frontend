@@ -21,13 +21,18 @@
   </div>
   <mat-form-field appearance="fill" >
     <mat-label>Role</mat-label>
-    <mat-select  formControlName="idRol">
-      <mat-option value="option">Admin</mat-option>
-      <mat-option value="option">User</mat-option>
+    <mat-select formControlName="idRole">
+      <mat-option value="0">Admin</mat-option>
+      <mat-option value="1">User</mat-option>
     </mat-select>
   </mat-form-field>
   <button fxFlexAlign="center" mat-raised-button type="submit" color="primary">Submit
     <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
   </button>
 </form>
+<div [ngSwitch]="responseMessage">
+  <span *ngSwitchCase="'posted'">New merchant created!</span>
+  <span *ngSwitchCase="'already registered'">This email is already registered</span>
+  <span *ngSwitchCase="'forbidden'">You are not allowed to do this operation</span>
+</div>
 

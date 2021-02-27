@@ -2,19 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { AbstractControl } from '@angular/forms';
 
 export interface JsonCredentials{
   username: string,
   password: string
 }
 
-export interface MerchantBody{
-  role: number,
+export interface NewMerchantBody{
+  idRole: number,
   password: string,
   name: string,
   email: string,
   phone: string
 }
+
+//TODO: ¿que hacemos con el password?
+const regexSet: { [key: string]: RegExp } = {
+  name: /^[A-zÀ-ú]+(\s[A-zÀ-ú]*)*$/ ,
+  email: /^[A-z0-9\._\+-]{4,}@[A-z0-9\-]{3,}(\.[a-z0-9\-]{2,})+$/ ,
+  phone: /^(\+\d{1,3})?[\s\d]{5,}$/ ,
+  idRole: /[0-1]/ 
+};
 
 @Injectable({
   providedIn: 'root'
@@ -46,13 +55,48 @@ export class BackendService {
     return true;
   }
 
+  logout(): void{
+    localStorage.removeItem('token');
+    this.JWT = "JWT";
+    this.httpOptions.headers = this.httpOptions.headers.delete('Authorization');
+  }
+
   postJwt(jwt: string): void{
     localStorage.setItem('token', jwt);
     this.JWT = jwt;
-    if(this.httpOptions.headers.get('Authorization') === undefined)
-      this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
-    else
-      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', this.JWT);
+    this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
+  }
+
+  //Este metodo comprueba que el email ingresado sea de la forma : correo@example.com
+  verifyValue(attribute: string, value: string): boolean{
+    let regex;
+    switch(attribute){
+      case "name":
+        regex = regexSet.name;
+        break;
+      case "phone":
+        regex = regexSet.phone;
+        break;
+      case "email":
+        regex = regexSet.email;
+        break;
+      case "idRole":
+        regex = regexSet.idRole;
+        break;
+      default:
+        return false;
+    }
+    if(regex.test(value)) 
+      return true;
+    return false;
+  }
+
+  verifyAllValues(information : { [key: string]: string }): boolean{
+    for(let key in regexSet){
+      if(!regexSet[key].test(information[key]))
+        return false;
+    }
+    return true;
   }
 
   postCredentials(credentials: JsonCredentials): Observable<any>{
@@ -62,10 +106,6 @@ export class BackendService {
       .pipe(
         catchError((error) => {return throwError(error);})
       );
-  }
-
-  logout(): void{
-    localStorage.removeItem('token');
   }
 
   getMerchantById(id: string): Observable<any>{
@@ -89,15 +129,39 @@ export class BackendService {
       .delete<any>(url, this.httpOptions);
   }
 
-  postMerchant(body: any): Observable<any>{
-    const newMerchant = {role: parseInt(body[0]),
-      password: body[1],
-      name: body[2],
-      email: body[3],
-      phone: body[4]} as MerchantBody;
+  postMerchant(body: { [key: string]: string }): Observable<any>{
+    const newMerchant = {
+      name: body.name,
+      phone: body.phone,
+      email: body.email,
+      password: body.password,
+      idRole: parseInt(body.idRole)
+    } as NewMerchantBody;
     const url = `${this.backendUrl}/${this.merchantsUrl}`;
     return this.httpClient
       .post<any>(url, newMerchant, this.httpOptions);
+  }
+
+  putMerchantNewValue(idMerchant: number, attribute: string, newValue: string): any{
+    let response;
+    switch(attribute){
+      case "name":
+        response = this.putMerchantName(idMerchant, newValue);
+        break;
+      case "email":
+        response = this.putMerchantEmail(idMerchant, newValue);
+        break;
+      case "phone":
+        response = this.putMerchantPhone(idMerchant, newValue);
+        break;
+      case "password":
+        response = this.putMerchantPassword(idMerchant, newValue);
+        break;
+      case "idRole":
+        response = this.putMerchantIdRole(idMerchant, newValue);
+        break;
+    }
+    return response;
   }
 
   putMerchantName(idMerchant: number, newValue: string): Observable<any>{
@@ -118,8 +182,9 @@ export class BackendService {
       .put<any>(url, {"newEmail" : newValue}, this.httpOptions);
   }
 
-  putMerchantRole(idMerchant: number, newValue: string): Observable<any>{
+  putMerchantIdRole(idMerchant: number, newValue: string): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/role`;
+    let idRole: number = parseInt(newValue); 
     return this.httpClient
       .put<any>(url, {"newRole" : newValue}, this.httpOptions);
   }

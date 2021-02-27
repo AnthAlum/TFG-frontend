@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { BackendService } from '../backend.service';
@@ -10,9 +11,10 @@ import { BackendService } from '../backend.service';
 
 export class PostMerchantComponent implements OnInit {
 
+  responseMessage: any = undefined;
   
   checkoutForm = this.formBuilder.group({
-    idRol: '',
+    idRole: '',
     password: '',
     name: '',
     email: '',
@@ -28,8 +30,28 @@ export class PostMerchantComponent implements OnInit {
   }
 
   postMerchant(): void{
-    const information = [ this.checkoutForm.get('idRol'), this.checkoutForm.get('password'), this.checkoutForm.get('name'), this.checkoutForm.get('email'), this.checkoutForm.get('phone') ];
-    //const information = ["1", "password", "Sujeto", "correo2@example.com", "123456789"];
-    this.backendService.postMerchant(information).subscribe(_ => console.log("Posted!"));
+    const information : { [key: string]: string } = {
+      'name': this.checkoutForm.get('name')?.value, 
+      'phone': this.checkoutForm.get('phone')?.value, 
+      'email': this.checkoutForm.get('email')?.value, 
+      'password': this.checkoutForm.get('password')?.value,
+      'idRole': this.checkoutForm.get('idRole')?.value 
+    };
+    if(this.backendService.verifyAllValues(information))
+      this.backendService.postMerchant(information)
+        .subscribe(
+          _ => this.responseMessage = 'posted', 
+          error => this.proccessError(error)
+        );
+    //TODO: Hay que mostrar que datos fallan en el formulario.
+  }
+
+  proccessError(error: HttpErrorResponse): void{
+    if(error.status === 403){
+      this.responseMessage = "Forbidden";
+    }
+    if(error.status === 400){
+      this.responseMessage = "already registered";
+    }
   }
 }

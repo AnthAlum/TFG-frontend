@@ -1,59 +1,64 @@
 
 <h1>Profile</h1>
-<form class="responsive" [formGroup]="checkoutForm">
+<form class="responsive" [formGroup]="checkoutForm" [ngSwitch]="updated">
   <h2>Personal information</h2>
   <div fxLayout="row" fxLayout.lt-md="column">
     <div fxLayout="column">
-      <mat-form-field fxFlexAlign="start" appearance="fill">
+      <mat-form-field id="putMerchant-name" fxFlexAlign="start" appearance="fill">
         <mat-label>Name</mat-label>
         <input name="name" type="text" matInput formControlName="name"/>
       </mat-form-field>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeName()">Change
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('name')">Change
         <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
       </button>  
+      <mat-icon fxFlexAlign="end" *ngSwitchCase="name" aria-label="Side nav toggle icon">done_outline</mat-icon>
     </div>
     <div fxLayout="column">
-      <mat-form-field fxFlexAlign="start" appearance="fill">
+      <mat-form-field id="putMerchant-phone" fxFlexAlign="start" appearance="fill">
         <mat-label>Phone</mat-label>
         <input name="phone" type="text" matInput formControlName="phone"/>
       </mat-form-field>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePhone()">Change
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('phone')">Change
         <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
       </button>
+      <mat-icon fxFlexAlign="end" *ngSwitchCase="phone" aria-label="Side nav toggle icon">done_outline</mat-icon>
     </div>
   </div>
   <h2>Credentials</h2>
   <div fxLayout="row" fxLayout.lt-md="column"> 
     <div fxLayout="column">
-      <mat-form-field fxFlexAlign="start" appearance="fill">
+      <mat-form-field id="putMerchant-email" fxFlexAlign="start" appearance="fill">
         <mat-label>Email</mat-label>
         <input name="email" type="text" matInput formControlName="email"/> 
       </mat-form-field>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeEmail()">Change
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('email')">Change
         <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
       </button>
+      <mat-icon fxFlexAlign="end" *ngSwitchCase="email" aria-label="Side nav toggle icon">done_outline</mat-icon>
     </div>
     <div fxLayout="column">
-      <mat-form-field fxFlexAlign="start" appearance="fill">
+      <mat-form-field id="putMerchant-password" fxFlexAlign="start" appearance="fill">
         <mat-label>Password</mat-label>
         <input name="password" type="text" matInput formControlName="password"/>
       </mat-form-field>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePassword()">Change
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('password')">Change
         <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
       </button>
+      <mat-icon fxFlexAlign="end" *ngSwitchCase="password" aria-label="Side nav toggle icon">done_outline</mat-icon>
     </div>
   </div>
   <div fxLayout="row">
-    <mat-form-field appearance="fill">
+    <mat-form-field id="putMerchant-idRole" appearance="fill">
       <mat-label>Role</mat-label>
       <mat-select  formControlName="idRole">
         <mat-option value="0">Admin</mat-option>
         <mat-option value="1">User</mat-option>
       </mat-select>
     </mat-form-field>
-    <button  fxFlexAlign="center" mat-raised-button color="primary" (click)="changeRole()">Change
+    <button  fxFlexAlign="center" mat-raised-button color="primary" (click)="changeValue('idRole')">Change
       <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
     </button>
+    <mat-icon fxFlexAlign="end" *ngSwitchCase="idRole" aria-label="Side nav toggle icon">done_outline</mat-icon>
   </div>
 </form>
 

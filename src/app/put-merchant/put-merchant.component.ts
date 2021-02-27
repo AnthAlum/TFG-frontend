@@ -12,8 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class PutMerchantComponent implements OnInit {
   
   merchant: any;
-
-  idRol: string = "idRol";
+  updated: string = "";
+  idRole: string = "idRol";
   password: string = "password";
   name: string = "name";
   email: string = "email";
@@ -33,6 +33,7 @@ export class PutMerchantComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //TODO: Hay que mostrar algo si se accede a un ID no registrado
     const routeParams = this.activatedRouter.snapshot.paramMap;
     const merchantId = routeParams.get('merchantId');
     if(merchantId)
@@ -43,36 +44,44 @@ export class PutMerchantComponent implements OnInit {
         );
   }
 
-  changeName(): void{
-    //TODO: Hacer comprobaciones sobre el atributo
-    this.backendService.putMerchantName(this.merchant.idMerchant, this.checkoutForm.value.name)
-      .subscribe(_ => console.log('name updated')); //TODO: Hay que mostrar de una buena manera que los datos se han actualizado. 
+  changeValue(attribute: string): void{
+    let value = this.getValue(attribute);
+    if(this.backendService.verifyValue(attribute, value))
+      this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value)
+        .subscribe(
+          _ => this.changedAttribute(attribute),
+          error => { 
+            console.log(error);
+            this.updated = "";
+          }
+        );
+    else
+      console.log(attribute + ' = ' + value);
   }
 
-  changePhone(): void{
-    //TODO: Hacer comprobaciones sobre el atributo
-    this.backendService.putMerchantPhone(this.merchant.idMerchant, this.checkoutForm.value.phone)
-      .subscribe(_ => console.log('phone updated')); //TODO: Hay que mostrar de una buena manera que los datos se han actualizado. 
+  getValue(attribute: string): string{
+    let value = undefined;
+    switch(attribute){
+      case "name":
+        value = this.checkoutForm.value.name;
+        break;
+      case "phone":
+        value = this.checkoutForm.value.phone;
+        break;
+      case "email":
+        value = this.checkoutForm.value.email;
+        break;
+        case "idRole":
+        value = this.checkoutForm.value.idRole;
+        break;
+      case "password":
+        value = this.checkoutForm.value.password;
+        break;
+    }
+    return value;
   }
 
-  changeEmail(): void{
-    //TODO: Hacer comprobaciones sobre el atributo
-    this.backendService.putMerchantEmail(this.merchant.idMerchant, this.checkoutForm.value.email)
-      .subscribe(_ => console.log('email update')); //TODO: Hay que mostrar de una buena manera que los datos se han actualizado. 
-  }
-
-  changeRole(): void{
-    //TODO: Hacer comprobaciones sobre el atributo
-    this.backendService.putMerchantRole(this.merchant.idMerchant, this.checkoutForm.value.idRol)
-      .subscribe(_ => console.log('role update')); //TODO: Hay que mostrar de una buena manera que los datos se han actualizado. 
-  }
-
-  changePassword(): void{
-    //TODO: Hacer comprobaciones sobre el atributo
-    this.backendService.putMerchantPassword(this.merchant.idMerchant, this.checkoutForm.value.password)
-      .subscribe(_ => console.log('password update')); //TODO: Hay que mostrar de una buena manera que los datos se han actualizado. 
-  }
-
+  
   proccessError(error: HttpErrorResponse): void{
     //TODO: Implementar
   }
@@ -89,5 +98,9 @@ export class PutMerchantComponent implements OnInit {
       'idRole': role,
       'password': ''
     });
+  }
+
+  changedAttribute(attribute: string): void{
+    this.updated = attribute;
   }
 }

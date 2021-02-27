@@ -59,7 +59,7 @@ export class LoginPageComponent implements OnInit {
       username: username,
       password: password
     };
-    if(this.verifyCredentials(username, password)){
+    if(this.backendService.verifyValue("email", username)){
       this.backendService.postCredentials(credentials)
         .subscribe(jwtAuthentication => {
             this.getAuthority(jwtAuthentication.JWT);
@@ -84,14 +84,6 @@ export class LoginPageComponent implements OnInit {
       this.router.navigateByUrl('/merchants');
     if(this.authority.localeCompare("ROLE_USER") === 0)
       this.router.navigateByUrl('/user'); 
-  }
-
-  //Este metodo comprueba que el email ingresado sea de la forma : correo@example.com
-  verifyCredentials(username: string, password: string): boolean{
-    let regex = /^[A-z0-9\._\+-]{4,}@[A-z0-9\-]{3,}(\.[a-z0-9\-]{2,})+$/;
-    if(regex.test(username)) 
-      return true;
-    return false;
   }
 
   proccessError(error: HttpErrorResponse): void{
