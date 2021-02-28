@@ -3,6 +3,7 @@ import {FormBuilder, FormsModule} from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 
 @Component({
   selector: 'app-put-merchant',
@@ -29,7 +30,8 @@ export class PutMerchantComponent implements OnInit {
   constructor(
     private backendService: BackendService,
     private formBuilder: FormBuilder,
-    private activatedRouter: ActivatedRoute,
+    private activatedRouter: ActivatedRoute,  
+    private snackBar: SnackbarMessageComponent
   ) { }
 
   ngOnInit(): void {
@@ -49,9 +51,8 @@ export class PutMerchantComponent implements OnInit {
     if(this.backendService.verifyValue(attribute, value))
       this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value)
         .subscribe(
-          _ => this.changedAttribute(attribute),
-          error => { 
-            console.log(error);
+          (merchant: any) => this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey"),
+          (error: any) => { 
             this.updated = "";
           }
         );
@@ -98,9 +99,5 @@ export class PutMerchantComponent implements OnInit {
       'idRole': role,
       'password': ''
     });
-  }
-
-  changedAttribute(attribute: string): void{
-    this.updated = attribute;
   }
 }

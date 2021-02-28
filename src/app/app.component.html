@@ -1,9 +1,7 @@
 <mat-sidenav-container *ngIf="isNotLoginPage()" class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      
-      >
+      [mode]="(isHandset$ | async) ? 'over' : 'side'">
     <mat-toolbar id="toolbar" color="primary">
       <span class="center-text">Application</span>
     </mat-toolbar>

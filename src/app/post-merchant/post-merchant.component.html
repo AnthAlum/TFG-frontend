@@ -2,21 +2,25 @@
   <div  fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" >
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input name="name" type="text" matInput formControlName="name"/>
+      <input name="name" type="text" matInput [formControl]="formControl.name"/>
+      <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Phone</mat-label>
-      <input name="phone" type="text" matInput formControlName="phone"/>
+      <input name="phone" type="text" matInput [formControl]="formControl.phone"/>
+      <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column">
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input name="email" type="text" matInput formControlName="email" placeholder="email@example.com"/> 
+      <input name="email" type="text" matInput [formControl]="formControl.email" placeholder="email@example.com"/>
+      <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error> 
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input name="password" type="text" matInput formControlName="password"/>
+      <input name="password" type="text" matInput [formControl]="formControl.password"/>
+      <mat-error *ngIf="formControl.password.invalid">{{getErrorMessage('password')}}</mat-error>
     </mat-form-field>
   </div>
   <mat-form-field appearance="fill" >
@@ -30,9 +34,4 @@
     <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
   </button>
 </form>
-<div [ngSwitch]="responseMessage">
-  <span *ngSwitchCase="'posted'">New merchant created!</span>
-  <span *ngSwitchCase="'already registered'">This email is already registered</span>
-  <span *ngSwitchCase="'forbidden'">You are not allowed to do this operation</span>
-</div>
 

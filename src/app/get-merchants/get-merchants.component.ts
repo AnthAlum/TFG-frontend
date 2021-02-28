@@ -2,6 +2,8 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { BackendService } from '../backend.service';
 import { Router } from '@angular/router';
 import { MatTable } from '@angular/material/table';
+import {MatDialog} from '@angular/material/dialog';
+import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 
 @Component({
   selector: 'app-get-merchants',
@@ -17,7 +19,8 @@ export class GetMerchantsComponent implements OnInit {
 
   constructor(
     private backendService: BackendService,
-    private router:Router
+    private router:Router,
+    public dialog: MatDialog,
   ) { }
 
 
@@ -30,6 +33,20 @@ export class GetMerchantsComponent implements OnInit {
       }
     );
   }
+
+  askForDeleteMerchant(idMerchant: string, element: any): void{
+    let modifiedInformation: { [key: string]: string} = this.modifyInformation(element);
+    let action: string = "Delete";
+    modifiedInformation.z = action;
+    const dialogRef = this.dialog.open(DialogConfirmationComponent,{
+      data: modifiedInformation
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.event === "Delete")
+        this.deleteMerchant(idMerchant, element);
+    });
+  }
+
 
   deleteMerchant(idMerchant: string, element: any):void{
     this.backendService.deleteMerchant(idMerchant).subscribe(_ => this.deleteRow(element));
@@ -45,5 +62,18 @@ export class GetMerchantsComponent implements OnInit {
       this.merchants.splice(index, 1);
     }
     this.table?.renderRows();
+  }
+
+  modifyInformation(element: any): any{
+    let role = "User";
+    if(element.idRole === 0)
+      role = "Admin";
+    let modified = {
+      a: element.name,
+      b: element.email,
+      c: element.phone,
+      d: role
+    };
+    return modified;
   }
 }

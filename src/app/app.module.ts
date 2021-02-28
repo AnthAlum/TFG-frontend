@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';  
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,11 +25,15 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { LoadingPageComponent } from './loading-page/loading-page.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { PageContainerComponent } from './page-container/page-container.component';
 import { MerchantCardComponent } from './merchant-card/merchant-card.component';
 import { MerchantFormComponent } from './merchant-form/merchant-form.component';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
+import { SnackbarMessageComponent } from './snackbar-message/snackbar-message.component';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -38,12 +43,15 @@ import { MerchantFormComponent } from './merchant-form/merchant-form.component';
     GetMerchantsComponent,
     PostMerchantComponent,
     PutMerchantComponent,
-    LoadingPageComponent,
     PageContainerComponent,
     MerchantCardComponent,
-    MerchantFormComponent
+    MerchantFormComponent,
+    DeleteConfirmationComponent,
+    DialogConfirmationComponent,
+    SnackbarMessageComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     MatGridListModule,
@@ -64,10 +72,12 @@ import { MerchantFormComponent } from './merchant-form/merchant-form.component';
     FlexLayoutModule,
     MatSidenavModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   exports:[AppRoutingModule],
-  providers: [],
+  providers: [SnackbarMessageComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

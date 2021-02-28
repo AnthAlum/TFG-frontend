@@ -44,6 +44,10 @@ export class BackendService {
 
   constructor(private httpClient: HttpClient) { }
   
+  getValuesRegex(): { [key: string]: RegExp } {
+    return regexSet;
+  }
+
   authenticationDone(): boolean{
     let token = localStorage.getItem('token');
     if(token){
@@ -67,7 +71,7 @@ export class BackendService {
     this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
   }
 
-  //Este metodo comprueba que el email ingresado sea de la forma : correo@example.com
+  //Este metodo comprueba que los datos recibidos cumplan con las regex permitidas.
   verifyValue(attribute: string, value: string): boolean{
     let regex;
     switch(attribute){

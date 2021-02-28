@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BackendService } from '../backend.service';
+import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 
 @Component({
   selector: 'app-post-merchant',
@@ -11,8 +12,15 @@ import { BackendService } from '../backend.service';
 
 export class PostMerchantComponent implements OnInit {
 
-  responseMessage: any = undefined;
-  
+  regexSet = this.backendService.getValuesRegex();
+
+  formControl: { [key: string]: FormControl } = {
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.min(4)]),
+    phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
+    name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)])
+  };
+
   checkoutForm = this.formBuilder.group({
     idRole: '',
     password: '',
@@ -24,6 +32,7 @@ export class PostMerchantComponent implements OnInit {
   constructor(
     private backendService: BackendService,
     private formBuilder: FormBuilder,  
+    private snackBar: SnackbarMessageComponent
   ) { }
 
   ngOnInit(): void {
@@ -40,18 +49,24 @@ export class PostMerchantComponent implements OnInit {
     if(this.backendService.verifyAllValues(information))
       this.backendService.postMerchant(information)
         .subscribe(
-          _ => this.responseMessage = 'posted', 
+          _ => this.snackBar.openSnackBar("Merchant successfully created!", "Okey"), 
           error => this.proccessError(error)
         );
     //TODO: Hay que mostrar que datos fallan en el formulario.
   }
 
   proccessError(error: HttpErrorResponse): void{
-    if(error.status === 403){
-      this.responseMessage = "Forbidden";
-    }
-    if(error.status === 400){
-      this.responseMessage = "already registered";
-    }
+    if(error.status === 403)
+      this.snackBar.openSnackBar("You are not allowed to create a new user", "Okey");
+    if(error.status === 400)
+      this.snackBar.openSnackBar("This email is already registered", "Got it");
+  }
+
+  getErrorMessage(attribute: string){
+    if(this.formControl[attribute].hasError('required'))
+      return 'You must insert a ' + attribute;
+    if(this.regexSet[attribute].test(this.checkoutForm.get(attribute)?.value))
+      return 'Not a valid ' + attribute;
+    return '';
   }
 }
