@@ -1,64 +1,89 @@
 
-<h1>Profile</h1>
+<mat-card>
+  <h1>Profile</h1>
 <form class="responsive" [formGroup]="checkoutForm">
   <h2>Personal information</h2>
   <div fxLayout="column">
     <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
+      <mat-label>
+        <mat-icon>face</mat-icon>
+         Name</mat-label>
       <input name="name" type="text" matInput [formControl]="formControl.name" formControlName="name"/>
-    </mat-form-field>
+      
+      
+  </mat-form-field>
     <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
-    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('name')">Change
-      <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('name')"><span>
+      CHANGE 
+      <mat-icon [inline]="true">send</mat-icon>
+    </span> 
     </button>  
   </div>
   <div fxLayout="column">
     <mat-form-field fxFlexAlign="start" appearance="fill">
-      <mat-label>Phone</mat-label>
+      <mat-label>
+        <mat-icon>call</mat-icon> Phone</mat-label>
       <input name="phone" type="text" matInput [formControl]="formControl.phone" formControlName="phone"/>
     </mat-form-field>
     <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
-    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('phone')">Change
-      <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('phone')"><span>
+      CHANGE 
+      <mat-icon [inline]="true">send</mat-icon>
+    </span> 
     </button>
   </div>
   <h2>Credentials</h2> 
   <div fxLayout="column">
     <mat-form-field fxFlexAlign="start" appearance="fill">
-      <mat-label>Email</mat-label>
+      <mat-label>
+        <mat-icon>email</mat-icon> Email</mat-label>
       <input name="email" type="text" matInput [formControl]="formControl.email" formControlName="email"/> 
     </mat-form-field>
     <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error>
-    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('email')">Change
-      <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('email')"><span>
+      CHANGE 
+      <mat-icon [inline]="true">send</mat-icon>
+    </span> 
     </button>
   </div>
   <div fxLayout="column">
     <mat-form-field fxFlexAlign="start" appearance="fill">
-      <mat-label>Password</mat-label>
-      <input name="password" type="text" matInput />
+      <mat-label>
+        <mat-icon>password</mat-icon> Password</mat-label>
+      <input name="password" type="password" matInput />
     </mat-form-field>
     <mat-form-field fxFlexAlign="start" appearance="fill">
-      <mat-label>New password</mat-label>
-      <input name="newPassword" type="text" matInput />
+      <mat-label>
+        <mat-icon>password</mat-icon> New password</mat-label>
+      <input name="newPassword" type="password" matInput />
     </mat-form-field>
-    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePassword()">Change
-      <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePassword()"><span>
+      CHANGE 
+      <mat-icon [inline]="true">send</mat-icon>
+    </span> 
     </button>
   </div> 
   <div fxLayout="column">
     <mat-form-field id="putMerchant-idRole" appearance="fill">
       <mat-label>Role</mat-label>
       <mat-select formControlName="idRole">
-        <mat-option value="0">Admin</mat-option>
-        <mat-option value="1">User</mat-option>
+        <mat-option value="0">ADMINISTRATOR</mat-option>
+        <mat-option value="1">MERCHANT</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-error *ngIf="formControl.idRole.invalid">{{getErrorMessage('idRole')}}</mat-error>
-    <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('idRole')">Change
-      <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
+    <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('idRole')"><span>
+      CHANGE 
+      <mat-icon [inline]="true">send</mat-icon>
+    </span> 
     </button>
   </div>
 </form>
+</mat-card>
 
 
+<!-- HACER LAS TARJETAS SEA MOVIL -->
+<!-- HACER LA PAGINACION -->
+<!-- HACER UN FILTRO -->
+<!-- HACER UN LOADING -->
+<!-- USAR EL ORDEN EN EL DIALOGO DE ACCIONES -->

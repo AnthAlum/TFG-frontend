@@ -1,8 +1,10 @@
-<mat-sidenav-container *ngIf="isNotLoginPage()" class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+<div id="app">
+
+  <mat-sidenav-container *ngIf="isNotLoginPage()" class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'">
-    <mat-toolbar id="toolbar" color="primary">
+      <mat-toolbar id="toolbar" color="primary">
       <span class="center-text">Application</span>
     </mat-toolbar>
     <mat-nav-list>
@@ -22,11 +24,12 @@
       (click)="drawer.toggle()">
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
-      <span>PYMES Application</span>
-    </mat-toolbar> 
-    <app-page-container>
-    </app-page-container>
+    <span>PYMES Application</span>
+  </mat-toolbar> 
+  <app-page-container>
+  </app-page-container>
   </mat-sidenav-content>
 </mat-sidenav-container>
 <!-- [opened]="(isHandset$ | async) === false" Para abrir y cerrar la barra a la hora del redimensionamiento--> 
 <app-login-page *ngIf="!isNotLoginPage()"></app-login-page> 
+</div>

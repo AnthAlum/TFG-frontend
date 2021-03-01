@@ -2,9 +2,12 @@
   margin: 2rem;
   width: 100%;
   max-width: 1200px;
+  
 }
 
 .page-container{
   display: flex;
   justify-content: center;
+  background-color: #eaeaea;
+  height: 100%;
 }

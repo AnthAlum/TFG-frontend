@@ -13,7 +13,7 @@ import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confi
 export class GetMerchantsComponent implements OnInit {
 
   @Input() merchants: any = undefined;
-  displayedColumns: string[] = ['id', 'idRole', 'nombre', 'email', 'telefono', 'modify', 'delete'];
+  displayedColumns: string[] = [ 'idRole', 'nombre', 'email', 'telefono', 'modify', 'delete'];
   
   @ViewChild(MatTable) table?: MatTable<any>;
 
@@ -38,8 +38,10 @@ export class GetMerchantsComponent implements OnInit {
     let modifiedInformation: { [key: string]: string} = this.modifyInformation(element);
     let action: string = "Delete";
     modifiedInformation.z = action;
+    
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
-      data: modifiedInformation
+      data: modifiedInformation 
+      //order: ["name", "phone", "email", "idRole"]
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result.event === "Delete")

@@ -14,6 +14,7 @@ export class DialogConfirmationComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogConfirmationComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() @Inject(MAT_DIALOG_DATA) public fields: string[]
   ) {
   }
   
