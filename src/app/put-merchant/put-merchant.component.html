@@ -3,50 +3,58 @@
 <form class="responsive" [formGroup]="checkoutForm">
   <h2>Personal information</h2>
   <div fxLayout="column">
-    <mat-form-field id="putMerchant-name"  appearance="fill">
+    <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input name="name" type="text" matInput formControlName="name"/>
+      <input name="name" type="text" matInput [formControl]="formControl.name" formControlName="name"/>
     </mat-form-field>
+    <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
     <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('name')">Change
       <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
     </button>  
   </div>
   <div fxLayout="column">
-    <mat-form-field id="putMerchant-phone" fxFlexAlign="start" appearance="fill">
+    <mat-form-field fxFlexAlign="start" appearance="fill">
       <mat-label>Phone</mat-label>
-      <input name="phone" type="text" matInput formControlName="phone"/>
+      <input name="phone" type="text" matInput [formControl]="formControl.phone" formControlName="phone"/>
     </mat-form-field>
+    <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
     <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('phone')">Change
       <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
     </button>
   </div>
   <h2>Credentials</h2> 
   <div fxLayout="column">
-    <mat-form-field id="putMerchant-email" fxFlexAlign="start" appearance="fill">
+    <mat-form-field fxFlexAlign="start" appearance="fill">
       <mat-label>Email</mat-label>
-      <input name="email" type="text" matInput formControlName="email"/> 
+      <input name="email" type="text" matInput [formControl]="formControl.email" formControlName="email"/> 
     </mat-form-field>
+    <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error>
     <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('email')">Change
       <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
     </button>
   </div>
   <div fxLayout="column">
-    <mat-form-field id="putMerchant-password" fxFlexAlign="start" appearance="fill">
+    <mat-form-field fxFlexAlign="start" appearance="fill">
       <mat-label>Password</mat-label>
-      <input name="password" type="text" matInput formControlName="password"/>
+      <input name="password" type="text" matInput />
     </mat-form-field>
-    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('password')">Change
+    <mat-form-field fxFlexAlign="start" appearance="fill">
+      <mat-label>New password</mat-label>
+      <input name="newPassword" type="text" matInput />
+    </mat-form-field>
+    <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePassword()">Change
       <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
     </button>
   </div> 
   <div fxLayout="column">
     <mat-form-field id="putMerchant-idRole" appearance="fill">
       <mat-label>Role</mat-label>
-      <mat-select  formControlName="idRole">
+      <mat-select formControlName="idRole">
         <mat-option value="0">Admin</mat-option>
         <mat-option value="1">User</mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-error *ngIf="formControl.idRole.invalid">{{getErrorMessage('idRole')}}</mat-error>
     <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('idRole')">Change
       <mat-icon aria-label="Side nav toggle icon">create</mat-icon>
     </button>

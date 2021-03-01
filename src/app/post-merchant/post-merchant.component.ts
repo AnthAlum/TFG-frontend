@@ -1,32 +1,25 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
+
 
 @Component({
   selector: 'app-post-merchant',
   templateUrl: './post-merchant.component.html',
   styleUrls: ['./post-merchant.component.css']
 })
-
 export class PostMerchantComponent implements OnInit {
 
   regexSet = this.backendService.getValuesRegex();
 
-  formControl: { [key: string]: FormControl } = {
+  checkoutForm = this.formBuilder.group({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.min(4)]),
     phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
-    name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)])
-  };
-
-  checkoutForm = this.formBuilder.group({
-    idRole: '',
-    password: '',
-    name: '',
-    email: '',
-    phone: '',
+    name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)]),
+    idRole: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.idRole)])
   });
 
   constructor(
@@ -52,7 +45,6 @@ export class PostMerchantComponent implements OnInit {
           _ => this.snackBar.openSnackBar("Merchant successfully created!", "Okey"), 
           error => this.proccessError(error)
         );
-    //TODO: Hay que mostrar que datos fallan en el formulario.
   }
 
   proccessError(error: HttpErrorResponse): void{
@@ -62,10 +54,10 @@ export class PostMerchantComponent implements OnInit {
       this.snackBar.openSnackBar("This email is already registered", "Got it");
   }
 
-  getErrorMessage(attribute: string){
-    if(this.formControl[attribute].hasError('required'))
+  getErrorMessage(attribute: string): string{
+    if(this.checkoutForm.get(attribute)?.hasError('required'))
       return 'You must insert a ' + attribute;
-    if(this.regexSet[attribute].test(this.checkoutForm.get(attribute)?.value))
+    if(this.checkoutForm.get(attribute)?.hasError('pattern'))
       return 'Not a valid ' + attribute;
     return '';
   }

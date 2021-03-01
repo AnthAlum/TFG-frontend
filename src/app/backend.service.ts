@@ -88,7 +88,7 @@ export class BackendService {
         regex = regexSet.idRole;
         break;
       default:
-        return false;
+        return true;
     }
     if(regex.test(value)) 
       return true;
@@ -158,9 +158,6 @@ export class BackendService {
       case "phone":
         response = this.putMerchantPhone(idMerchant, newValue);
         break;
-      case "password":
-        response = this.putMerchantPassword(idMerchant, newValue);
-        break;
       case "idRole":
         response = this.putMerchantIdRole(idMerchant, newValue);
         break;
@@ -193,9 +190,9 @@ export class BackendService {
       .put<any>(url, {"newRole" : newValue}, this.httpOptions);
   }
 
-  putMerchantPassword(idMerchant: number, newValue: string): Observable<any>{
+  putMerchantPassword(idMerchant: number, oldPassword: string, newPassword: string): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/password`;
     return this.httpClient
-      .put<any>(url, {"newPassword" : newValue}, this.httpOptions);
+      .put<any>(url, {"password": oldPassword , "newPassword" : newPassword }, this.httpOptions);
   }
 }

@@ -2,25 +2,25 @@
   <div  fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" >
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input name="name" type="text" matInput [formControl]="formControl.name"/>
-      <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
+      <input name="name" type="text" matInput formControlName="name" required>
+      <mat-error *ngIf="checkoutForm.get('name')?.invalid">{{getErrorMessage('name')}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Phone</mat-label>
-      <input name="phone" type="text" matInput [formControl]="formControl.phone"/>
-      <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
+      <input name="phone" type="text" matInput formControlName="phone" required>
+      <mat-error *ngIf="checkoutForm.get('phone')?.invalid">{{getErrorMessage('phone')}}</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column">
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input name="email" type="text" matInput [formControl]="formControl.email" placeholder="email@example.com"/>
-      <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error> 
+      <input name="email" type="text" matInput placeholder="email@example.com" formControlName="email" required>
+      <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error> 
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input name="password" type="text" matInput [formControl]="formControl.password"/>
-      <mat-error *ngIf="formControl.password.invalid">{{getErrorMessage('password')}}</mat-error>
+      <input name="password" type="text" matInput formControlName="password" required>
+      <mat-error *ngIf="checkoutForm.get('password')?.invalid">{{getErrorMessage('password')}}</mat-error>
     </mat-form-field>
   </div>
   <mat-form-field appearance="fill" >
@@ -29,6 +29,7 @@
       <mat-option value="0">Admin</mat-option>
       <mat-option value="1">User</mat-option>
     </mat-select>
+    <mat-error *ngIf="checkoutForm.get('idRole')?.invalid">{{getErrorMessage('idRole')}}</mat-error>
   </mat-form-field>
   <button fxFlexAlign="center" mat-raised-button type="submit" color="primary">Submit
     <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>

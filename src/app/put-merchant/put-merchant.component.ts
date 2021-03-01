@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormsModule} from '@angular/forms';
+import {FormBuilder, FormControl, FormsModule, Validators} from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -12,16 +12,20 @@ import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.c
 })
 export class PutMerchantComponent implements OnInit {
   
+  regexSet = this.backendService.getValuesRegex();
+
+  formControl: { [key: string]: FormControl } = {
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
+    name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)]),
+    idRole: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.idRole)]),
+    password: new FormControl('', [Validators.required, Validators.min(4)]),
+    newPassword: new FormControl('', [Validators.required, Validators.min(4)]),
+  };
+
   merchant: any;
-  updated: string = "";
-  idRole: string = "idRol";
-  password: string = "password";
-  name: string = "name";
-  email: string = "email";
-  phone: string = "phone";
   checkoutForm = this.formBuilder.group({
     idRole: '',
-    password: '',
     name: '',
     email: '',
     phone: '',
@@ -42,7 +46,7 @@ export class PutMerchantComponent implements OnInit {
       this.backendService.getMerchantById(merchantId)
         .subscribe( 
           merchant => this.setValues(merchant), 
-          error => this.proccessError(error)
+          error => console.log("Error")
         );
   }
 
@@ -52,12 +56,21 @@ export class PutMerchantComponent implements OnInit {
       this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value)
         .subscribe(
           (merchant: any) => this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey"),
-          (error: any) => { 
-            this.updated = "";
-          }
+          (error: any) => { }
         );
-    else
-      console.log(attribute + ' = ' + value);
+  }
+
+  changePassword(): void{
+    let password: string = "password";
+    let newPassword: string = "newPassword";
+    let passwordValue = this.getValue(password);
+    let newPasswordValue = this.getValue(newPassword);
+    if(this.backendService.verifyValue(password, newPasswordValue))
+      this.backendService.putMerchantPassword(this.merchant.idMerchant, passwordValue, newPassword)
+        .subscribe(
+          (merchant: any) => this.snackBar.openSnackBar("Your " + password + " has been changed", "Okey"),
+          (error: any) => { this.snackBar.openSnackBar("The actual password doens't match", "Okey") }
+        );
   }
 
   getValue(attribute: string): string{
@@ -78,13 +91,30 @@ export class PutMerchantComponent implements OnInit {
       case "password":
         value = this.checkoutForm.value.password;
         break;
+      case "newPassword":
+        value = this.checkoutForm.value.newPassword;
+        break;
     }
     return value;
   }
 
-  
-  proccessError(error: HttpErrorResponse): void{
-    //TODO: Implementar
+  getErrorMessage(attribute: string): string{
+    if(this.formControl[attribute].hasError('required'))
+      return 'You must insert a ' + attribute;
+    if(this.formControl[attribute].hasError('pattern'))
+      return 'Not a valid ' + attribute;
+    return '';
+  }
+
+  getErrorMessagePassword(): string {
+    let attribute = "password";
+    if(this.formControl[attribute].hasError('required'))
+      return 'You must insert a ' + attribute;
+    if(this.formControl[attribute].hasError('pattern'))
+      return 'Not a valid ' + attribute;
+    if(this.getValue(attribute).localeCompare(this.merchant.password) !== 0)
+      return 'The password is incorrect';
+    return '';
   }
 
   setValues(merchant: any): void{
@@ -97,7 +127,10 @@ export class PutMerchantComponent implements OnInit {
       'phone': this.merchant.phone,
       'email': this.merchant.email,
       'idRole': role,
-      'password': ''
     });
+    this.formControl.name.setValue(this.merchant.name);
+    this.formControl.email.setValue(this.merchant.email);
+    this.formControl.phone.setValue(this.merchant.phone);
+    this.formControl.idRole.setValue(this.merchant.idRole);
   }
 }
