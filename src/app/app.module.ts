@@ -34,6 +34,8 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { SnackbarMessageComponent } from './snackbar-message/snackbar-message.component';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -74,10 +76,12 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
     MatListModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgxSpinnerModule
   ],
   exports:[AppRoutingModule],
   providers: [SnackbarMessageComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

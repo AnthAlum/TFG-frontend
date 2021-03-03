@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LoadingService } from '../loading.service';
 
 @Component({
   selector: 'app-dialog-confirmation',
@@ -7,22 +8,26 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./dialog-confirmation.component.css']
 })
 export class DialogConfirmationComponent implements OnInit {
-  action: String = new String();
-  event:string = "";
-  attributes: string[] = [];
-  last: number = 0;
+  event: string = "";
+  lastField: number = 0;
+
+  information: { [key: string]: string} = {};
+  fields: string[] = [];
+  action: string = "";
+
   constructor(
     public dialogRef: MatDialogRef<DialogConfirmationComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    @Optional() @Inject(MAT_DIALOG_DATA) public fields: string[]
+    private loadingService: LoadingService
   ) {
   }
   
   ngOnInit(): void {
+    this.dialogRef.disableClose = true;
     this.event = "Cancel";
-    this.attributes = Object.keys(this.data); //Get attributes, the last one is the action
-    this.last = this.attributes.length - 1; //Extract the action
-    this.action = { ...this.data }[this.attributes[this.last]];
+    this.information = this.data[0];
+    this.fields = this.data[1];
+    this.action = this.data[2];
   }
 
   acceptAction(){
@@ -35,5 +40,6 @@ export class DialogConfirmationComponent implements OnInit {
     this.dialogRef.close({
       event: "Cancel"
     });
+    this.loadingService.hide();
   }
 }

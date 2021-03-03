@@ -4,6 +4,7 @@ import { BackendService } from '../backend.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
+import { LoadingService } from '../loading.service';
 
 @Component({
   selector: 'app-put-merchant',
@@ -35,7 +36,8 @@ export class PutMerchantComponent implements OnInit {
     private backendService: BackendService,
     private formBuilder: FormBuilder,
     private activatedRouter: ActivatedRoute,  
-    private snackBar: SnackbarMessageComponent
+    private snackBar: SnackbarMessageComponent,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
@@ -45,19 +47,31 @@ export class PutMerchantComponent implements OnInit {
     if(merchantId)
       this.backendService.getMerchantById(merchantId)
         .subscribe( 
-          merchant => this.setValues(merchant), 
-          error => console.log("Error")
+          merchant => {
+            this.setValues(merchant);
+            this.loadingService.hide();
+          }, 
+          error => {
+            console.log("Error");
+            this.loadingService.hide();
+          }
         );
   }
 
   changeValue(attribute: string): void{
     let value = this.getValue(attribute);
-    if(this.backendService.verifyValue(attribute, value))
+    if(this.backendService.verifyValue(attribute, value)){
       this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value)
         .subscribe(
-          (merchant: any) => this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey"),
-          (error: any) => { }
+          (merchant: any) => {
+            this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey");
+            this.loadingService.hide();
+          },(error: any) => {
+            this.loadingService.hide();
+           }
         );
+      this.loadingService.show();
+    }
   }
 
   changePassword(): void{
@@ -65,12 +79,19 @@ export class PutMerchantComponent implements OnInit {
     let newPassword: string = "newPassword";
     let passwordValue = this.getValue(password);
     let newPasswordValue = this.getValue(newPassword);
-    if(this.backendService.verifyValue(password, newPasswordValue))
+    if(this.backendService.verifyValue(password, newPasswordValue)){
       this.backendService.putMerchantPassword(this.merchant.idMerchant, passwordValue, newPassword)
         .subscribe(
-          (merchant: any) => this.snackBar.openSnackBar("Your " + password + " has been changed", "Okey"),
-          (error: any) => { this.snackBar.openSnackBar("The actual password doens't match", "Okey") }
+          (merchant: any) => {
+            this.snackBar.openSnackBar("Your " + password + " has been changed", "Okey");
+            this.loadingService.hide();
+          },(error: any) => { 
+            this.snackBar.openSnackBar("The actual password doens't match", "Okey");
+            this.loadingService.hide(); 
+          }
         );
+      this.loadingService.show();
+    }
   }
 
   getValue(attribute: string): string{

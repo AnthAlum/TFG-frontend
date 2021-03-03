@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LoadingService } from '../loading.service';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -13,7 +14,7 @@ export class DeleteConfirmationComponent implements OnInit {
   last: number = 0;
   constructor(
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
   

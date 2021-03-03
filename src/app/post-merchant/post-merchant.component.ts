@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { BackendService } from '../backend.service';
+import { LoadingService } from '../loading.service';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 
 
@@ -25,10 +26,12 @@ export class PostMerchantComponent implements OnInit {
   constructor(
     private backendService: BackendService,
     private formBuilder: FormBuilder,  
-    private snackBar: SnackbarMessageComponent
+    private snackBar: SnackbarMessageComponent,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
+    this.loadingService.hide();
   }
 
   postMerchant(): void{
@@ -39,12 +42,20 @@ export class PostMerchantComponent implements OnInit {
       'password': this.checkoutForm.get('password')?.value,
       'idRole': this.checkoutForm.get('idRole')?.value 
     };
-    if(this.backendService.verifyAllValues(information))
+    if(this.backendService.verifyAllValues(information)){
+      this.loadingService.show();
       this.backendService.postMerchant(information)
         .subscribe(
-          _ => this.snackBar.openSnackBar("Merchant successfully created!", "Okey"), 
-          error => this.proccessError(error)
+          _ => {
+            this.snackBar.openSnackBar("Merchant successfully created!", "Okey");
+            this.loadingService.hide();
+          },
+          error => {
+            this.proccessError(error);
+            this.loadingService.hide();
+          }
         );
+    }
   }
 
   proccessError(error: HttpErrorResponse): void{

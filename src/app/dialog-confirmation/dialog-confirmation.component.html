@@ -1,7 +1,7 @@
 <h2>Are you sure to {{ action.toLowerCase() }} ?</h2>
-<div class="field" *ngFor="let attribute of attributes | slice:0:last">
-  <div class="field-header"><strong>{{ attribute.toUpperCase() }}</strong></div>
-  <div class="field-value">{{ data[attribute] }}</div>
+<div class="field" *ngFor="let field of fields">
+  <div class="field-header"><strong>{{ field.toUpperCase() }}</strong></div>
+  <div class="field-value">{{ information[field] }}</div>
 </div>
 <div fxLayout="row" fxLayoutAlign="end">
   <button class="dialog-button" mat-raised-button type="button" color="warn" (click)="acceptAction()">{{ action }}</button>

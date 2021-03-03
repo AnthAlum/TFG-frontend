@@ -1,9 +1,11 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { BackendService } from './backend.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { LoadingService } from './loading.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -16,6 +18,7 @@ export class AppComponent implements OnInit{
   merchants: any = undefined;
   postOption: boolean = false;
   putOption: boolean = false;
+  hideElement: boolean = false;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
   .pipe(
     map(result => result.matches),
@@ -25,11 +28,17 @@ export class AppComponent implements OnInit{
   constructor(
     private breakpointObserver: BreakpointObserver,
     private backendService: BackendService,
-    private router: Router
+    private router: Router,
+    private spinnerService: LoadingService
     ) { }
 
     ngOnInit(): void{
       this.checkAuthenthication();
+      this.showLoading();
+    }
+
+    showLoading(): void{
+      this.spinnerService.show();
     }
 
     isNotLoginPage(): boolean{

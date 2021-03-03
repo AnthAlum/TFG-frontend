@@ -1,5 +1,4 @@
 <div id="app">
-
   <mat-sidenav-container *ngIf="isNotLoginPage()" class="sidenav-container">
     <mat-sidenav #drawer class="sidenav" fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
@@ -8,7 +7,7 @@
       <span class="center-text">Application</span>
     </mat-toolbar>
     <mat-nav-list>
-      <a class="padding20" mat-list-item routerLink="/merchants" (click)="drawer.toggle()">
+      <a class="padding20" mat-list-item routerLink="/merchants" (click)="drawer.toggle(); showLoading()">
         <mat-icon class="padding5" aria-label="Side nav toggle icon">people_alt</mat-icon>Users
       </a>
       <a class="padding20" mat-list-item routerLink="/login" (click)="drawer.toggle(); exit()">
@@ -30,6 +29,13 @@
   </app-page-container>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<!-- [opened]="(isHandset$ | async) === false" Para abrir y cerrar la barra a la hora del redimensionamiento--> 
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
 <app-login-page *ngIf="!isNotLoginPage()"></app-login-page> 
 </div>

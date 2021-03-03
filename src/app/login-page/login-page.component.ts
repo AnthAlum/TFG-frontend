@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -48,10 +49,12 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private backendService : BackendService,
-    private router: Router
+    private router: Router,
+    private spinnerService: NgxSpinnerService,
     ) { }
 
   ngOnInit(): void {
+    this.spinnerService.hide();
   }
 
   postCredentials(username: string, password: string): void{
@@ -60,6 +63,7 @@ export class LoginPageComponent implements OnInit {
       password: password
     };
     if(this.backendService.verifyValue("email", username)){
+      this.spinnerService.show();
       this.backendService.postCredentials(credentials)
         .subscribe(jwtAuthentication => {
             this.getAuthority(jwtAuthentication.JWT);
