@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { LoadingService } from '../loading.service';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
@@ -15,7 +15,7 @@ export class PostMerchantComponent implements OnInit {
 
   regexSet = this.backendService.getValuesRegex();
 
-  checkoutForm = this.formBuilder.group({
+  checkoutForm: FormGroup = this.formBuilder.group({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.min(4)]),
     phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),

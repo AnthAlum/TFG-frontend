@@ -2,13 +2,15 @@
 
   <h1>Users</h1>
   <div class="row-button" fxLayout="row" fxLayoutAlign="end" fxShow fxHide.xs="true" fxHide.sm="true">
-    <a [routerLink]="['/merchants-add']">
+    <span class="span">Search: </span>
+    <input type="text" matInput style="width: 150px;text-align: start;" (keyup)="doFilter($event.target!.value)" placeholder="Filter"/>
+    <a [routerLink]="['/merchants-add']" style="margin-right: 5px;">
       <button mat-raised-button type="button" color="primary">
         <mat-icon aria-label="Side nav toggle icon" >person_add</mat-icon>
       </button>
     </a>
   </div>
-  <table mat-table [dataSource]="merchants">
+  <table mat-table [dataSource]="dataSource">
     <!--- Note that these columns can be defined in any order.
       The actual rendered columns are set as a property on the row definition" -->
       
@@ -19,7 +21,7 @@
   </ng-container>
 
   <!-- Weight Column -->
-  <ng-container matColumnDef="nombre">
+  <ng-container matColumnDef="name">
     <th  mat-header-cell *matHeaderCellDef>
       <span fxLayout="row" fxLayoutAlign="center center">
         Name <mat-icon [inline]="true">face</mat-icon>
@@ -36,7 +38,7 @@
   </ng-container>
 
   <!-- Symbol Column -->
-  <ng-container matColumnDef="telefono">
+  <ng-container matColumnDef="phone">
     <th  mat-header-cell *matHeaderCellDef> 
       <span fxLayout="row" fxLayoutAlign="center center">
         Phone <mat-icon [inline]="true">call</mat-icon>

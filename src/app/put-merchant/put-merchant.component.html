@@ -9,8 +9,6 @@
         <mat-icon>face</mat-icon>
          Name</mat-label>
       <input name="name" type="text" matInput [formControl]="formControl.name" formControlName="name"/>
-      
-      
   </mat-form-field>
     <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
     <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('name')"><span>
@@ -83,5 +81,4 @@
 
 
 <!-- HACER LAS TARJETAS SEA MOVIL -->
-<!-- HACER LA PAGINACION -->
 <!-- HACER UN FILTRO -->

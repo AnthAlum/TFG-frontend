@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { BackendService } from '../backend.service';
 import { Router } from '@angular/router';
-import { MatTable } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
 import { PageEvent } from '@angular/material/paginator';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Merchant } from '../merchant';
 
 @Component({
   selector: 'app-get-merchants',
@@ -14,18 +16,21 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class GetMerchantsComponent implements OnInit {
 
+  public dataSource = new MatTableDataSource<Merchant>();
   @Input() merchants: any = undefined;
+  originalMerchantsNumber: number = 0;
   merchantsNumber: number = 0;
   paginationSize: number = 5;
   paginationIndex: number = 0;
-  displayedColumns: string[] = [ 'idRole', 'nombre', 'email', 'telefono', 'modify', 'delete'];
+  displayedColumns: string[] = [ 'idRole', 'name', 'email', 'phone', 'modify', 'delete'];
   @ViewChild(MatTable) table?: MatTable<any>;
-
+  
   constructor(
     private backendService: BackendService,
     private router:Router,
     public dialog: MatDialog,
     public loadingService: LoadingService,
+    private formBuilder: FormBuilder,
   ) { }
 
 
@@ -33,7 +38,8 @@ export class GetMerchantsComponent implements OnInit {
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
       merchants => {
         this.merchantsNumber = merchants.paginationInfo.totalElements;
-        this.merchants = merchants.pages;
+        this.originalMerchantsNumber = this.merchantsNumber;
+        this.dataSource.data = merchants.pages as Merchant[];
         this.loadingService.hide();
       }, error => {
         this.loadingService.hide();
@@ -49,7 +55,8 @@ export class GetMerchantsComponent implements OnInit {
     this.backendService.getMerchants(event.pageIndex, event.pageSize).subscribe(
       merchants => {
         this.merchantsNumber = merchants.paginationInfo.totalElements;
-        this.merchants = merchants.pages;
+        this.originalMerchantsNumber = this.merchantsNumber;
+        this.dataSource.data = merchants.pages as Merchant[];
         this.loadingService.hide();
       }, error => {
         this.loadingService.hide();
@@ -92,15 +99,16 @@ export class GetMerchantsComponent implements OnInit {
   }
 
   deleteRow(row: any):void {
-    const index = this.merchants.indexOf(row, 0);
+    const index = this.dataSource.data.indexOf(row, 0);
     if (index > -1) {
-      this.merchants.splice(index, 1);
+      this.dataSource.data.splice(index, 1);
     }
     this.table?.renderRows();
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
       merchants => {
         this.merchantsNumber = merchants.paginationInfo.totalElements;
-        this.merchants = merchants.pages;
+        this.originalMerchantsNumber = this.merchantsNumber;
+        this.dataSource.data = merchants.pages as Merchant[];
         this.loadingService.hide();
       }, error => {
         this.loadingService.hide();
@@ -118,4 +126,11 @@ export class GetMerchantsComponent implements OnInit {
     return elementModified;
   }
 
+  public doFilter = (value: string) => {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
+    if(value.localeCompare('') != 0)
+      this.merchantsNumber = this.dataSource.filteredData.length;
+    else
+      this.merchantsNumber = this.originalMerchantsNumber;
+  }
 }
