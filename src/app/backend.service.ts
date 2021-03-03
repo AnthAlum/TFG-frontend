@@ -121,8 +121,8 @@ export class BackendService {
       );
   }
 
-  getMerchants(): Observable<any>{
-    const url = `${this.backendUrl}/${this.merchantsUrl}`;
+  getMerchants(pageNumber: number, pageSize: number): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}?page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<any>(url, this.httpOptions);
   }

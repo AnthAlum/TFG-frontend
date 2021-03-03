@@ -5,6 +5,7 @@ import { MatTable } from '@angular/material/table';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-get-merchants',
@@ -15,9 +16,9 @@ export class GetMerchantsComponent implements OnInit {
 
   @Input() merchants: any = undefined;
   merchantsNumber: number = 0;
-  paginationSize: number = 0;
+  paginationSize: number = 5;
+  paginationIndex: number = 0;
   displayedColumns: string[] = [ 'idRole', 'nombre', 'email', 'telefono', 'modify', 'delete'];
-  
   @ViewChild(MatTable) table?: MatTable<any>;
 
   constructor(
@@ -29,9 +30,24 @@ export class GetMerchantsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.backendService.getMerchants().subscribe(
+    this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
       merchants => {
-        console.log(merchants);
+        this.merchantsNumber = merchants.paginationInfo.totalElements;
+        this.merchants = merchants.pages;
+        this.loadingService.hide();
+      }, error => {
+        this.loadingService.hide();
+        // TODO: Tratar el error
+      }
+    );
+  }
+
+  changePagination(event: PageEvent): void{
+    this.loadingService.show();
+    this.paginationIndex = event.pageIndex;
+    this.paginationSize = event.pageSize;
+    this.backendService.getMerchants(event.pageIndex, event.pageSize).subscribe(
+      merchants => {
         this.merchantsNumber = merchants.paginationInfo.totalElements;
         this.merchants = merchants.pages;
         this.loadingService.hide();
@@ -81,6 +97,16 @@ export class GetMerchantsComponent implements OnInit {
       this.merchants.splice(index, 1);
     }
     this.table?.renderRows();
+    this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
+      merchants => {
+        this.merchantsNumber = merchants.paginationInfo.totalElements;
+        this.merchants = merchants.pages;
+        this.loadingService.hide();
+      }, error => {
+        this.loadingService.hide();
+        // TODO: Tratar el error
+      }
+    );
   }
 
   modifyRole(element: any): {[key: string]: any}{

@@ -70,7 +70,7 @@
 
 </table>
 
-<mat-paginator [length]="merchantsNumber"  [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+<mat-paginator #paginator (page)="changePagination($event)" [length]="merchantsNumber" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 <!-- TODO: Hay que cambiar cuando sea movil -->
 </mat-card>
 <app-merchant-card *ngFor="let merchant of merchants" [merchant]="merchant" fxHide fxShow.xs="true" fxShow.sm="true"></app-merchant-card>
