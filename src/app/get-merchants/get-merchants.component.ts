@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Merchant } from '../merchant';
 import {MatSelectModule} from '@angular/material/select';
 import { MerchantPage } from '../merchant-page';
+import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 
 @Component({
   selector: 'app-get-merchants',
@@ -34,6 +35,7 @@ export class GetMerchantsComponent implements OnInit {
     public dialog: MatDialog,
     public loadingService: LoadingService,
     private formBuilder: FormBuilder,
+    private snackBar: SnackbarMessageComponent,
   ) { }
 
 
@@ -75,6 +77,7 @@ export class GetMerchantsComponent implements OnInit {
     this.backendService.deleteMerchant(idMerchant).subscribe(_ => {
       this.deleteRow(element);
       this.loadingService.hide();
+      this.snackBar.openSnackBar("Merchant successfully deleted!", "Okey")
     });
   }
 
@@ -89,11 +92,6 @@ export class GetMerchantsComponent implements OnInit {
   }
 
   deleteRow(row: any):void {
-    /*const index = this.dataSource.data.indexOf(row, 0);
-    if (index > -1) {
-      this.dataSource.data.splice(index, 1);
-    }
-    this.table!.renderRows();*/
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
       merchants => this.updateValues(merchants), 
       error => this.loadingService.hide()

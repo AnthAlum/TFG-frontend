@@ -18,7 +18,7 @@ export class SnackbarMessageComponent implements OnInit {
 
   openSnackBar(message: string, action: string) {
     let config = new MatSnackBarConfig();
-    config.duration = 50000;
+    config.duration = 10000;
     config.panelClass = ['red-snackbar'];
     this.snackBar.open(message, action, config);
   }

@@ -4,6 +4,8 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Valida
 import { BackendService } from '../backend.service';
 import { LoadingService } from '../loading.service';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 
 
 @Component({
@@ -28,20 +30,37 @@ export class PostMerchantComponent implements OnInit {
     private formBuilder: FormBuilder,  
     private snackBar: SnackbarMessageComponent,
     private loadingService: LoadingService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
     this.loadingService.hide();
   }
 
-  postMerchant(): void{
+  post(): void{
+    let action: string = "Create";
+    let order = ["name", "email", "phone", "idRole"];
     const information : { [key: string]: string } = {
-      'name': this.checkoutForm.get('name')?.value, 
-      'phone': this.checkoutForm.get('phone')?.value, 
-      'email': this.checkoutForm.get('email')?.value, 
-      'password': this.checkoutForm.get('password')?.value,
-      'idRole': this.checkoutForm.get('idRole')?.value 
+      'name': this.checkoutForm.get('name')!.value, 
+      'phone': this.checkoutForm.get('phone')!.value, 
+      'email': this.checkoutForm.get('email')!.value, 
+      'password': this.checkoutForm.get('password')!.value,
+      'idRole': this.checkoutForm.get('idRole')!.value 
     };
+    const dialogRef = this.dialog.open(DialogConfirmationComponent,{
+      data: [ information, order, action]
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadingService.show();
+      if(result.event === action)
+        this.postMerchant(information);
+      else
+        this.loadingService.hide();
+    });
+
+  }
+  
+  postMerchant(information: { [key: string]: string }): void{
     if(this.backendService.verifyAllValues(information)){
       this.loadingService.show();
       this.backendService.postMerchant(information)
@@ -66,9 +85,9 @@ export class PostMerchantComponent implements OnInit {
   }
 
   getErrorMessage(attribute: string): string{
-    if(this.checkoutForm.get(attribute)?.hasError('required'))
+    if(this.checkoutForm.get(attribute)!.hasError('required'))
       return 'You must insert a ' + attribute;
-    if(this.checkoutForm.get(attribute)?.hasError('pattern'))
+    if(this.checkoutForm.get(attribute)!.hasError('pattern'))
       return 'Not a valid ' + attribute;
     return '';
   }

@@ -1,13 +1,16 @@
 <mat-card>
   <h1>New user</h1>
-  <form [formGroup]="checkoutForm" (ngSubmit)="postMerchant()">
-    <div  fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" >
+  <form [formGroup]="checkoutForm" (ngSubmit)="post()">
+    <h2>Personal information</h2>
+    <div  fxLayout="column" >
       <mat-form-field appearance="fill">
       <mat-label>
         <mat-icon>face</mat-icon> Name</mat-label>
       <input name="name" type="text" matInput formControlName="name" required>
       <mat-error *ngIf="checkoutForm.get('name')?.invalid">{{getErrorMessage('name')}}</mat-error>
     </mat-form-field>
+    </div>
+    <div fxLayout="column">
     <mat-form-field appearance="fill">
       <mat-label>
         <mat-icon>call</mat-icon> Phone</mat-label>
@@ -15,13 +18,16 @@
       <mat-error *ngIf="checkoutForm.get('phone')?.invalid">{{getErrorMessage('phone')}}</mat-error>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column">
+  <h2>Credentials</h2> 
+  <div fxLayout="column">
     <mat-form-field appearance="fill">
       <mat-label>
         <mat-icon>email</mat-icon> Email</mat-label>
       <input name="email" type="text" matInput placeholder="email@example.com" formControlName="email" required>
       <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error> 
     </mat-form-field>
+  </div>
+  <div fxLayout="column">
     <mat-form-field appearance="fill">
       <mat-label>
         <mat-icon>password</mat-icon> Password</mat-label>
@@ -29,17 +35,16 @@
       <mat-error *ngIf="checkoutForm.get('password')?.invalid">{{getErrorMessage('password')}}</mat-error>
     </mat-form-field>
   </div>
-  <mat-form-field appearance="fill" >
-    <mat-label>Role</mat-label>
-    <mat-select formControlName="idRole">
-      <mat-option value="0">ADMINISTRATOR</mat-option>
-      <mat-option value="1">MERCHANT</mat-option>
-    </mat-select>
-    <mat-error *ngIf="checkoutForm.get('idRole')?.invalid">{{getErrorMessage('idRole')}}</mat-error>
-  </mat-form-field>
-  <!-- <button fxFlexAlign="center" mat-raised-button type="submit" color="primary">Submit
-    <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
-  </button> -->
+  <div fxLayout="column">
+    <mat-form-field appearance="fill" >
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="idRole">
+        <mat-option value="0">ADMINISTRATOR</mat-option>
+        <mat-option value="1">MERCHANT</mat-option>
+      </mat-select>
+      <mat-error *ngIf="checkoutForm.get('idRole')?.invalid">{{getErrorMessage('idRole')}}</mat-error>
+    </mat-form-field>
+  </div>
   <div  fxLayout="row" fxLayoutAlign="end">
     <button  mat-raised-button type="submit" color="primary">
       <span>
