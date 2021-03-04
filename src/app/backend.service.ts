@@ -111,6 +111,12 @@ export class BackendService {
         catchError((error) => {return throwError(error);})
       );
   }
+  
+  getMerchants(pageNumber: number, pageSize: number): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}?page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions);
+  }
 
   getMerchantById(id: string): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${id}`;
@@ -120,9 +126,27 @@ export class BackendService {
         catchError((error) => {return throwError(error);})
       );
   }
+  
+  getMerchantsByName(name: string, pageNumber: number, pageSize: number): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/findbyname?name=${name}&page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions);
+  }
 
-  getMerchants(pageNumber: number, pageSize: number): Observable<any>{
-    const url = `${this.backendUrl}/${this.merchantsUrl}?page=${pageNumber}&size=${pageSize}`;
+  getMerchantsByEmail(email: string, pageNumber: number, pageSize: number): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/findbyemail?email=${email}&page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions);
+  }
+
+  getMerchantsByPhone(phone: string, pageNumber: number, pageSize: number): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/findbyphone?phone=${phone}&page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions);
+  }
+
+  getMerchantsByIdRole(idRole: number, pageNumber: number, pageSize: number): Observable<any>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}/findbyidRole?idRole=${idRole}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<any>(url, this.httpOptions);
   }

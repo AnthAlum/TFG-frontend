@@ -38,7 +38,8 @@ export class AppComponent implements OnInit{
     }
 
     showLoading(): void{
-      this.spinnerService.show();
+      if(this.router.url !== "/merchants")
+        this.spinnerService.show();
     }
 
     isNotLoginPage(): boolean{

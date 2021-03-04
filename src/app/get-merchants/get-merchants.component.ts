@@ -8,6 +8,8 @@ import { LoadingService } from '../loading.service';
 import { PageEvent } from '@angular/material/paginator';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Merchant } from '../merchant';
+import {MatSelectModule} from '@angular/material/select';
+import { MerchantPage } from '../merchant-page';
 
 @Component({
   selector: 'app-get-merchants',
@@ -24,7 +26,8 @@ export class GetMerchantsComponent implements OnInit {
   paginationIndex: number = 0;
   displayedColumns: string[] = [ 'idRole', 'name', 'email', 'phone', 'modify', 'delete'];
   @ViewChild(MatTable) table?: MatTable<any>;
-  
+  //Attributes for filtering:
+  selectedField: string = "";
   constructor(
     private backendService: BackendService,
     private router:Router,
@@ -35,16 +38,13 @@ export class GetMerchantsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getMerchants();
+  }
+
+  getMerchants(): void{
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => {
-        this.merchantsNumber = merchants.paginationInfo.totalElements;
-        this.originalMerchantsNumber = this.merchantsNumber;
-        this.dataSource.data = merchants.pages as Merchant[];
-        this.loadingService.hide();
-      }, error => {
-        this.loadingService.hide();
-        // TODO: Tratar el error
-      }
+      merchants => this.updateValues(merchants), 
+      error => this.loadingService.hide()
     );
   }
 
@@ -52,17 +52,7 @@ export class GetMerchantsComponent implements OnInit {
     this.loadingService.show();
     this.paginationIndex = event.pageIndex;
     this.paginationSize = event.pageSize;
-    this.backendService.getMerchants(event.pageIndex, event.pageSize).subscribe(
-      merchants => {
-        this.merchantsNumber = merchants.paginationInfo.totalElements;
-        this.originalMerchantsNumber = this.merchantsNumber;
-        this.dataSource.data = merchants.pages as Merchant[];
-        this.loadingService.hide();
-      }, error => {
-        this.loadingService.hide();
-        // TODO: Tratar el error
-      }
-    );
+    this.getMerchants();
   }
 
   askForDeleteMerchant(idMerchant: string, element: any): void{
@@ -99,21 +89,14 @@ export class GetMerchantsComponent implements OnInit {
   }
 
   deleteRow(row: any):void {
-    const index = this.dataSource.data.indexOf(row, 0);
+    /*const index = this.dataSource.data.indexOf(row, 0);
     if (index > -1) {
       this.dataSource.data.splice(index, 1);
     }
-    this.table?.renderRows();
+    this.table!.renderRows();*/
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => {
-        this.merchantsNumber = merchants.paginationInfo.totalElements;
-        this.originalMerchantsNumber = this.merchantsNumber;
-        this.dataSource.data = merchants.pages as Merchant[];
-        this.loadingService.hide();
-      }, error => {
-        this.loadingService.hide();
-        // TODO: Tratar el error
-      }
+      merchants => this.updateValues(merchants), 
+      error => this.loadingService.hide()
     );
   }
 
@@ -126,11 +109,49 @@ export class GetMerchantsComponent implements OnInit {
     return elementModified;
   }
 
-  public doFilter = (value: string) => {
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
-    if(value.localeCompare('') != 0)
-      this.merchantsNumber = this.dataSource.filteredData.length;
+  search(): void {
+    let filterTerm: string = (<HTMLInputElement>document.getElementById("filter")).value;
+    if(filterTerm.localeCompare("") === 0)
+      this.getMerchants();
     else
-      this.merchantsNumber = this.originalMerchantsNumber;
+      this.searchByField(this.selectedField, filterTerm);
+  }
+  
+  searchByField(field: string, term: string): void{
+    switch(field){
+      case "name":
+          this.backendService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
+            merchants => this.updateValues(merchants),
+            error => this.loadingService.hide()
+          );
+        break;
+        case "phone":
+          this.backendService.getMerchantsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
+            merchants => this.updateValues(merchants),
+            error => this.loadingService.hide()
+          );
+          break;
+        case "email":
+          this.backendService.getMerchantsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
+            merchants => this.updateValues(merchants),
+            error => this.loadingService.hide()
+          );
+        break;
+      case "role":
+        this.backendService.getMerchantsByIdRole(parseInt(term), this.paginationIndex, this.paginationSize).subscribe(
+          merchants => this.updateValues(merchants),
+          error => this.loadingService.hide()
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
+  updateValues(merchants: MerchantPage): void{
+    this.merchantsNumber = merchants.paginationInfo.totalElements;
+    this.originalMerchantsNumber = this.merchantsNumber;
+    this.dataSource.data = merchants.pages as Merchant[];
+    this.loadingService.hide();
   }
 }
