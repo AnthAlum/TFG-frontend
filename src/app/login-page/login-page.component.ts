@@ -70,6 +70,7 @@ export class LoginPageComponent implements OnInit {
             this.checkAuthority();
         }, (error) => {
           this.proccessError(error);
+          this.spinnerService.hide();
         })
     } else{
       this.loginErrorMessage = "Invalid email address";
@@ -86,8 +87,8 @@ export class LoginPageComponent implements OnInit {
   checkAuthority(): void{
     if(this.authority.localeCompare("ROLE_ADMIN") === 0)
       this.router.navigateByUrl('/merchants');
-    if(this.authority.localeCompare("ROLE_USER") === 0)
-      this.router.navigateByUrl('/user'); 
+    if(this.authority.localeCompare("ROLE_USER") === 1)
+      this.router.navigateByUrl('/clients'); 
   }
 
   proccessError(error: HttpErrorResponse): void{

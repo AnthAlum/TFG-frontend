@@ -32,7 +32,6 @@ export class BackendService {
 
   private backendUrl: string = "http://localhost:8095/MyOrganization62/TFGAplicactionAPI/1.0.0";
   private loginUrl: string = "login";
-  private merchantUrl: string = "merchants";
   private merchantsUrl: string = "merchants";
   
   private idMerchant: string = "";
@@ -152,7 +151,7 @@ export class BackendService {
   }
 
   deleteMerchant(idMerchant: string): Observable<any>{
-    const url = `${this.backendUrl}/${this.merchantUrl}/${idMerchant}`;
+    const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}`;
     return this.httpClient
       .delete<any>(url, this.httpOptions);
   }

@@ -1,0 +1,51 @@
+.main-div{
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+}
+
+.title-table{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  font-size: 2em;
+}
+
+.content-space{
+  justify-content: space-around;
+  padding: 0px;
+  align-items: baseline;
+}
+
+.center-text{
+  text-align: center;
+}
+
+.centered-margin{
+  text-align: center;
+  margin: 0% 3%;
+}
+
+.align-end{
+  align-self: flex-end;}
+
+.td-button{
+  width: 60px;
+  padding-left: 5px;
+}
+
+.row-button{
+  padding-right: 24px;
+}
+
+.span{
+  display: inline-flex;
+  align-items: center;
+  padding-right: 5px;
+}

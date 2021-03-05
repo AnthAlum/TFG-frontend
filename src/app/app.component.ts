@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { LoadingService } from './loading.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { BackendClientsService } from './backend-clients.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class AppComponent implements OnInit{
     private breakpointObserver: BreakpointObserver,
     private backendService: BackendService,
     private router: Router,
-    private spinnerService: LoadingService
+    private spinnerService: LoadingService,
+    private clientsService: BackendClientsService,
     ) { }
 
     ngOnInit(): void{
@@ -55,5 +57,6 @@ export class AppComponent implements OnInit{
 
     exit(): void{
       this.backendService.logout();
+      this.clientsService.logout();
     }
 }

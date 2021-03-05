@@ -6,31 +6,31 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
 import { PageEvent } from '@angular/material/paginator';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Merchant } from '../merchant';
 import {MatSelectModule} from '@angular/material/select';
-import { MerchantPage } from '../merchant-page';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
+import { BackendClientsService } from '../backend-clients.service';
+import { ClientPage } from '../client-page';
+import { Client } from '../client';
 
 @Component({
-  selector: 'app-get-merchants',
-  templateUrl: './get-merchants.component.html',
-  styleUrls: ['./get-merchants.component.css']
+  selector: 'app-get-clients',
+  templateUrl: './get-clients.component.html',
+  styleUrls: ['./get-clients.component.css']
 })
-export class GetMerchantsComponent implements OnInit {
+export class GetClientsComponent implements OnInit {
 
-  public dataSource = new MatTableDataSource<Merchant>();
-  @Input() merchants: any = undefined;
-  originalMerchantsNumber: number = 0;
-  merchantsNumber: number = 0;
+  public dataSource = new MatTableDataSource<Client>();
+  @Input() clients: any = undefined;
+  originalClientsNumber: number = 0;
+  clientsNumber: number = 0;
   paginationSize: number = 5;
   paginationIndex: number = 0;
-  displayedColumns: string[] = [ 'idRole', 'name', 'email', 'phone', 'modify', 'delete'];
+  displayedColumns: string[] = ['name', 'phone', 'email', 'company', 'modify', 'delete'];
   @ViewChild(MatTable) table?: MatTable<any>;
   //Attributes for filtering:
   selectedField: string = "";
   constructor(
-    private backendService: BackendService,
+    private clientsService: BackendClientsService,
     private router:Router,
     public dialog: MatDialog,
     public loadingService: LoadingService,
@@ -43,8 +43,8 @@ export class GetMerchantsComponent implements OnInit {
   }
 
   getMerchants(): void{
-    this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => this.updateValues(merchants), 
+    this.clientsService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
+      clients => this.updateValues(clients), 
       error => this.loadingService.hide()
     );
   }
@@ -56,16 +56,16 @@ export class GetMerchantsComponent implements OnInit {
     this.getMerchants();
   }
 
-  askForDeleteMerchant(idMerchant: string, element: any): void{
+  askForDeleteClient(idClient: string, element: Client): void{
     let action: string = "Delete";
-    let order = ["name", "email", "phone", "idRole"]
+    let order = ["name", "email", "phone", "company"]
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
-      data: [ this.modifyRole(element), order, action]
+      data: [ this.modify(element), order, action]
     });
     dialogRef.afterClosed().subscribe(result => {
       this.loadingService.show();
       if(result.event === action)
-        this.deleteMerchant(idMerchant, element);
+        this.deleteMerchant(idClient, element);
       else
         this.loadingService.hide();
     });
@@ -73,36 +73,33 @@ export class GetMerchantsComponent implements OnInit {
 
 
   deleteMerchant(idMerchant: string, element: any):void{
-    this.backendService.deleteMerchant(idMerchant).subscribe(_ => {
+    this.clientsService.deleteMerchant(parseInt(idMerchant)).subscribe(_ => {
       this.deleteRow(element);
       this.loadingService.hide();
-      this.snackBar.openSnackBar("Merchant successfully deleted!", "Okey")
+      this.snackBar.openSnackBar("Client successfully deleted!", "Okey")
     });
   }
 
   goToAddMerchant(): void{
-    this.router.navigateByUrl("/merchants-add");
+    this.router.navigateByUrl("/clients-add");
     this.loadingService.show();
   }
 
-  goToModifyMerchant(id: number): void{
-    this.router.navigateByUrl(`/merchants-modify/${id}`);
+  goToModifyClient(id: number): void{
+    this.router.navigateByUrl(`/clients-modify/${id}`);
     this.loadingService.show();
   }
 
   deleteRow(row: any):void {
-    this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => this.updateValues(merchants), 
+    this.clientsService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
+      clients => this.updateValues(clients), 
       error => this.loadingService.hide()
     );
   }
 
-  modifyRole(element: any): {[key: string]: any}{
+  modify(element: any): {[key: string]: any}{
     let elementModified: {[key: string]: any} = {...element};
-    if(elementModified.idRole === 0)
-      elementModified.idRole = "Administrator";
-    if(element.idRole === 1)
-      elementModified.idRole = "Merchant";
+    delete elementModified['idClient'];
     return elementModified;
   }
 
@@ -116,8 +113,8 @@ export class GetMerchantsComponent implements OnInit {
   
   searchByField(field: string, term: string): void{
     switch(field){
-      case "name":
-          this.backendService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
+      /*case "name":
+          this.clientsService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants),
             error => this.loadingService.hide()
           );
@@ -139,16 +136,16 @@ export class GetMerchantsComponent implements OnInit {
           merchants => this.updateValues(merchants),
           error => this.loadingService.hide()
         );
-        break;
+        break;*/
       default:
         break;
     }
   }
 
-  updateValues(merchants: MerchantPage): void{
-    this.merchantsNumber = merchants.paginationInfo.totalElements;
-    this.originalMerchantsNumber = this.merchantsNumber;
-    this.dataSource.data = merchants.pages as Merchant[];
+  updateValues(clients: ClientPage): void{
+    this.clientsNumber = clients.paginationInfo.totalElements;
+    this.originalClientsNumber = this.clientsNumber;
+    this.dataSource.data = clients.pages as Client[];
     this.loadingService.hide();
   }
 }

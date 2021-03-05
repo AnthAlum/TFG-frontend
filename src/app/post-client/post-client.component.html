@@ -1,0 +1,49 @@
+<mat-card>
+  <h1>New client</h1>
+  <form [formGroup]="checkoutForm" (ngSubmit)="post()">
+    <h2>Personal information</h2>
+    <div  fxLayout="column" >
+      <mat-form-field appearance="fill">
+      <mat-label>
+        <mat-icon>face</mat-icon> Name</mat-label>
+      <input name="name" type="text" matInput formControlName="name" required>
+      <mat-error *ngIf="checkoutForm.get('name')?.invalid">{{getErrorMessage('name')}}</mat-error>
+    </mat-form-field>
+    </div>
+    <div fxLayout="column">
+    <mat-form-field appearance="fill">
+      <mat-label>
+        <mat-icon>call</mat-icon> Phone</mat-label>
+      <input name="phone" type="text" matInput formControlName="phone" required>
+      <mat-error *ngIf="checkoutForm.get('phone')?.invalid">{{getErrorMessage('phone')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <h2>Credentials</h2> 
+  <div fxLayout="column">
+    <mat-form-field appearance="fill">
+      <mat-label>
+        <mat-icon>email</mat-icon> Email</mat-label>
+      <input name="email" type="text" matInput placeholder="email@example.com" formControlName="email" required>
+      <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error> 
+    </mat-form-field>
+  </div>
+  <div fxLayout="column">
+    <mat-form-field appearance="fill">
+      <mat-label>
+        <mat-icon>apartment</mat-icon>Company</mat-label>
+        <input name="company" matInput formControlName="company" required>
+      <mat-error *ngIf="checkoutForm.get('company')?.invalid">{{getErrorMessage('company')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div  fxLayout="row" fxLayoutAlign="end">
+    <button  mat-raised-button type="submit" color="primary">
+      <span>
+        SUBMIT 
+        <mat-icon [inline]="true">send</mat-icon>
+      </span>  
+    </button>
+  </div>
+</form>
+</mat-card>
+
+

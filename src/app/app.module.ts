@@ -36,6 +36,8 @@ import { SnackbarMessageComponent } from './snackbar-message/snackbar-message.co
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { GetClientsComponent } from './get-clients/get-clients.component';
+import { PostClientComponent } from './post-client/post-client.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     MerchantFormComponent,
     DeleteConfirmationComponent,
     DialogConfirmationComponent,
-    SnackbarMessageComponent
+    SnackbarMessageComponent,
+    GetClientsComponent,
+    PostClientComponent
   ],
   imports: [
     CommonModule,
