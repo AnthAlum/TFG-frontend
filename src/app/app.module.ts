@@ -38,6 +38,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GetClientsComponent } from './get-clients/get-clients.component';
 import { PostClientComponent } from './post-client/post-client.component';
+import { PutClientComponent } from './put-client/put-client.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { PostClientComponent } from './post-client/post-client.component';
     DialogConfirmationComponent,
     SnackbarMessageComponent,
     GetClientsComponent,
-    PostClientComponent
+    PostClientComponent,
+    PutClientComponent
   ],
   imports: [
     CommonModule,

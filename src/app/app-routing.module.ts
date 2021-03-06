@@ -7,6 +7,7 @@ import { PutMerchantComponent } from './put-merchant/put-merchant.component';
 import { GetMerchantsComponent } from './get-merchants/get-merchants.component';
 import { GetClientsComponent } from './get-clients/get-clients.component';
 import { PostClientComponent } from './post-client/post-client.component';
+import { PutClientComponent } from './put-client/put-client.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'merchants', component: GetMerchantsComponent },
   { path: 'clients', component: GetClientsComponent },
   { path: 'clients-add', component: PostClientComponent },
+  { path: 'clients-modify/:clientId', component: PutClientComponent },
   //{ path: '**', component: PageNotFoundComponent },
 ];
 

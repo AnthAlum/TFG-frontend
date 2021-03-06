@@ -39,11 +39,11 @@ export class GetClientsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getMerchants();
+    this.getClients();
   }
 
-  getMerchants(): void{
-    this.clientsService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
+  getClients(): void{
+    this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
       clients => this.updateValues(clients), 
       error => this.loadingService.hide()
     );
@@ -53,7 +53,7 @@ export class GetClientsComponent implements OnInit {
     this.loadingService.show();
     this.paginationIndex = event.pageIndex;
     this.paginationSize = event.pageSize;
-    this.getMerchants();
+    this.getClients();
   }
 
   askForDeleteClient(idClient: string, element: Client): void{
@@ -73,7 +73,7 @@ export class GetClientsComponent implements OnInit {
 
 
   deleteMerchant(idMerchant: string, element: any):void{
-    this.clientsService.deleteMerchant(parseInt(idMerchant)).subscribe(_ => {
+    this.clientsService.deleteClient(parseInt(idMerchant)).subscribe(_ => {
       this.deleteRow(element);
       this.loadingService.hide();
       this.snackBar.openSnackBar("Client successfully deleted!", "Okey")
@@ -91,7 +91,7 @@ export class GetClientsComponent implements OnInit {
   }
 
   deleteRow(row: any):void {
-    this.clientsService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
+    this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
       clients => this.updateValues(clients), 
       error => this.loadingService.hide()
     );
@@ -106,7 +106,7 @@ export class GetClientsComponent implements OnInit {
   search(): void {
     let filterTerm: string = (<HTMLInputElement>document.getElementById("filter")).value;
     if(filterTerm.localeCompare("") === 0)
-      this.getMerchants();
+      this.getClients();
     else
       this.searchByField(this.selectedField, filterTerm);
   }
@@ -114,25 +114,25 @@ export class GetClientsComponent implements OnInit {
   searchByField(field: string, term: string): void{
     switch(field){
       /*case "name":
-          this.clientsService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
+          this.clientsService.getClientsByName(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants),
             error => this.loadingService.hide()
           );
         break;
         case "phone":
-          this.backendService.getMerchantsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
+          this.backendService.getClientsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants),
             error => this.loadingService.hide()
           );
           break;
         case "email":
-          this.backendService.getMerchantsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
+          this.backendService.getClientsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants),
             error => this.loadingService.hide()
           );
         break;
       case "role":
-        this.backendService.getMerchantsByIdRole(parseInt(term), this.paginationIndex, this.paginationSize).subscribe(
+        this.backendService.getClientsByIdRole(parseInt(term), this.paginationIndex, this.paginationSize).subscribe(
           merchants => this.updateValues(merchants),
           error => this.loadingService.hide()
         );

@@ -2,7 +2,7 @@
 <mat-card>
   <h1>Profile</h1>
   <form class="responsive" [formGroup]="checkoutForm">
-    <h2>Personal information</h2>
+    <h2>Client information</h2>
     <div fxLayout="column">
       <mat-form-field appearance="fill">
         <mat-label>
@@ -30,7 +30,6 @@
       </span> 
       </button>
     </div>
-    <h2>Credentials</h2> 
     <div fxLayout="column">
       <mat-form-field fxFlexAlign="start" appearance="fill">
         <mat-label>
@@ -47,38 +46,15 @@
     <div fxLayout="column">
       <mat-form-field fxFlexAlign="start" appearance="fill">
         <mat-label>
-          <mat-icon>password</mat-icon> Password</mat-label>
-        <input id="password" name="password" type="password" matInput />
+          <mat-icon>apartment</mat-icon>Company</mat-label>
+        <input name="password" matInput />
       </mat-form-field>
-      <mat-form-field fxFlexAlign="start" appearance="fill">
-        <mat-label>
-          <mat-icon>password</mat-icon> New password</mat-label>
-        <input id="newPassword" name="newPassword" type="password" matInput />
-      </mat-form-field>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePassword()"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('company')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 
       </button>
     </div> 
-    <div fxLayout="column">
-      <mat-form-field id="putMerchant-idRole" appearance="fill">
-        <mat-label>Role</mat-label>
-        <mat-select formControlName="idRole">
-          <mat-option value="0">ADMINISTRATOR</mat-option>
-          <mat-option value="1">MERCHANT</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-error *ngIf="formControl.idRole.invalid">{{getErrorMessage('idRole')}}</mat-error>
-      <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('idRole')"><span>
-        CHANGE 
-        <mat-icon [inline]="true">send</mat-icon>
-      </span> 
-      </button>
-    </div>
   </form>
 </mat-card>
 
-
-<!-- HACER LAS TARJETAS SEA MOVIL -->
-<!-- HACER UN FILTRO -->

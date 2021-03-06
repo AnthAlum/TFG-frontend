@@ -79,8 +79,8 @@ export class PutMerchantComponent implements OnInit {
     let newPassword: string = "newPassword";
     let passwordValue = this.getValue(password);
     let newPasswordValue = this.getValue(newPassword);
-    if(this.backendService.verifyValue(password, newPasswordValue)){
-      this.backendService.putMerchantPassword(this.merchant.idMerchant, passwordValue, newPassword)
+    if(this.backendService.verifyValue(passwordValue, newPasswordValue)){
+      this.backendService.putMerchantPassword(this.merchant.idMerchant, passwordValue, newPasswordValue)
         .subscribe(
           (merchant: any) => {
             this.snackBar.openSnackBar("Your " + password + " has been changed", "Okey");
@@ -106,14 +106,14 @@ export class PutMerchantComponent implements OnInit {
       case "email":
         value = this.checkoutForm.value.email;
         break;
-        case "idRole":
+      case "idRole":
         value = this.checkoutForm.value.idRole;
         break;
       case "password":
-        value = this.checkoutForm.value.password;
+        value = (<HTMLInputElement>document.getElementById('password')).value;
         break;
       case "newPassword":
-        value = this.checkoutForm.value.newPassword;
+        value = (<HTMLInputElement>document.getElementById('newPassword')).value;
         break;
     }
     return value;

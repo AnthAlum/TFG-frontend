@@ -53,13 +53,19 @@ export class BackendClientsService {
     return regexSet;
   }
 
-  getMerchants(pageNumber: number, pageSize: number): Observable<ClientPage>{
+  getClientById(id: string): Observable<Client>{
+    const url = `${this.backendUrl}/${this.clientsUrl}/${id}`;
+    return this.httpClient
+      .get<Client>(url, this.httpOptions);
+  }
+
+  getClients(pageNumber: number, pageSize: number): Observable<ClientPage>{
     const url = `${this.backendUrl}/${this.clientsUrl}?page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<ClientPage>(url, this.httpOptions);
   }
 
-  deleteMerchant(idClient: number): Observable<ClientPage>{
+  deleteClient(idClient: number): Observable<ClientPage>{
     const url = `${this.backendUrl}/${this.clientsUrl}/${idClient}`;
     return this.httpClient
       .delete<ClientPage>(url, this.httpOptions);
@@ -75,6 +81,16 @@ export class BackendClientsService {
     const url = `${this.backendUrl}/${this.clientsUrl}`;
     return this.httpClient
       .post<any>(url, newClient, this.httpOptions);
+  }
+
+  putClientNewValue(idClient: number, attribute: string, newValue: string): Observable<any>{
+  const url = `${this.backendUrl}/${this.clientsUrl}/${idClient}/${attribute}`;
+    let attributeName = 'new' + attribute;
+    attributeName = attributeName.substr(0, 3) + attributeName[3].toUpperCase() + attributeName.substr(4);
+    let body :{[key: string]: string} = {};
+    body[`${attributeName}`] = `${newValue}`;
+    return this.httpClient
+      .put<any>(url, body, this.httpOptions);
   }
 
   //Este metodo comprueba que los datos recibidos cumplan con las regex permitidas.
