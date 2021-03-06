@@ -11,7 +11,7 @@
         <input name="name" type="text" matInput [formControl]="formControl.name" formControlName="name"/>
       </mat-form-field>
       <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('name')"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('name')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 
@@ -24,7 +24,7 @@
         <input name="phone" type="text" matInput [formControl]="formControl.phone" formControlName="phone"/>
       </mat-form-field>
       <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('phone')"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('phone')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 
@@ -38,7 +38,7 @@
         <input name="email" type="text" matInput [formControl]="formControl.email" formControlName="email"/> 
       </mat-form-field>
       <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('email')"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('email')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 
@@ -70,7 +70,7 @@
         </mat-select>
       </mat-form-field>
       <mat-error *ngIf="formControl.idRole.invalid">{{getErrorMessage('idRole')}}</mat-error>
-      <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('idRole')"><span>
+      <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('idRole')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 

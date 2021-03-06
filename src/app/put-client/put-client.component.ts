@@ -7,6 +7,8 @@ import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.c
 import { LoadingService } from '../loading.service';
 import { BackendClientsService } from '../backend-clients.service';
 import { Client } from '../client';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 
 @Component({
   selector: 'app-put-client',
@@ -38,6 +40,7 @@ export class PutClientComponent implements OnInit {
     private activatedRouter: ActivatedRoute,  
     private snackBar: SnackbarMessageComponent,
     private loadingService: LoadingService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -52,10 +55,27 @@ export class PutClientComponent implements OnInit {
             this.loadingService.hide();
           }, 
           error => {
-            console.log("Error");
             this.loadingService.hide();
           }
         );
+  }
+
+  askForChange(attribute: string): void{
+    let action: string = "Modify";
+    let order = [ `current ${attribute}`, `new ${attribute}` ]
+    let information: {[key: string]: string}= {};
+    information[`current ${attribute}`] = this.client[attribute];
+    information[`new ${attribute}`] = this.getValue(attribute);
+    const dialogRef = this.dialog.open(DialogConfirmationComponent,{
+      data: [ information, order, action]
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadingService.show();
+      if(result.event === action)
+        this.changeValue(attribute);
+      else
+        this.loadingService.hide();
+    });
   }
 
   changeValue(attribute: string): void{

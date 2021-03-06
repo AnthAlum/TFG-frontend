@@ -196,8 +196,6 @@ export class BackendService {
 
   putMerchantPhone(idMerchant: number, newValue: string): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/phone`;
-    console.log(url + '\n' + "newPhone" + '\n' + newValue);
-    
     return this.httpClient
       .put<any>(url, {"newPhone" : newValue}, this.httpOptions);
   }

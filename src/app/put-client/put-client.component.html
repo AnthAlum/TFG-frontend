@@ -11,7 +11,7 @@
         <input name="name" type="text" matInput [formControl]="formControl.name" formControlName="name"/>
       </mat-form-field>
       <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('name')"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('name')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 
@@ -24,7 +24,7 @@
         <input name="phone" type="text" matInput [formControl]="formControl.phone" formControlName="phone"/>
       </mat-form-field>
       <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('phone')"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('phone')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 
@@ -37,7 +37,7 @@
         <input name="email" type="text" matInput [formControl]="formControl.email" formControlName="email"/> 
       </mat-form-field>
       <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('email')"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('email')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 
@@ -47,9 +47,9 @@
       <mat-form-field fxFlexAlign="start" appearance="fill">
         <mat-label>
           <mat-icon>apartment</mat-icon>Company</mat-label>
-        <input name="password" matInput />
+        <input matInput [formControl]="formControl.company" formControlName="company"/>
       </mat-form-field>
-      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changeValue('company')"><span>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('company')"><span>
         CHANGE 
         <mat-icon [inline]="true">send</mat-icon>
       </span> 

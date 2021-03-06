@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 import { LoadingService } from '../loading.service';
+import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-put-merchant',
@@ -38,6 +40,7 @@ export class PutMerchantComponent implements OnInit {
     private activatedRouter: ActivatedRoute,  
     private snackBar: SnackbarMessageComponent,
     private loadingService: LoadingService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +59,26 @@ export class PutMerchantComponent implements OnInit {
             this.loadingService.hide();
           }
         );
+  }
+
+  askForChangeValue(attribute: string): void{
+    if(attribute.localeCompare("password") === 0)
+      this.changePassword();
+    let action: string = "Modify";
+    let order = [ `current ${attribute}`, `new ${attribute}` ]
+    let information: {[key: string]: string}= {};
+    information[`current ${attribute}`] = this.merchant[attribute];
+    information[`new ${attribute}`] = this.getValue(attribute);
+    const dialogRef = this.dialog.open(DialogConfirmationComponent,{
+      data: [ information, order, action]
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadingService.show();
+      if(result.event === action)
+        this.changeValue(attribute);
+      else
+        this.loadingService.hide();
+    });
   }
 
   changeValue(attribute: string): void{
