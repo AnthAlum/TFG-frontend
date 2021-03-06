@@ -15,16 +15,16 @@ import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.c
 @Component({
   selector: 'app-get-merchants',
   templateUrl: './get-merchants.component.html',
-  styleUrls: ['./get-merchants.component.css']
+  styleUrls: ['./get-merchants.component.css'],
 })
 export class GetMerchantsComponent implements OnInit {
 
   public dataSource = new MatTableDataSource<Merchant>();
-  @Input() merchants: any = undefined;
   originalMerchantsNumber: number = 0;
   merchantsNumber: number = 0;
   paginationSize: number = 5;
   paginationIndex: number = 0;
+  queryDone: boolean = false;
   displayedColumns: string[] = [ 'idRole', 'name', 'email', 'phone', 'modify', 'delete'];
   @ViewChild(MatTable) table?: MatTable<any>;
   //Attributes for filtering:
@@ -44,7 +44,7 @@ export class GetMerchantsComponent implements OnInit {
 
   getMerchants(): void{
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => this.updateValues(merchants), 
+      merchants => this.updateValues(merchants, false), 
       error => this.loadingService.hide()
     );
   }
@@ -107,36 +107,35 @@ export class GetMerchantsComponent implements OnInit {
   }
 
   search(): void {
-    let filterTerm: string = (<HTMLInputElement>document.getElementById("filter")).value;
-    if(filterTerm.localeCompare("") === 0)
-      this.getMerchants();
-    else
+    let filterTerm: string = this.filterInput("get");
+    if(filterTerm.localeCompare('')!==0)
       this.searchByField(this.selectedField, filterTerm);
   }
   
   searchByField(field: string, term: string): void{
+    this.loadingService.show();
     switch(field){
       case "name":
         this.backendService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants),
+            merchants => this.updateValues(merchants, true),
             error => this.loadingService.hide()
           );
         break;
       case "phone":
         this.backendService.getMerchantsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants),
+            merchants => this.updateValues(merchants, true),
             error => this.loadingService.hide()
           );
         break;
       case "email":
         this.backendService.getMerchantsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants),
+            merchants => this.updateValues(merchants, true),
             error => this.loadingService.hide()
           );
         break;
       case "role":
         this.backendService.getMerchantsByIdRole(parseInt(term), this.paginationIndex, this.paginationSize).subscribe(
-          merchants => this.updateValues(merchants),
+          merchants => this.updateValues(merchants, true),
           error => this.loadingService.hide()
         );
         break;
@@ -145,10 +144,29 @@ export class GetMerchantsComponent implements OnInit {
     }
   }
 
-  updateValues(merchants: MerchantPage): void{
+  updateValues(merchants: MerchantPage, query?: boolean): void{
     this.merchantsNumber = merchants.paginationInfo.totalElements;
     this.originalMerchantsNumber = this.merchantsNumber;
     this.dataSource.data = merchants.pages as Merchant[];
     this.loadingService.hide();
+    this.queryDone = query!;
+  }
+
+  cancelFiltering(): void{
+    this.loadingService.show();
+    this.getMerchants();
+    this.filterInput("reset");
+  }
+
+  filterInput(action: string): string{
+    switch(action){
+      case "get":
+        return (<HTMLInputElement>document.getElementById("filter")).value;
+      break;
+      case "reset":
+        (<HTMLInputElement>document.getElementById("filter")).value = "";
+      break;
+    }
+    return "";
   }
 }

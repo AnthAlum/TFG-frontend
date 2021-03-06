@@ -20,7 +20,7 @@ import { Client } from '../client';
 export class GetClientsComponent implements OnInit {
 
   public dataSource = new MatTableDataSource<Client>();
-  @Input() clients: any = undefined;
+  queryDone: boolean = false;
   originalClientsNumber: number = 0;
   clientsNumber: number = 0;
   paginationSize: number = 5;
@@ -44,7 +44,7 @@ export class GetClientsComponent implements OnInit {
 
   getClients(): void{
     this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
-      clients => this.updateValues(clients), 
+      clients => this.updateValues(clients, false), 
       error => this.loadingService.hide()
     );
   }
@@ -104,25 +104,43 @@ export class GetClientsComponent implements OnInit {
   }
 
   search(): void {
-    let filterTerm: string = (<HTMLInputElement>document.getElementById("filter")).value;
-    if(filterTerm.localeCompare("") === 0)
-      this.getClients();
-    else
+    let filterTerm: string = this.filterInput("get");
+    if(filterTerm.localeCompare("") !== 0)
       this.searchByField(this.selectedField, filterTerm);
   }
   
   searchByField(field: string, term: string): void{
     term = term.replace('+', '%2B'); //Spring recibe ' ' en lugar de '+' si no hacemos este cambio.
+    this.loadingService.show();
     this.clientsService.getClientsByAttribute(field, term, this.paginationIndex, this.paginationSize).subscribe(
-      clients => this.updateValues(clients),
+      clients => this.updateValues(clients, true),
       error => this.loadingService.hide()
     );
   }
 
-  updateValues(clients: ClientPage): void{
+  updateValues(clients: ClientPage, isQuery?: boolean): void{
     this.clientsNumber = clients.paginationInfo.totalElements;
     this.originalClientsNumber = this.clientsNumber;
     this.dataSource.data = clients.pages as Client[];
     this.loadingService.hide();
+    this.queryDone = isQuery!;
+  }
+
+  cancelFiltering(): void{
+    this.loadingService.show();
+    this.getClients();
+    this.filterInput("reset");
+  }
+
+  filterInput(action: string): string{
+    switch(action){
+      case "get":
+        return (<HTMLInputElement>document.getElementById("filter")).value;
+      break;
+      case "reset":
+        (<HTMLInputElement>document.getElementById("filter")).value = "";
+      break;
+    }
+    return "";
   }
 }

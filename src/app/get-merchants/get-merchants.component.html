@@ -1,6 +1,9 @@
 <mat-card>
   <h1>Users</h1>
   <div class="row-button" fxLayout="row" fxLayoutAlign="end" fxShow fxHide.xs="true" fxHide.sm="true">
+    <button *ngIf="queryDone" mat-raised-button type="button" color="warn" style="margin-right: 5px;" (click)="cancelFiltering();" fxFlexAlign="center">
+      <mat-icon>cancel</mat-icon>
+    </button>
     <span class="span">Search: </span>
     <mat-form-field style="width: 150px;">
       <mat-label>Field</mat-label>
@@ -84,5 +87,5 @@
 <mat-paginator #paginator (page)="changePagination($event)" [length]="merchantsNumber" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 <!-- TODO: Hay que cambiar cuando sea movil -->
 </mat-card>
-<app-merchant-card *ngFor="let merchant of merchants" [merchant]="merchant" fxHide fxShow.xs="true" fxShow.sm="true"></app-merchant-card>
+<app-merchant-card *ngFor="let merchant of dataSource.data" [merchant]="merchant" fxHide fxShow.xs="true" fxShow.sm="true"></app-merchant-card>
 
