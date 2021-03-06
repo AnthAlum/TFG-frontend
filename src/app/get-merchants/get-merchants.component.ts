@@ -117,19 +117,19 @@ export class GetMerchantsComponent implements OnInit {
   searchByField(field: string, term: string): void{
     switch(field){
       case "name":
-          this.backendService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
+        this.backendService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants),
             error => this.loadingService.hide()
           );
         break;
-        case "phone":
-          this.backendService.getMerchantsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
+      case "phone":
+        this.backendService.getMerchantsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants),
             error => this.loadingService.hide()
           );
-          break;
-        case "email":
-          this.backendService.getMerchantsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
+        break;
+      case "email":
+        this.backendService.getMerchantsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants),
             error => this.loadingService.hide()
           );

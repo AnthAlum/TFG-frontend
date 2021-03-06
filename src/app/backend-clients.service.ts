@@ -52,15 +52,39 @@ export class BackendClientsService {
   getValuesRegex(): { [key: string]: RegExp } {
     return regexSet;
   }
-
+  
+  getClients(pageNumber: number, pageSize: number): Observable<ClientPage>{
+    const url = `${this.backendUrl}/${this.clientsUrl}?page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<ClientPage>(url, this.httpOptions);
+  }
+  
   getClientById(id: string): Observable<Client>{
     const url = `${this.backendUrl}/${this.clientsUrl}/${id}`;
     return this.httpClient
       .get<Client>(url, this.httpOptions);
   }
 
-  getClients(pageNumber: number, pageSize: number): Observable<ClientPage>{
-    const url = `${this.backendUrl}/${this.clientsUrl}?page=${pageNumber}&size=${pageSize}`;
+  getClientsByName(name: string, pageNumber: number, pageSize: number): Observable<ClientPage>{
+    const url = `${this.backendUrl}/${this.clientsUrl}/findbyname?name=${name}&page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<ClientPage>(url, this.httpOptions);
+  }
+
+  getClientsByPhone(phone: string, pageNumber: number, pageSize: number): Observable<ClientPage>{
+    const url = `${this.backendUrl}/${this.clientsUrl}/findbyemail?email=${phone}&page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<ClientPage>(url, this.httpOptions);
+  }
+
+  getClientsByAttribute(attribute: string, value: string, pageNumber: number, pageSize: number): Observable<ClientPage>{
+    const url = `${this.backendUrl}/${this.clientsUrl}/findby${attribute}?${attribute}=${value}&page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<ClientPage>(url, this.httpOptions);
+  }
+
+  getClientsByCompany(company: string, pageNumber: number, pageSize: number): Observable<ClientPage>{
+    const url = `${this.backendUrl}/${this.clientsUrl}/findbyemail?email=${company}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<ClientPage>(url, this.httpOptions);
   }

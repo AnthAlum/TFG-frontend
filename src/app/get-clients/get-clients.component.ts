@@ -112,34 +112,11 @@ export class GetClientsComponent implements OnInit {
   }
   
   searchByField(field: string, term: string): void{
-    switch(field){
-      /*case "name":
-          this.clientsService.getClientsByName(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants),
-            error => this.loadingService.hide()
-          );
-        break;
-        case "phone":
-          this.backendService.getClientsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants),
-            error => this.loadingService.hide()
-          );
-          break;
-        case "email":
-          this.backendService.getClientsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants),
-            error => this.loadingService.hide()
-          );
-        break;
-      case "role":
-        this.backendService.getClientsByIdRole(parseInt(term), this.paginationIndex, this.paginationSize).subscribe(
-          merchants => this.updateValues(merchants),
-          error => this.loadingService.hide()
-        );
-        break;*/
-      default:
-        break;
-    }
+    term = term.replace('+', '%2B'); //Spring recibe ' ' en lugar de '+' si no hacemos este cambio.
+    this.clientsService.getClientsByAttribute(field, term, this.paginationIndex, this.paginationSize).subscribe(
+      clients => this.updateValues(clients),
+      error => this.loadingService.hide()
+    );
   }
 
   updateValues(clients: ClientPage): void{

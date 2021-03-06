@@ -139,6 +139,7 @@ export class BackendService {
   }
 
   getMerchantsByPhone(phone: string, pageNumber: number, pageSize: number): Observable<any>{
+    phone = phone.replace('+', '%2B');
     const url = `${this.backendUrl}/${this.merchantsUrl}/findbyphone?phone=${phone}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<any>(url, this.httpOptions);
