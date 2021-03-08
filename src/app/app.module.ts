@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,6 +39,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GetClientsComponent } from './get-clients/get-clients.component';
 import { PostClientComponent } from './post-client/post-client.component';
 import { PutClientComponent } from './put-client/put-client.component';
+import { ClientCardComponent } from './client-card/client-card.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { PutClientComponent } from './put-client/put-client.component';
     SnackbarMessageComponent,
     GetClientsComponent,
     PostClientComponent,
-    PutClientComponent
+    PutClientComponent,
+    ClientCardComponent,
   ],
   imports: [
     CommonModule,

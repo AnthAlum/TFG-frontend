@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'clients', component: GetClientsComponent },
   { path: 'clients-add', component: PostClientComponent },
   { path: 'clients-modify/:clientId', component: PutClientComponent },
-  { path: '',   redirectTo: '/login', pathMatch: 'full' },
+  //{ path: '',   redirectTo: '/login', pathMatch: 'full' },
   //{ path: '**', component: PageNotFoundComponent },
 ];
 

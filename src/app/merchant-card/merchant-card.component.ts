@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { GetMerchantsComponent } from '../get-merchants/get-merchants.component';
+import { Merchant } from '../merchant';
 
 @Component({
   selector: 'app-merchant-card',
@@ -7,11 +9,18 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MerchantCardComponent implements OnInit {
 
-  @Input() merchant: any;
-
+  @Input() merchant: Merchant;
+  @Input() reference: GetMerchantsComponent;
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  goToModifyMerchant(): void{
+    this.reference.goToModifyMerchant(this.merchant.idMerchant);
+  }
+
+  askForDeleteMerchant(): void{
+    this.reference.deleteMerchant(this.merchant.idMerchant.toString(), this.merchant);
+  }
 }

@@ -21,12 +21,14 @@ export class GetClientsComponent implements OnInit {
 
   public dataSource = new MatTableDataSource<Client>();
   queryDone: boolean = false;
+  ready: boolean = false;
   originalClientsNumber: number = 0;
   clientsNumber: number = 0;
   paginationSize: number = 5;
   paginationIndex: number = 0;
   displayedColumns: string[] = ['name', 'phone', 'email', 'company', 'modify', 'delete'];
   @ViewChild(MatTable) table?: MatTable<any>;
+  reference: GetClientsComponent;
   //Attributes for filtering:
   selectedField: string = "";
   constructor(
@@ -35,7 +37,9 @@ export class GetClientsComponent implements OnInit {
     public dialog: MatDialog,
     public loadingService: LoadingService,
     private snackBar: SnackbarMessageComponent,
-  ) { }
+  ) {
+    this.reference = this;
+  }
 
 
   ngOnInit(): void {
@@ -44,7 +48,7 @@ export class GetClientsComponent implements OnInit {
 
   getClients(): void{
     this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
-      clients => this.updateValues(clients, false), 
+      clients => this.updateValues(clients, false),
       error => this.loadingService.hide()
     );
   }
@@ -92,7 +96,7 @@ export class GetClientsComponent implements OnInit {
 
   deleteRow(row: any):void {
     this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
-      clients => this.updateValues(clients), 
+      clients => this.updateValues(clients),
       error => this.loadingService.hide()
     );
   }
@@ -108,7 +112,7 @@ export class GetClientsComponent implements OnInit {
     if(filterTerm.localeCompare("") !== 0)
       this.searchByField(this.selectedField, filterTerm);
   }
-  
+
   searchByField(field: string, term: string): void{
     term = term.replace('+', '%2B'); //Spring recibe ' ' en lugar de '+' si no hacemos este cambio.
     this.loadingService.show();
@@ -122,6 +126,7 @@ export class GetClientsComponent implements OnInit {
     this.clientsNumber = clients.paginationInfo.totalElements;
     this.originalClientsNumber = this.clientsNumber;
     this.dataSource.data = clients.pages as Client[];
+    this.ready = true;
     this.loadingService.hide();
     this.queryDone = isQuery!;
   }

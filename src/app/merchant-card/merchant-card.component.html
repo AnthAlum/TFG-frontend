@@ -1,3 +1,17 @@
-<mat-card>
-  <h1>{{merchant.nombre}}</h1>
+<mat-card class="margin-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayout="column">
+    <span><mat-icon [inline]="true">face</mat-icon>{{merchant.name}}</span>
+    <span><mat-icon [inline]="true">email</mat-icon>{{merchant.email}}</span>
+    <span><mat-icon [inline]="true">call</mat-icon>{{merchant.phone}}</span>
+    <span>{{merchant.idRole}}</span>
+  </div>
+  <div fxLayout="row">
+    <button class="margin-button" mat-raised-button type="button" color="primary" (click)="goToModifyMerchant();" >
+      <mat-icon>mode</mat-icon>
+    </button>
+    <button class="margin-button" mat-raised-button type="button" color="warn" (click)="askForDeleteMerchant();">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <!-- TODO: poner merchant o administrator -->
 </mat-card>

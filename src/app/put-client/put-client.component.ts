@@ -37,7 +37,7 @@ export class PutClientComponent implements OnInit {
   constructor(
     private clientsService: BackendClientsService,
     private formBuilder: FormBuilder,
-    private activatedRouter: ActivatedRoute,  
+    private activatedRouter: ActivatedRoute,
     private snackBar: SnackbarMessageComponent,
     private loadingService: LoadingService,
     private dialog: MatDialog,
@@ -49,11 +49,11 @@ export class PutClientComponent implements OnInit {
     const clientId = routeParams.get('clientId');
     if(clientId)
       this.clientsService.getClientById(clientId)
-        .subscribe( 
+        .subscribe(
           client => {
             this.setValues(client);
             this.loadingService.hide();
-          }, 
+          },
           error => {
             this.loadingService.hide();
           }
@@ -64,7 +64,7 @@ export class PutClientComponent implements OnInit {
     let action: string = "Modify";
     let order = [ `current ${attribute}`, `new ${attribute}` ]
     let information: {[key: string]: string}= {};
-    information[`current ${attribute}`] = this.client[attribute];
+    //information[`current ${attribute}`] = this.client[attribute];
     information[`new ${attribute}`] = this.getValue(attribute);
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
       data: [ information, order, action]

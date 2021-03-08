@@ -1,0 +1,17 @@
+<mat-card class="margin-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayout="column">
+    <span><mat-icon [inline]="true" style="margin-right: 5px;">face</mat-icon> {{client.name}}</span>
+    <span><mat-icon [inline]="true" style="margin-right: 5px;">email</mat-icon> {{client.email}}</span>
+    <span><mat-icon [inline]="true" style="margin-right: 5px;">call</mat-icon> {{client.phone}}</span>
+    <span><mat-icon [inline]="true" style="margin-right: 5px;">apartment</mat-icon> {{client.company}}</span>
+  </div>
+  <div fxLayout="row">
+    <button class="margin-button" mat-raised-button type="button" color="primary" (click)="goToModifyClient();" >
+      <mat-icon>mode</mat-icon>
+    </button>
+    <button mat-raised-button type="button" color="warn" (click)="askForDeleteClient();">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <!-- TODO: Poner separaciones entre los elements -->
+</mat-card>

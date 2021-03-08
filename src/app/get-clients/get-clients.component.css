@@ -49,3 +49,9 @@ table {
   align-items: center;
   padding-right: 5px;
 }
+
+.input-style{
+  min-width: 100px;
+  max-width: 150px;
+  margin: 0px 10px;
+}

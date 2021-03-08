@@ -29,13 +29,16 @@ export class GetMerchantsComponent implements OnInit {
   @ViewChild(MatTable) table?: MatTable<any>;
   //Attributes for filtering:
   selectedField: string = "";
+  reference: GetMerchantsComponent;
   constructor(
     private backendService: BackendService,
     private router:Router,
     public dialog: MatDialog,
     public loadingService: LoadingService,
     private snackBar: SnackbarMessageComponent,
-  ) { }
+  ) {
+    this.reference = this;
+  }
 
 
   ngOnInit(): void {
@@ -44,7 +47,7 @@ export class GetMerchantsComponent implements OnInit {
 
   getMerchants(): void{
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => this.updateValues(merchants, false), 
+      merchants => this.updateValues(merchants, false),
       error => this.loadingService.hide()
     );
   }
@@ -92,7 +95,7 @@ export class GetMerchantsComponent implements OnInit {
 
   deleteRow(row: any):void {
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => this.updateValues(merchants), 
+      merchants => this.updateValues(merchants),
       error => this.loadingService.hide()
     );
   }
@@ -111,7 +114,7 @@ export class GetMerchantsComponent implements OnInit {
     if(filterTerm.localeCompare('')!==0)
       this.searchByField(this.selectedField, filterTerm);
   }
-  
+
   searchByField(field: string, term: string): void{
     this.loadingService.show();
     switch(field){
