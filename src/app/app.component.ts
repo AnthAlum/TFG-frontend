@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BackendService } from './backend.service';
@@ -8,10 +9,14 @@ import { LoadingService } from './loading.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BackendClientsService } from './backend-clients.service';
 
+=======
+import { Component } from '@angular/core';
+>>>>>>> 809c776ed983e7a86db28334e52c398f70860018
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+<<<<<<< HEAD
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
@@ -59,4 +64,10 @@ export class AppComponent implements OnInit{
       this.backendService.logout();
       this.clientsService.logout();
     }
+=======
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'frontend';
+>>>>>>> 809c776ed983e7a86db28334e52c398f70860018
 }

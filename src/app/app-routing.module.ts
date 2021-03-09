@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+<<<<<<< HEAD
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { PostMerchantComponent } from './post-merchant/post-merchant.component';
@@ -20,6 +21,10 @@ const routes: Routes = [
   //{ path: '',   redirectTo: '/login', pathMatch: 'full' },
   //{ path: '**', component: PageNotFoundComponent },
 ];
+=======
+
+const routes: Routes = [];
+>>>>>>> 809c776ed983e7a86db28334e52c398f70860018
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
