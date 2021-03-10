@@ -1,0 +1,87 @@
+<mat-card>
+  <h1>Users</h1>
+  <div class="row-button" fxLayout="row" fxLayoutAlign="end" >
+    <button *ngIf="queryDone" mat-raised-button type="button" color="warn" style="margin-right: 5px;" (click)="cancelFiltering();" fxFlexAlign="center">
+      <mat-icon>cancel</mat-icon>
+    </button>
+    <mat-form-field class="input-style">
+      <mat-label>Field</mat-label>
+      <mat-select id="field" [required]="true" [(value)]="selectedField">
+        <mat-option value="name">Name</mat-option>
+        <mat-option value="email">Email</mat-option>
+        <mat-option value="phone">Phone</mat-option>
+        <mat-option value="role">Role</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="input-style">
+      <mat-label>Term</mat-label>
+      <input id="filter" type="text" matInput style="width: 150px;text-align: start;" placeholder="Term"/>
+    </mat-form-field>
+    <div fxLayout="row">
+      <button mat-raised-button type="button" color="primary" style="margin-right: 5px;" (click)="search();" fxFlexAlign="center">
+        <mat-icon aria-label="Side nav toggle icon">person_search</mat-icon>
+      </button>
+    </div>
+    <div fxLayout="row">
+      <a [routerLink]="['/merchants-add']" style="margin-right: 5px;" fxFlexAlign="center">
+        <button mat-raised-button type="button" color="primary">
+          <mat-icon aria-label="Side nav toggle icon" >person_add</mat-icon>
+        </button>
+      </a>
+    </div>
+  </div>
+  <table mat-table [dataSource]="dataSource" fxShow fxHide.xs="true" fxHide.sm="true">
+      <ng-container matColumnDef="matter">
+        <th  mat-header-cell *matHeaderCellDef > Matter </th>
+    <td mat-cell *matCellDef="let element"> {{element.matter}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th  mat-header-cell *matHeaderCellDef>
+      <span fxLayout="row" fxLayoutAlign="center center">
+        Date <mat-icon [inline]="true">face</mat-icon>
+      </span></th>
+    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="idsMerchant">
+    <th  mat-header-cell *matHeaderCellDef> <span fxLayout="row" fxLayoutAlign="center center">
+      Merchants <mat-icon [inline]="true">email</mat-icon>
+    </span></th>
+    <td mat-cell *matCellDef="let element"> {{element.idsMerchant}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="idsClient">
+    <th  mat-header-cell *matHeaderCellDef>
+      <span fxLayout="row" fxLayoutAlign="center center">
+        Clients <mat-icon [inline]="true">call</mat-icon>
+      </span>
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.idsClient}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <ng-container matColumnDef="modify">
+    <th  mat-header-cell *matHeaderCellDef>  </th>
+    <td class="td-button" mat-cell *matCellDef="let element">
+      <button mat-raised-button type="button" color="primary" (click)="goToModifyMerchant(element.idMerchant);" >
+        <mat-icon aria-label="Side nav toggle icon">mode</mat-icon>
+    </button>
+  </td>
+  </ng-container>
+  <ng-container matColumnDef="delete">
+    <th class="center-text" mat-header-cell *matHeaderCellDef> </th>
+    <td class="td-button" mat-cell *matCellDef="let element">
+      <button
+      mat-raised-button type="button" color="warn"
+      (click)="askForDeleteMerchant(element.idMerchant, element);">
+      <mat-icon aria-label="Side nav toggle icon">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  </table>
+  <!-- <app-merchant-card *ngFor="let merchant of dataSource.data" [merchant]="merchant" [reference]="reference"  fxHide fxShow.xs="true" fxShow.sm="true"></app-merchant-card> -->
+  <mat-paginator #paginator (page)="changePagination($event)" [length]="meetingsNumber" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</mat-card>
