@@ -23,7 +23,7 @@ export class BackendClientsService {
   };
 
   constructor(private httpClient: HttpClient) {
-    this.authenticationDone(); 
+    this.authenticationDone();
   }
 
   authenticationDone(): boolean{
@@ -42,7 +42,7 @@ export class BackendClientsService {
     this.JWT = "JWT";
     this.httpOptions.headers = this.httpOptions.headers.delete('Authorization');
   }
-  
+
   postJwt(jwt: string): void{
     localStorage.setItem('token', jwt);
     this.JWT = jwt;
@@ -52,13 +52,13 @@ export class BackendClientsService {
   getValuesRegex(): { [key: string]: RegExp } {
     return regexSet;
   }
-  
+
   getClients(pageNumber: number, pageSize: number): Observable<ClientPage>{
     const url = `${this.backendUrl}/${this.clientsUrl}?page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<ClientPage>(url, this.httpOptions);
   }
-  
+
   getClientById(id: string): Observable<Client>{
     const url = `${this.backendUrl}/${this.clientsUrl}/${id}`;
     return this.httpClient
@@ -108,7 +108,7 @@ export class BackendClientsService {
   }
 
   putClientNewValue(idClient: number, attribute: string, newValue: string): Observable<any>{
-  const url = `${this.backendUrl}/${this.clientsUrl}/${idClient}/${attribute}`;
+    const url = `${this.backendUrl}/${this.clientsUrl}/${idClient}/${attribute}`;
     let attributeName = 'new' + attribute;
     attributeName = attributeName.substr(0, 3) + attributeName[3].toUpperCase() + attributeName.substr(4);
     let body :{[key: string]: string} = {};
@@ -136,7 +136,7 @@ export class BackendClientsService {
       default:
         return true;
     }
-    if(regex.test(value)) 
+    if(regex.test(value))
       return true;
     return false;
   }

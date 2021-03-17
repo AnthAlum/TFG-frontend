@@ -78,7 +78,7 @@ export class GetClientsComponent implements OnInit {
 
   deleteMerchant(idMerchant: string, element: any):void{
     this.clientsService.deleteClient(parseInt(idMerchant)).subscribe(_ => {
-      this.deleteRow(element);
+      this.getClients();
       this.loadingService.hide();
       this.snackBar.openSnackBar("Client successfully deleted!", "Okey")
     });
@@ -94,12 +94,6 @@ export class GetClientsComponent implements OnInit {
     this.loadingService.show();
   }
 
-  deleteRow(row: any):void {
-    this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
-      clients => this.updateValues(clients),
-      error => this.loadingService.hide()
-    );
-  }
 
   modify(element: any): {[key: string]: any}{
     let elementModified: {[key: string]: any} = {...element};

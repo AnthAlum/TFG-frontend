@@ -1,0 +1,32 @@
+<div class="main-div">
+  <mat-card class="main-card">
+    <h2>Mattter: {{ data.matter }}</h2>
+    <div fxLayout="row">
+      <button mat-mini-fab color="warn" (click)="close();">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" (click)="goToModifyMeeting(data);">
+        <mat-icon>create</mat-icon>
+      </button>
+    </div>
+    <h4>Date: {{ data.date }}</h4>
+    <h4>Merchants: </h4>
+    <ol>
+      <li *ngFor="let merchant of data.merchants.Merchants">{{ merchant.name }}
+        <ul>
+          <li>{{ merchant.email }}</li>
+          <li>{{ merchant.phone }}</li>
+        </ul>
+      </li>
+    </ol>
+    <h4>Clients: </h4>
+    <ol>
+      <li *ngFor="let client of data.clients.Clients">{{ client.name }}
+        <ul>
+          <li>{{ client.email }}</li>
+          <li>{{ client.phone }}</li>
+        </ul>
+      </li>
+    </ol>
+  </mat-card>
+</div>

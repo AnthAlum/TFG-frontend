@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { BackendMeetingsService } from '../backend-meetings.service';
+import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
 import { Meeting } from '../meeting';
+import { MeetingDetailComponent } from '../meeting-detail/meeting-detail.component';
 import { MeetingPage } from '../meeting-page';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 
@@ -17,13 +19,12 @@ import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.c
 export class GetMeetingsComponent implements OnInit {
 
   public dataSource = new MatTableDataSource<Meeting>();
-  originalMeetingsNumber: number = 0;
   meetingsNumber: number = 0;
   paginationSize: number = 5;
   paginationIndex: number = 0;
   queryDone: boolean = false;
   ready: boolean = false;
-  displayedColumns: string[] = [ 'matter', 'date', 'idsMerchant', 'idsClient', 'modify', 'delete'];
+  displayedColumns: string[] = [ 'matter', 'date', 'merchants', 'clients', 'delete'];
   @ViewChild(MatTable) table?: MatTable<any>;
   //Attributes for filtering:
   selectedField: string = "";
@@ -58,10 +59,41 @@ export class GetMeetingsComponent implements OnInit {
 
   updateValues(meetings: MeetingPage, isQuery?: boolean): void{
     this.meetingsNumber = meetings.paginationInfo.totalElements;
-    this.originalMeetingsNumber = this.meetingsNumber;
     this.dataSource.data = meetings.pages as Meeting[];
     this.ready = true;
     this.loadingService.hide();
     this.queryDone = isQuery!;
   }
+
+  askForDeleteMeeting(idMeeting: number, meeting: Meeting): void{
+    let action: string = "Delete";
+    let order = ["matter", "date"]
+    const dialogRef = this.dialog.open(DialogConfirmationComponent,{
+      data: [ meeting, order, action],
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadingService.show();
+      if(result.event === action)
+        this.deleteMeeting(idMeeting, meeting);
+      else
+        this.loadingService.hide();
+    });
+  }
+
+  deleteMeeting(idMeeting: number, meeting: Meeting): void{
+    this.meetingsService.deleteMeeting(idMeeting).subscribe(_ => {
+      this.getMeetings();
+      this.loadingService.hide();
+      this.snackBar.openSnackBar("Meeting successfully deleted!", "Okey")
+    });
+  }
+
+  showData(meeting: Meeting): void{
+    const dialogRef = this.dialog.open(MeetingDetailComponent, {
+      data: meeting,
+      height: '90%',
+      width: '90%',
+    });
+  }
+
 }

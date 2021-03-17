@@ -9,6 +9,7 @@ import { GetClientsComponent } from './get-clients/get-clients.component';
 import { PostClientComponent } from './post-client/post-client.component';
 import { PutClientComponent } from './put-client/put-client.component';
 import { GetMeetingsComponent } from './get-meetings/get-meetings.component';
+import { PutMeetingComponent } from './put-meeting/put-meeting.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'clients-add', component: PostClientComponent },
   { path: 'clients-modify/:clientId', component: PutClientComponent },
   { path: 'meetings', component: GetMeetingsComponent },
+  { path: 'meetings-modify/:meetingId', component: PutMeetingComponent },
   //{ path: '',   redirectTo: '/login', pathMatch: 'full' },
   //{ path: '**', component: PageNotFoundComponent },
 ];

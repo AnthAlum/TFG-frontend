@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angul
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms';
+import { MerchantOption } from './merchant-option';
+import { MerchantSimplifiedListResponse } from './merchant-simplified-list-response';
 
 export interface JsonCredentials{
   username: string,
@@ -22,7 +24,7 @@ const regexSet: { [key: string]: RegExp } = {
   name: /^[A-zÀ-ú]+(\s[A-zÀ-ú]*)*$/ ,
   email: /^[A-z0-9\._\+-]{4,}@[A-z0-9\-]{3,}(\.[a-z0-9\-]{2,})+$/ ,
   phone: /^(\+\d{1,3})?[\s\d]{5,}$/ ,
-  idRole: /[0-1]/ 
+  idRole: /[0-1]/
 };
 
 @Injectable({
@@ -33,7 +35,7 @@ export class BackendService {
   private backendUrl: string = "http://localhost:8095/MyOrganization62/TFGAplicactionAPI/1.0.0";
   private loginUrl: string = "login";
   private merchantsUrl: string = "merchants";
-  
+
   private idMerchant: string = "";
   JWT = "JWT";
 
@@ -42,7 +44,7 @@ export class BackendService {
   };
 
   constructor(private httpClient: HttpClient) { }
-  
+
   getValuesRegex(): { [key: string]: RegExp } {
     return regexSet;
   }
@@ -89,7 +91,7 @@ export class BackendService {
       default:
         return true;
     }
-    if(regex.test(value)) 
+    if(regex.test(value))
       return true;
     return false;
   }
@@ -110,7 +112,7 @@ export class BackendService {
         catchError((error) => {return throwError(error);})
       );
   }
-  
+
   getMerchants(pageNumber: number, pageSize: number): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}?page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
@@ -125,7 +127,13 @@ export class BackendService {
         catchError((error) => {return throwError(error);})
       );
   }
-  
+
+  getMerchantsSimplified(): Observable<MerchantSimplifiedListResponse>{
+    const url = `${this.backendUrl}/${this.merchantsUrl}-simplified`;
+    return this.httpClient
+      .get<MerchantSimplifiedListResponse>(url, this.httpOptions);
+  }
+
   getMerchantsByName(name: string, pageNumber: number, pageSize: number): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/findbyname?name=${name}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
@@ -209,7 +217,7 @@ export class BackendService {
 
   putMerchantIdRole(idMerchant: number, newValue: string): Observable<any>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/role`;
-    let idRole: number = parseInt(newValue); 
+    let idRole: number = parseInt(newValue);
     return this.httpClient
       .put<any>(url, {"newRole" : newValue}, this.httpOptions);
   }

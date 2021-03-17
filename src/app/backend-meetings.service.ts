@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MeetingPage } from './meeting-page';
+import { Meeting } from './meeting';
 
 const regexSet : {[key: string]: RegExp} = {
-  matter: /^[A-zÀ-ú]+(\s[A-zÀ-ú]*)*$/
+  matter: /^[A-zÀ-ú0-9]+(\s[A-zÀ-ú0-9]*)*$/,
+  date: /[0-9]{4}(\/[0-9]){2}\s[0-9]{2}\:[0-9]{2}/
 };
 
 @Injectable({
@@ -55,4 +57,33 @@ export class BackendMeetingsService {
     return this.httpClient
       .get<MeetingPage>(url, this.httpOptions);
   }
+
+  getMeetingById(id: string): Observable<Meeting>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${id}`;
+    return this.httpClient
+      .get<Meeting>(url, this.httpOptions);
+  }
+
+  putMeetingNewValue(idMeeting: number, attribute: string, newValue: string): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/${attribute}`;
+    let attributeName = 'new' + attribute;
+    attributeName = attributeName.substr(0, 3) + attributeName[3].toUpperCase() + attributeName.substr(4);
+    let body :{[key: string]: string} = {};
+    if(attribute.localeCompare('date') === 0){
+      newValue = newValue.replace(' ', 'T');
+      newValue = newValue.concat(':00.000');
+    }
+    body[`${attributeName}`] = `${newValue}`;
+    console.log(newValue);
+
+    return this.httpClient
+      .put<{}>(url, body, this.httpOptions);
+  }
+
+  deleteMeeting(idMeeting: number): Observable<{}>{
+    const url : string = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}`;
+    return this.httpClient
+      .delete(url, this.httpOptions);
+  }
+
 }
