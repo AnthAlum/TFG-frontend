@@ -10,9 +10,9 @@ export class MerchantOption {
     nameAndLastName: string,
     email: string,
     ) {
-      this.id = id;
-    this.nameAndLastname = nameAndLastName;
-    this.email = email;
+        this.id = id;
+        this.nameAndLastname = nameAndLastName;
+        this.email = email;
   }
 
   static toMerchantOption(merchants: Merchant[]): MerchantOption[]{

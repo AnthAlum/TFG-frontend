@@ -47,6 +47,8 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateAdapter, NgxMatTimepickerMo
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     PutMeetingComponent,
   ],
   imports: [
+    MatChipsModule,
     CommonModule,
     BrowserModule,
     AppRoutingModule,
@@ -102,6 +105,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
   ],
   exports:[
     AppRoutingModule,

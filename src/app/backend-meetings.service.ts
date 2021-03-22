@@ -16,6 +16,7 @@ const regexSet : {[key: string]: RegExp} = {
 export class BackendMeetingsService {
   private backendUrl: string = "http://localhost:8095/MyOrganization62/TFGAplicactionAPI/1.0.0";
   private meetingsUrl: string = "meetings";
+
   JWT = "JWT";
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -58,10 +59,28 @@ export class BackendMeetingsService {
       .get<MeetingPage>(url, this.httpOptions);
   }
 
-  getMeetingById(id: string): Observable<Meeting>{
+  getMeetingById(id: number): Observable<Meeting>{
     const url = `${this.backendUrl}/${this.meetingsUrl}/${id}`;
     return this.httpClient
       .get<Meeting>(url, this.httpOptions);
+  }
+
+  postMeetingNewKeyword(idMeeting: number, keyword: string): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/keywords`;
+    return this.httpClient.
+      post<{}>(url, {'keyword': keyword}, this.httpOptions);
+  }
+
+  postMeetingNewMerchant(idMeeting: number, idMerchant: number): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/merchants`;
+    return this.httpClient.
+      post<{}>(url, {'subjectId': idMerchant}, this.httpOptions);
+  }
+
+  postMeetingNewClient(idMeeting: number, idClient: number): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/clients`;
+    return this.httpClient.
+      post<{}>(url, {'subjectId': idClient}, this.httpOptions);
   }
 
   putMeetingNewValue(idMeeting: number, attribute: string, newValue: string): Observable<{}>{
@@ -78,6 +97,24 @@ export class BackendMeetingsService {
 
     return this.httpClient
       .put<{}>(url, body, this.httpOptions);
+  }
+
+  deleteMeetingKeyword(idMeeting: number, keyword: string): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/keywords/${keyword}`;
+    return this.httpClient.
+      delete<{}>(url, this.httpOptions);
+  }
+
+  deleteMeetingMerchant(idMeeting: number, idMerchant: number): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/merchants/${idMerchant}`;
+    return this.httpClient.
+      delete<{}>(url, this.httpOptions);
+  }
+
+  deleteMeetingClient(idMeeting: number, idClient: number): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/clients/${idClient}`;
+    return this.httpClient.
+      delete<{}>(url, this.httpOptions);
   }
 
   deleteMeeting(idMeeting: number): Observable<{}>{

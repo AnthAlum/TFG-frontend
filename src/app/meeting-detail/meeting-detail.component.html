@@ -1,32 +1,110 @@
-<div class="main-div">
-  <mat-card class="main-card">
-    <h2>Mattter: {{ data.matter }}</h2>
-    <div fxLayout="row">
-      <button mat-mini-fab color="warn" (click)="close();">
-        <mat-icon>keyboard_backspace</mat-icon>
-      </button>
-      <button mat-mini-fab color="primary" (click)="goToModifyMeeting(data);">
-        <mat-icon>create</mat-icon>
-      </button>
-    </div>
-    <h4>Date: {{ data.date }}</h4>
-    <h4>Merchants: </h4>
-    <ol>
-      <li *ngFor="let merchant of data.merchants.Merchants">{{ merchant.name }}
-        <ul>
-          <li>{{ merchant.email }}</li>
-          <li>{{ merchant.phone }}</li>
-        </ul>
-      </li>
-    </ol>
-    <h4>Clients: </h4>
-    <ol>
-      <li *ngFor="let client of data.clients.Clients">{{ client.name }}
-        <ul>
-          <li>{{ client.email }}</li>
-          <li>{{ client.phone }}</li>
-        </ul>
-      </li>
-    </ol>
-  </mat-card>
+<div>
+  <form [formGroup]="formGroup" class="main-form">
+    <!-- Matter form field -->
+    <mat-form-field [style.fontSize]="fontSize">
+      <mat-label>Matter</mat-label>
+      <textarea matInput name="matter" [formControl]="formControl.matter" formControlName="matter"
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"></textarea>
+    </mat-form-field>
+    <!-- Date form field -->
+    <mat-form-field>
+      <mat-label>Choose a date</mat-label>
+      <input matInput name="date" [matDatepicker]="datepicker" [formControl]="formControl.date" formControlName="date" [value]="formControl['date'].value">
+      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply (click)="modifyMeetingDate()">Apply</button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+    </mat-form-field>
+    <!-- Merchants form field -->
+    <mat-form-field class="example-chip-list">
+      <mat-label>Merchants</mat-label>
+      <mat-chip-list #chipMerchantList aria-label="Merchant selection">
+        <!-- Show actual merchants -->
+        <mat-chip
+          *ngFor="let merchant of actualMerchants"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="removeMerchant($event, merchant)">
+          {{merchant}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input id="merchantInput"
+          name="merchantsCtrl"
+          placeholder="New merchant..."
+          #merchantInput
+          [formControl]="formControl.merchantsCtrl"
+          formControlName="merchantsCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipMerchantList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event, actualMerchants, formControl.merchantsCtrl)">
+      </mat-chip-list>
+      <!-- Show actual merchants -->
+      <mat-autocomplete #auto="matAutocomplete"
+      (optionSelected)="selectedMerchant($event, 'merchantInput', formControl.merchantsCtrl)">
+        <mat-option *ngFor="let merchant of filteredMerchants">
+          {{merchant.name + '/' + merchant.email}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <!-- Client form field -->
+    <mat-form-field class="example-chip-list">
+      <mat-label>Clients</mat-label>
+      <mat-chip-list #chipClientList aria-label="Client selection">
+        <mat-chip
+          *ngFor="let client of actualClients"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="removeClient($event, client)">
+          {{client}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input id="clientInput"
+          name="clientsCtrl"
+          placeholder="New client..."
+          #clientInput
+          [formControl]="formControl.clientsCtrl"
+          formControlName="clientsCtrl"
+          [matAutocomplete]="auto1"
+          [matChipInputFor]="chipClientList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event, actualClients, formControl.clientsCtrl)">
+      </mat-chip-list>
+      <mat-autocomplete #auto1="matAutocomplete"
+      (optionSelected)="selectedClient($event, 'clientInput', formControl.clientsCtrl)">
+        <mat-option *ngFor="let client of filteredClients">
+          {{client.name + '/' + client.email}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <!-- Description form field -->
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea style="min-height: 200px;" matInput name="description" [formControl]="formControl.description" formControlName="description"></textarea>
+    </mat-form-field>
+    <!-- Keywords form field -->
+    <mat-form-field class="example-chip-list">
+      <mat-label>Keywords</mat-label>
+      <mat-chip-list #chipKeywordList aria-label="Keyword selection" (change)="selectedKeyword($event)">
+        <mat-chip *ngFor="let keyword of actualKeywords" [selectable]="selectable"
+                 [removable]="removable" (removed)="removeKeyword($event, keyword)">
+          {{keyword}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="New keywords..."
+              [matChipInputFor]="chipKeywordList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true"
+              [matAutocomplete]="auto2"
+              (matChipInputTokenEnd)="add($event, actualKeywords, formControl.keywordsCtrl)">
+      </mat-chip-list>
+      <mat-autocomplete #auto2="matAutocomplete"
+      (optionSelected)="selectedKeyword($event)">
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
 </div>
