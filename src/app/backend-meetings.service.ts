@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MeetingPage } from './meeting-page';
 import { Meeting } from './meeting';
+import { NewMerchantBody } from './backend.service';
+import { NewMeetingBody } from './new-meeting-body';
 
 const regexSet : {[key: string]: RegExp} = {
   matter: /^[A-zÀ-ú0-9]+(\s[A-zÀ-ú0-9]*)*$/,
@@ -65,6 +67,12 @@ export class BackendMeetingsService {
       .get<Meeting>(url, this.httpOptions);
   }
 
+  getMeetingsByMatter(matter: string, pageNumber: number, pageSize: number): Observable<MeetingPage>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/findbymatter?matter=${matter}&page=${pageNumber}&size=${pageSize}`;
+    return this.httpClient
+      .get<MeetingPage>(url, this.httpOptions);
+  }
+
   postMeetingNewKeyword(idMeeting: number, keyword: string): Observable<{}>{
     const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/keywords`;
     return this.httpClient.
@@ -83,20 +91,29 @@ export class BackendMeetingsService {
       post<{}>(url, {'subjectId': idClient}, this.httpOptions);
   }
 
-  putMeetingNewValue(idMeeting: number, attribute: string, newValue: string): Observable<{}>{
+  postNewMeeting(body: NewMeetingBody): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}`;
+    return this.httpClient.
+      post<{}>(url, body, this.httpOptions);
+  }
+
+  putMeetingNewValue(idMeeting: number, attribute: string, newValue: string ): Observable<{}>{
     const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/${attribute}`;
     let attributeName = 'new' + attribute;
     attributeName = attributeName.substr(0, 3) + attributeName[3].toUpperCase() + attributeName.substr(4);
     let body :{[key: string]: string} = {};
-    if(attribute.localeCompare('date') === 0){
-      newValue = newValue.replace(' ', 'T');
-      newValue = newValue.concat(':00.000');
-    }
     body[`${attributeName}`] = `${newValue}`;
-    console.log(newValue);
-
     return this.httpClient
       .put<{}>(url, body, this.httpOptions);
+  }
+
+  putMeetingNewDate(idMeeting: number, newValue: Date): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/date`;
+    //newValue = newValue.replace(' ', 'T');
+    let newDate: string = this.modifyMeetingDate(newValue);
+    newDate = newDate.concat(':00.000');
+    return this.httpClient
+      .put<{}>(url, {"newDate": newDate}, this.httpOptions);
   }
 
   deleteMeetingKeyword(idMeeting: number, keyword: string): Observable<{}>{
@@ -123,4 +140,13 @@ export class BackendMeetingsService {
       .delete(url, this.httpOptions);
   }
 
+  //Change date format: ISO to 'dd/mm/yyyy hh:mm'
+  modifyMeetingDate(dateISO: Date): string{
+    let day = dateISO.getDate() > 9 ? dateISO.getDate() : '0' + dateISO.getDate();
+    let month = (dateISO.getMonth()+1) > 9 ? (dateISO.getMonth()+1) : '0' + (dateISO.getMonth()+1);
+    let newDate = day + '-' + month + '-' + dateISO.getFullYear() + ' 00:00'; // Get the fiven date with 00:00 time
+    return newDate;
+    //this.loadingService.show();
+    //this.meetingService.putMeetingNewValue(this.data.idMeeting, 'date', newDate).subscribe(_ => this.loadingService.hide(), _ => this.loadingService.hide());
+  }
 }

@@ -1,5 +1,5 @@
 <mat-card>
-  <h1>Users</h1>
+  <h1>Meetings</h1>
   <div class="row-button" fxLayout="row" fxLayoutAlign="end">
     <button *ngIf="queryDone" mat-raised-button type="button" color="warn" style="margin-right: 5px"
       (click)="cancelFiltering()" fxFlexAlign="center">
@@ -8,7 +8,7 @@
     <mat-form-field class="input-style">
       <mat-label>Field</mat-label>
       <mat-select id="field" [required]="true" [(value)]="selectedField">
-        <mat-option value="name">Name</mat-option>
+        <mat-option value="matter">Matter</mat-option>
         <mat-option value="email">Email</mat-option>
         <mat-option value="phone">Phone</mat-option>
         <mat-option value="role">Role</mat-option>
@@ -16,7 +16,7 @@
     </mat-form-field>
     <mat-form-field class="input-style">
       <mat-label>Term</mat-label>
-      <input id="filter" type="text" matInput style="width: 150px; text-align: start" placeholder="Term" />
+      <input id="filter" (change)="search($event)" type="text" matInput style="width: 150px; text-align: start" placeholder="Term" />
     </mat-form-field>
     <div fxLayout="row">
       <button mat-raised-button type="button" color="primary" style="margin-right: 5px" (click)="search()"
@@ -25,11 +25,10 @@
       </button>
     </div>
     <div fxLayout="row">
-      <a [routerLink]="['/merchants-add']" style="margin-right: 5px" fxFlexAlign="center">
-        <button mat-raised-button type="button" color="primary">
-          <mat-icon aria-label="Side nav toggle icon">person_add</mat-icon>
-        </button>
-      </a>
+      <button mat-raised-button type="button" color="primary" style="margin-right: 5px" (click)="addMeeting()"
+      fxFlexAlign="center">
+        <mat-icon aria-label="Side nav toggle icon">stream</mat-icon>
+      </button>
     </div>
   </div>
   <table mat-table [dataSource]="dataSource" fxShow fxHide.xs="true" fxHide.sm="true">

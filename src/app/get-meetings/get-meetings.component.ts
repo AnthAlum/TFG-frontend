@@ -3,10 +3,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { BackendMeetingsService } from '../backend-meetings.service';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
 import { Meeting } from '../meeting';
+import { MeetingCreateComponent } from '../meeting-create/meeting-create.component';
 import { MeetingDetailComponent } from '../meeting-detail/meeting-detail.component';
 import { MeetingPage } from '../meeting-page';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
@@ -44,6 +46,7 @@ export class GetMeetingsComponent implements OnInit {
   }
 
   getMeetings(): void{
+    this.loadingService.show();
     this.meetingsService.getMeetings(this.paginationIndex, this.paginationSize).subscribe(
       meetings => this.updateValues(meetings, false),
       error => this.loadingService.hide()
@@ -90,10 +93,10 @@ export class GetMeetingsComponent implements OnInit {
 
   showData(rowIndex: number, meeting: Meeting): void{
     const dialogRef = this.dialog.open(MeetingDetailComponent, {
-        data: meeting,
-        height: '90%',
-        width: '100%',
-      });
+      data: meeting, //TODO: Cambiar por una lllamada al servidor
+      height: '90%',
+      width: '100%',
+    });
     dialogRef.afterClosed().subscribe(
       _ => {
         this.loadingService.show();
@@ -103,10 +106,28 @@ export class GetMeetingsComponent implements OnInit {
             this.dataSource.data[rowIndex] = updatedMeeting;
             this.dataSource.data = this.dataSource.data; // Without this line table doesn't update values lol.
             this.loadingService.hide();
-          }
-        )
-      }
-    );
+    })});
   }
 
+  addMeeting(): void{
+    const dialogRef = this.dialog.open(MeetingCreateComponent, {
+      height: '90%',
+      width: '100%',
+    });
+    dialogRef.afterClosed().subscribe(_ => this.getMeetings()); //Update the meeting list
+  }
+
+  search(newValue): void {
+    this.loadingService.show();
+    switch(this.selectedField){
+      case "matter":
+        this.meetingsService.getMeetingsByMatter(newValue.target.value, this.paginationIndex, this.paginationSize).subscribe(
+          meetings => this.updateValues(meetings),
+          error => this.loadingService.hide()
+        );
+        break;
+      default:
+        break;
+    }
+  }
 }

@@ -46,9 +46,10 @@ import { PutMeetingComponent } from './put-meeting/put-meeting.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateAdapter, NgxMatTimepickerModule, NgxNativeDateModule } from '@angular-material-components/datetime-picker';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
+import { MeetingCreateComponent } from './meeting-create/meeting-create.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import {MatChipsModule} from '@angular/material/chips';
     GetMeetingsComponent,
     MeetingDetailComponent,
     PutMeetingComponent,
+    MeetingCreateComponent,
   ],
   imports: [
     MatChipsModule,
@@ -114,6 +116,7 @@ import {MatChipsModule} from '@angular/material/chips';
   ],
   providers: [
     SnackbarMessageComponent,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

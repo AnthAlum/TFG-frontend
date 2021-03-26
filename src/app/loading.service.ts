@@ -9,21 +9,21 @@ import { RouterModule, Router, NavigationEnd } from '@angular/router';
 export class LoadingService {
 
   hideElement: boolean = false;
-
+  count: number;
   constructor(
     private router: Router,
     private spinnerService: NgxSpinnerService
   ) {
   }
-  
+
   ngOnInit(): void {
   }
-  
-  show(): void{
+
+  show(count?: number): void{
     this.spinnerService.show();
   }
 
-  hide(): void{
+  hide(count?: number): void{
     this.spinnerService.hide();
   }
 
