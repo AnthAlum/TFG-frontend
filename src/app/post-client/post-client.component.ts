@@ -24,7 +24,7 @@ export class PostClientComponent implements OnInit {
 
   constructor(
     private clientsService: BackendClientsService,
-    private formBuilder: FormBuilder,  
+    private formBuilder: FormBuilder,
     private snackBar: SnackbarMessageComponent,
     private loadingService: LoadingService,
     private dialog: MatDialog,
@@ -35,13 +35,15 @@ export class PostClientComponent implements OnInit {
   }
 
   post(): void{
+    if(!this.isFormSendable())
+      return;
     let action: string = "Create";
     let order = ["name", "email", "phone", "company"];
     const information : { [key: string]: string } = {
-      'name': this.checkoutForm.get('name')!.value, 
-      'phone': this.checkoutForm.get('phone')!.value, 
-      'email': this.checkoutForm.get('email')!.value, 
-      'company': this.checkoutForm.get('company')!.value 
+      'name': this.checkoutForm.get('name')!.value,
+      'phone': this.checkoutForm.get('phone')!.value,
+      'email': this.checkoutForm.get('email')!.value,
+      'company': this.checkoutForm.get('company')!.value
     };
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
       data: [ information, order, action]
@@ -55,7 +57,15 @@ export class PostClientComponent implements OnInit {
     });
 
   }
-  
+
+  isFormSendable(): boolean{
+    for(const field in this.checkoutForm.controls){
+      if(this.checkoutForm.get(field)!.hasError('required') || this.checkoutForm.get(field)?.hasError('pattern'))
+        return false;
+    }
+    return true;
+  }
+
   postMerchant(information: { [key: string]: string }): void{
     if(this.clientsService.verifyAllValues(information)){
       this.loadingService.show();

@@ -1,21 +1,19 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, ElementRef, Inject, NgModule, OnInit, Optional, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, SelectControlValueAccessor, Validators } from '@angular/forms';
+import { Component, ElementRef, Inject, OnInit, Optional, ViewChild } from '@angular/core';
+import {  FormControl,  Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import {  Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { LoadingService } from '../loading.service';
 import { Meeting } from '../meeting';
-import {COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
+import { ENTER, SPACE} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
-import {map, startWith} from 'rxjs/operators';
 import {MatChipEvent, MatChipInputEvent, MatChipList, MatChipListChange} from '@angular/material/chips';
 import { BackendClientsService } from '../backend-clients.service';
 import { BackendService } from '../backend.service';
 import { BackendMeetingsService } from '../backend-meetings.service';
-import { Merchant } from '../merchant';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 import * as moment from 'moment';
+import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 
 const NOT_FOUND: number = -1;
 const ID_INDEX: number = 0;
@@ -47,6 +45,13 @@ export class MeetingDetailComponent implements OnInit {
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, SPACE];
+  //WordCloud variables
+  wordCloudData: CloudData[] = this.buildWordCloudData();
+  cloudOptions: CloudOptions = {
+    strict: true,
+    width: 1,
+    height: 200,
+  };
 
   //Merchant chips variables
   moreThanOneMerchants = true;
@@ -390,6 +395,21 @@ export class MeetingDetailComponent implements OnInit {
     let clientId = this.searchSubjectId(client, this.availableClients);
     this.close();
     this.router.navigateByUrl(`/clients-modify/${clientId}`);
+  }
+
+  buildWordCloudData(): CloudData[]{
+    let data: CloudData[] = [];
+    let weight: number = Math.max(this.data.wordCloud.length, 10);
+    this.data.wordCloud.forEach(word => {
+      word = word[0].toUpperCase() + word.substr(1);
+      data.push({ text : word, weight : weight--});
+    });
+    return data;
+  }
+
+  wordCloudChange(): void{
+    const changedData$: Observable<CloudData[]> = of(this.buildWordCloudData());
+    changedData$.subscribe(newData => this.wordCloudData = newData);
   }
 
   close(): void{

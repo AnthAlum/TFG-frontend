@@ -48,7 +48,7 @@ export class GetMerchantsComponent implements OnInit {
   getMerchants(): void{
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
       merchants => this.updateValues(merchants, false),
-      error => this.loadingService.hide()
+      _ => this.loadingService.hide()
     );
   }
 

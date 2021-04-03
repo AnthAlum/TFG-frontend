@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
-import {MatIcon, MatIconModule} from '@angular/material/icon';
+import { MatIconModule} from '@angular/material/icon';
 import { GetMerchantsComponent } from './get-merchants/get-merchants.component';
 import {MatTableModule} from '@angular/material/table';
 import { PostMerchantComponent } from './post-merchant/post-merchant.component';
@@ -30,10 +30,10 @@ import { PageContainerComponent } from './page-container/page-container.componen
 import { MerchantCardComponent } from './merchant-card/merchant-card.component';
 import { MerchantFormComponent } from './merchant-form/merchant-form.component';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule} from '@angular/material/dialog';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { SnackbarMessageComponent } from './snackbar-message/snackbar-message.component';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GetClientsComponent } from './get-clients/get-clients.component';
@@ -50,6 +50,7 @@ import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import { MeetingCreateComponent } from './meeting-create/meeting-create.component';
+import { TagCloudModule } from 'angular-tag-cloud-module';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { MeetingCreateComponent } from './meeting-create/meeting-create.componen
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    TagCloudModule,
   ],
   exports:[
     AppRoutingModule,

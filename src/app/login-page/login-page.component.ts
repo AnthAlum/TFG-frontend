@@ -8,6 +8,9 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { BackendClientsService } from '../backend-clients.service';
+import { BackendMeetingsService } from '../backend-meetings.service';
+import { UsersessionService } from '../usersession.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -23,7 +26,6 @@ export interface Tile {
   rows: number;
 }
 
-const JWT_PREFIX = "Bearer ";
 
 @Component({
   selector: 'app-login-page',
@@ -51,10 +53,13 @@ export class LoginPageComponent implements OnInit {
     private backendService : BackendService,
     private router: Router,
     private spinnerService: NgxSpinnerService,
+    private usersessionService: UsersessionService,
     ) { }
 
   ngOnInit(): void {
     this.spinnerService.hide();
+    if(this.usersessionService.authenticationDone())
+      this.router.navigateByUrl('/clients');
   }
 
   postCredentials(username: string, password: string): void{
@@ -64,10 +69,9 @@ export class LoginPageComponent implements OnInit {
     };
     if(this.backendService.verifyValue("email", username)){
       this.spinnerService.show();
-      this.backendService.postCredentials(credentials)
-        .subscribe(jwtAuthentication => {
-            this.getAuthority(jwtAuthentication.JWT);
-            this.checkAuthority();
+      this.backendService.postCredentials(credentials).subscribe(
+        jwtAuthentication => {
+            this.getAuthority(username, jwtAuthentication.JWT);
         }, (error) => {
           this.proccessError(error);
           this.spinnerService.hide();
@@ -78,17 +82,10 @@ export class LoginPageComponent implements OnInit {
   }
 
   //This method obtain the authority inside the JWT in the response and stores the JWT in the service for next requests.
-  getAuthority(jwt: string): void{
-    const tokenInfo = this.helper.decodeToken(jwt.replace(JWT_PREFIX, ""));
-    this.authority = tokenInfo.authorities[0].authority;
-    this.backendService.postJwt(jwt);
-  }
-
-  checkAuthority(): void{
-    if(this.authority.localeCompare("ROLE_ADMIN") === 0)
-      this.router.navigateByUrl('/merchants');
-    if(this.authority.localeCompare("ROLE_USER") === 1)
-      this.router.navigateByUrl('/clients'); 
+  getAuthority(username: string, jwt: string): void{
+    this.usersessionService.postJwt(jwt);
+    this.usersessionService.postUsername(username);
+    this.router.navigateByUrl('/clients');
   }
 
   proccessError(error: HttpErrorResponse): void{

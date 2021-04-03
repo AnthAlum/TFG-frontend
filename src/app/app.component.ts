@@ -7,7 +7,11 @@ import { map, shareReplay } from 'rxjs/operators';
 import { LoadingService } from './loading.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BackendClientsService } from './backend-clients.service';
+import { BackendMeetingsService } from './backend-meetings.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { UsersessionService } from './usersession.service';
 
+const JWT_PREFIX = "Bearer ";
 
 @Component({
   selector: 'app-root',
@@ -26,12 +30,13 @@ export class AppComponent implements OnInit{
     shareReplay()
   );
 
+  jwtHelperService = new JwtHelperService();
+
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private backendService: BackendService,
     private router: Router,
     private spinnerService: LoadingService,
-    private clientsService: BackendClientsService,
+    private usersessionService: UsersessionService,
     ) { }
 
     ngOnInit(): void{
@@ -51,12 +56,16 @@ export class AppComponent implements OnInit{
     }
 
     checkAuthenthication(): void{
-      if(!this.backendService.authenticationDone())
+      if(!this.usersessionService.authenticationDone())
         this.router.navigateByUrl("/login");
     }
 
+    goToModifyMerchant(id: number): void{
+      this.router.navigateByUrl(`/merchants-modify/${this.usersessionService.id}`);
+    }
+
     exit(): void{
-      this.backendService.logout();
-      this.clientsService.logout();
+      this.usersessionService.logout();
+      this.router.navigateByUrl("/login");
     }
 }

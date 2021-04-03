@@ -10,4 +10,5 @@ export interface Meeting {
   date: string,
   time: string,
   keywords: string[],
+  wordCloud: string[],
 }

@@ -62,8 +62,6 @@
           {{client}}
           <mat-icon matChipRemove *ngIf="removable && moreThanOneClients">cancel</mat-icon>
         </mat-chip>
-        <!-- TODO: ENVIAR LA PETICION CUANDO LOS CAMPOS OBLIGATORIOS ESTEN  -->
-        <!-- TODO: ACABAR EL POST -->
         <input id="clientInput"
           name="clientsCtrl"
           placeholder="New client..."
@@ -82,7 +80,7 @@
     <!-- Description form field -->
     <mat-form-field>
       <mat-label>Description</mat-label>
-      <textarea matInput style="min-height: 200px;" name="description" [formControl]="formControl.description" (blur)="putNewDescription()"></textarea>
+      <textarea matInput style="min-height: 150px;" name="description" [formControl]="formControl.description" (blur)="putNewDescription()"></textarea>
     </mat-form-field>
     <!-- Keywords form field -->
     <mat-form-field class="example-chip-list">
@@ -101,5 +99,10 @@
           (matChipInputTokenEnd)="postKeyword($event)">
       </mat-chip-list>
     </mat-form-field>
+    <angular-tag-cloud [data]="wordCloudData"
+      [width]="cloudOptions.width"
+      [height]="cloudOptions.height"
+      [strict]="true"
+      [overflow]="false"></angular-tag-cloud>
   </form>
 </div>

@@ -25,30 +25,6 @@ export class BackendMeetingsService {
   };
 
   constructor(private httpClient: HttpClient) {
-    this.authenticationDone();
-  }
-
-  authenticationDone(): boolean{
-    let token = localStorage.getItem('token');
-    if(token){
-      this.postJwt(token);
-      return true;
-    }
-    if(this.JWT.localeCompare("JWT") === 0) //Si nuestro JWT no tiene un nuevo token asignado entonces es porque no estamos autenticados.
-      return false;
-    return true;
-  }
-
-  logout(): void{
-    localStorage.removeItem('token');
-    this.JWT = "JWT";
-    this.httpOptions.headers = this.httpOptions.headers.delete('Authorization');
-  }
-
-  postJwt(jwt: string): void{
-    localStorage.setItem('token', jwt);
-    this.JWT = jwt;
-    this.httpOptions.headers = this.httpOptions.headers.set('Authorization', this.JWT);
   }
 
   getValuesRegex(): { [key: string]: RegExp } {

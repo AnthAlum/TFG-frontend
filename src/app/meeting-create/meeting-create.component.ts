@@ -116,19 +116,52 @@ export class MeetingCreateComponent implements OnInit {
     });
   }
 
+  /**
+   * Sends a post request of a new meeting.
+   */
   postMeeting(): void{
-    if(this.oneOrMoreMerchants === true && this.oneOrMoreClients === true && this.formControl['matter'].valid == true){
-      const data: NewMeetingBody = {
+    if(this.canSendPostRequest()){
+      const data: NewMeetingBody = this.buildPostBody();
+      this.loadingService.show();
+      this.meetingsService.postNewMeeting(data).subscribe(_ => this.loadingService.hide());
+      //Reset values after send the post request.
+      this.resetFormValues();
+    }
+  }
+
+  /**
+   * Checks if user can send a post request of a new meeting with the given data in the form.
+   * @returns True if post request constrains are fulfilled.
+   */
+  canSendPostRequest(): boolean {
+    return this.oneOrMoreMerchants === true && this.oneOrMoreClients === true && this.formControl['matter'].valid == true;
+  }
+
+  /**
+   * Makes a body for a post request of new meeting.
+   * @returns Body with the form data.
+   */
+  buildPostBody(): NewMeetingBody{
+    const body: NewMeetingBody = {
       matter: this.formControl["matter"].value,
         date: this.formControl['date'].value.toLocaleDateString('en-GB').replaceAll('/', '-') + ' 00:00',
         description: this.formControl["description"].value,
         merchants: this.merchantIds,
         clients: this.clientIds,
         keywords: this.actualKeywords,
-      };
-      this.loadingService.show();
-      this.meetingsService.postNewMeeting(data).subscribe(_ => this.loadingService.hide());
-    }
+    };
+    return body;
+  }
+
+/**
+ * Resets form fields.
+ */
+  resetFormValues(): void{
+    this.formControl['matter'].setValue(null);
+    this.formControl['description'].setValue(null);
+    this.actualKeywords = [];
+    this.actualMerchants = [];
+    this.actualClients = [];
   }
 
   /**
