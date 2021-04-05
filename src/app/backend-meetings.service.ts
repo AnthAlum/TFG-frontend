@@ -6,6 +6,8 @@ import { MeetingPage } from './meeting-page';
 import { Meeting } from './meeting';
 import { NewMerchantBody } from './backend.service';
 import { NewMeetingBody } from './new-meeting-body';
+import { CloudData } from 'angular-tag-cloud-module';
+import { WordCloudResponse } from './word-cloud-response';
 
 const regexSet : {[key: string]: RegExp} = {
   matter: /^[A-zÀ-ú0-9]+(\s[A-zÀ-ú0-9]*)*$/,
@@ -37,16 +39,43 @@ export class BackendMeetingsService {
       .get<MeetingPage>(url, this.httpOptions);
   }
 
-  getMeetingById(id: number): Observable<Meeting>{
-    const url = `${this.backendUrl}/${this.meetingsUrl}/${id}`;
+  getMeetingById(idMeeting: number): Observable<Meeting>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}`;
     return this.httpClient
       .get<Meeting>(url, this.httpOptions);
+  }
+
+  getWordCloudById(idMeeting: number): Observable<WordCloudResponse>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/wordcloud`;
+    return this.httpClient
+      .get<WordCloudResponse>(url, this.httpOptions);
+  }
+
+  getMeetingFileById(idMeeting: number, idFile: number) {
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/files/${idFile}`;
+    return this.httpClient
+      .get<{}>(url, {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3JyZW9AZXhhbXBsZS5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNjE3MDM0Mjk0LCJleHAiOjE2MTc4MzI4MDB9.MIvqcL52ByrSiZSPYysQW4lsdBIHvc3_55SSqMuyYckSJKr-YFQKoCVa9XEkrJ7aG2FhLt_cYFsl8EwAn3V5nw",
+          responseType: 'blob'}),
+      });
   }
 
   getMeetingsByMatter(matter: string, pageNumber: number, pageSize: number): Observable<MeetingPage>{
     const url = `${this.backendUrl}/${this.meetingsUrl}/findbymatter?matter=${matter}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<MeetingPage>(url, this.httpOptions);
+  }
+
+  postFile(idMeeting: number, file: File): Observable<{}>{
+    var fd = new FormData();
+    fd.append('file', file);
+
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/files`;
+    return this.httpClient
+      .post<{}>(url, fd,{
+        headers: new HttpHeaders({ 'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3JyZW9AZXhhbXBsZS5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNjE3MDM0Mjk0LCJleHAiOjE2MTc4MzI4MDB9.MIvqcL52ByrSiZSPYysQW4lsdBIHvc3_55SSqMuyYckSJKr-YFQKoCVa9XEkrJ7aG2FhLt_cYFsl8EwAn3V5nw" })
+      });
   }
 
   postMeetingNewKeyword(idMeeting: number, keyword: string): Observable<{}>{

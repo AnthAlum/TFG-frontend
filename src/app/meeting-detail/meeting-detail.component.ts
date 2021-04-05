@@ -79,6 +79,9 @@ export class MeetingDetailComponent implements OnInit {
   @ViewChild('autoKeyword') matAutocompleteKeywords: MatAutocomplete;
   newKeyword: string = '';
 
+  //Table variables
+  displayedColumns: string[] = ['name', 'type'];
+
   constructor(
     public dialogRef: MatDialogRef<MeetingDetailComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Meeting,
@@ -248,7 +251,7 @@ export class MeetingDetailComponent implements OnInit {
     this.meetingService.deleteMeetingKeyword(this.data.idMeeting, keyword).subscribe( // Make delete request of that keyword.
       _ => {
         this.data.keywords.splice(this.data.keywords.indexOf(keyword), 1) //Removes element in the keywords list.
-        this.loadingService.hide();
+        this.wordCloudChange();
     });
   }
 
@@ -302,7 +305,7 @@ export class MeetingDetailComponent implements OnInit {
       _ => {
         this.data.keywords.push(event.value); //Insert keyword in keyword list.
         this.clearAndResetInput(this.formControl["keywordsCtrl"], "keywordInput"); //Reset value.
-        this.loadingService.hide();
+        this.wordCloudChange();
       },
       _ => this.loadingService.hide()
       );
@@ -374,7 +377,7 @@ export class MeetingDetailComponent implements OnInit {
       this.meetingService.putMeetingNewValue(this.data.idMeeting, 'description', this.formControl['description'].value).subscribe(
         _ => {
           this.data.description = this.formControl['description'].value;
-          this.loadingService.hide();
+          this.wordCloudChange();
         },
         _ => this.loadingService.hide());
     }
@@ -408,11 +411,23 @@ export class MeetingDetailComponent implements OnInit {
   }
 
   wordCloudChange(): void{
-    const changedData$: Observable<CloudData[]> = of(this.buildWordCloudData());
-    changedData$.subscribe(newData => this.wordCloudData = newData);
+    this.meetingService.getWordCloudById(this.data.idMeeting)
+    .subscribe(newData => {
+      this.data.wordCloud = newData.wordCloud;
+      this.wordCloudData = this.buildWordCloudData();
+      this.loadingService.hide();
+    });
   }
 
   close(): void{
     this.dialogRef.close();
+  }
+
+  fileInputChange(files: FileList) {
+    this.meetingService.postFile(this.data.idMeeting, files[0]).subscribe();
+  }
+
+  downloadFile(idMeeting: number, idFile: number) {
+    this.meetingService.getMeetingFileById(idMeeting, idFile).subscribe();
   }
 }

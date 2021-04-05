@@ -66,6 +66,9 @@ export class MeetingCreateComponent implements OnInit {
   @ViewChild('autoKeyword') matAutocompleteKeywords: MatAutocomplete;
   newKeyword: string = '';
 
+  //Files variables
+  filesToUpload: FileList;
+
   constructor(
     private loadingService: LoadingService,
     private merchantsService: BackendService,
@@ -123,7 +126,7 @@ export class MeetingCreateComponent implements OnInit {
     if(this.canSendPostRequest()){
       const data: NewMeetingBody = this.buildPostBody();
       this.loadingService.show();
-      this.meetingsService.postNewMeeting(data).subscribe(_ => this.loadingService.hide());
+      this.meetingsService.postNewMeeting(data).subscribe(_ => this.loadingService.hide(), _ => this.loadingService.hide());
       //Reset values after send the post request.
       this.resetFormValues();
     }
@@ -327,5 +330,9 @@ export class MeetingCreateComponent implements OnInit {
 
   getErrorMessageClients(): void{
     this.errorClients = this.clientIds.length === 0 ? 'You must enter one client at least' : '';
+  }
+
+  fileInputChange(files: FileList) {
+    this.filesToUpload = files;
   }
 }

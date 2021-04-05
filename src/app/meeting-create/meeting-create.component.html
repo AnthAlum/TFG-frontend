@@ -1,4 +1,4 @@
-<form class="main-form" (ngSubmit)="postMeeting()">
+<form class="main-form" >
 <!-- Matter form field -->
   <mat-form-field [style.fontStyle]="fontSize">
     <mat-label>Matter</mat-label>
@@ -100,8 +100,12 @@
     (matChipInputTokenEnd)="addKeyword($event)">
     </mat-chip-list>
   </mat-form-field>
+  <div style="width: 50%;">
+    <input #fileInput type="file" hidden="true" (change)="fileInputChange($event.target.files)" accept=".mp3"/>
+    <button mat-flat-button color="primary" (click)="fileInput.click()">Choose Audio File (MP3)</button>
+  </div>
   <div  fxLayout="row" fxLayoutAlign="end">
-    <button  mat-raised-button type="submit" color="primary">
+    <button  mat-raised-button type="submit" color="primary" (click)="postMeeting()">
       <span>
         SUBMIT
         <mat-icon [inline]="true">send</mat-icon>

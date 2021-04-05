@@ -92,21 +92,27 @@ export class GetMeetingsComponent implements OnInit {
   }
 
   showData(rowIndex: number, meeting: Meeting): void{
-    const dialogRef = this.dialog.open(MeetingDetailComponent, {
-      data: meeting, //TODO: Cambiar por una lllamada al servidor
-      height: '90%',
-      width: '100%',
-    });
-    dialogRef.afterClosed().subscribe(
-      _ => {
-        this.loadingService.show();
-        this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(
-          updatedMeeting => {
-            meeting = updatedMeeting;
-            this.dataSource.data[rowIndex] = updatedMeeting;
-            this.dataSource.data = this.dataSource.data; // Without this line table doesn't update values lol.
-            this.loadingService.hide();
-    })});
+    this.loadingService.show();
+    this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(
+      meetingUpdated => {
+        const dialogRef = this.dialog.open(MeetingDetailComponent, {
+          data: meetingUpdated,
+          height: '90%',
+          width: '100%',
+        });
+        dialogRef.afterClosed().subscribe(
+          _ => {
+            this.loadingService.show();
+            this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(
+              updatedMeeting => {
+                meeting = updatedMeeting;
+                this.dataSource.data[rowIndex] = updatedMeeting;
+                this.dataSource.data = this.dataSource.data; // Without this line table doesn't update values lol.
+                this.loadingService.hide();
+        })});
+        this.loadingService.hide();
+      }
+    );
   }
 
   addMeeting(): void{
