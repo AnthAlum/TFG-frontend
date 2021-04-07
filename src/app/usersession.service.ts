@@ -25,7 +25,7 @@ export class UsersessionService {
   ) { }
 
   authenticationDone(): boolean{
-    if(this.loadJwt() && this.loadUsername()){
+    if(this.loadJwt().localeCompare('JWT') !== 0 && this.loadUsername()){
       return true;
     }
     if(this.jwt.localeCompare("JWT") === 0) //Si nuestro JWT no tiene un nuevo token asignado entonces es porque no estamos autenticados.
@@ -33,13 +33,16 @@ export class UsersessionService {
   }
 
   loadJwt(): string{
-    this.jwt = localStorage.getItem('token')!;
-    const tokenInfo = this.jwtHelperService.decodeToken(this.jwt.replace(JWT_PREFIX, "")); //TODO: HAY UN ERROR CON ESTO
-    this.role = tokenInfo.authorities[0].authority;
-    this.merchantsService.httpOptions.headers = this.merchantsService.httpOptions.headers.set('Authorization', this.jwt);
-    this.clientsService.httpOptions.headers = this.clientsService.httpOptions.headers.set('Authorization', this.jwt);
-    this.meetingsService.httpOptions.headers = this.meetingsService.httpOptions.headers.set('Authorization', this.jwt);
-    return this.jwt;
+    if(localStorage.getItem('token') != null){
+      this.jwt = localStorage.getItem('token')!;
+      const tokenInfo = this.jwtHelperService.decodeToken(this.jwt.replace(JWT_PREFIX, "")); //TODO: HAY UN ERROR CON ESTO
+      this.role = tokenInfo.authorities[0].authority;
+      this.merchantsService.httpOptions.headers = this.merchantsService.httpOptions.headers.set('Authorization', this.jwt);
+      this.clientsService.httpOptions.headers = this.clientsService.httpOptions.headers.set('Authorization', this.jwt);
+      this.meetingsService.httpOptions.headers = this.meetingsService.httpOptions.headers.set('Authorization', this.jwt);
+      return this.jwt;
+    }
+    return "JWT";
   }
 
   loadUsername(): string{
@@ -56,6 +59,7 @@ export class UsersessionService {
 
   postJwt(jwt: string): void{
     localStorage.setItem('token', jwt);
+    this.jwt = jwt;
     this.merchantsService.httpOptions.headers = this.merchantsService.httpOptions.headers.set('Authorization', this.jwt);
     this.clientsService.httpOptions.headers = this.clientsService.httpOptions.headers.set('Authorization', this.jwt);
     this.meetingsService.httpOptions.headers = this.meetingsService.httpOptions.headers.set('Authorization', this.jwt);
@@ -67,6 +71,7 @@ export class UsersessionService {
 
   logout(): void{
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
     this.jwt = "JWT";
     this.id = 0;
     this.role = '';

@@ -14,10 +14,24 @@ import { BackendService } from '../backend.service';
 import { BackendMeetingsService } from '../backend-meetings.service';
 import * as moment from 'moment';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { saveAs } from 'file-saver';
 
 const NOT_FOUND: number = -1;
 const ID_INDEX: number = 0;
 const EMAIL_INDEX: number = 1;
+
+const MYME_TYPES = {
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  jpeg: 'image/jpeg',
+  jpg: 'image/jpeg',
+  json: 'application/json',
+  mp3: 'audio/mpeg',
+  mp4: 'video/mp4',
+  mpeg: 'video/mpeg',
+  pdf: 'application/pdf',
+
+}
 
 @Component({
   selector: 'app-meeting-detail',
@@ -80,7 +94,7 @@ export class MeetingDetailComponent implements OnInit {
   newKeyword: string = '';
 
   //Table variables
-  displayedColumns: string[] = ['name', 'type'];
+  displayedColumns: string[] = ['name', 'type', 'delete'];
 
   constructor(
     public dialogRef: MatDialogRef<MeetingDetailComponent>,
@@ -427,7 +441,9 @@ export class MeetingDetailComponent implements OnInit {
     this.meetingService.postFile(this.data.idMeeting, files[0]).subscribe();
   }
 
-  downloadFile(idMeeting: number, idFile: number) {
-    this.meetingService.getMeetingFileById(idMeeting, idFile).subscribe();
+  downloadFile(idMeeting: number, idFile: number, fileName: string, fileType: string) {
+    this.meetingService.getMeetingFileById(idMeeting, idFile).subscribe(data => {
+      saveAs(new Blob([data], {type: MYME_TYPES[fileType] }), fileName)
+    });
   }
 }

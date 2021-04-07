@@ -51,13 +51,15 @@ export class BackendMeetingsService {
       .get<WordCloudResponse>(url, this.httpOptions);
   }
 
-  getMeetingFileById(idMeeting: number, idFile: number) {
+  getMeetingFileById(idMeeting: number, idFile: number): any {
     const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/files/${idFile}`;
     return this.httpClient
-      .get<{}>(url, {
+      .get(url, {
         headers: new HttpHeaders({
           'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3JyZW9AZXhhbXBsZS5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNjE3MDM0Mjk0LCJleHAiOjE2MTc4MzI4MDB9.MIvqcL52ByrSiZSPYysQW4lsdBIHvc3_55SSqMuyYckSJKr-YFQKoCVa9XEkrJ7aG2FhLt_cYFsl8EwAn3V5nw",
-          responseType: 'blob'}),
+
+        }),
+        responseType: 'blob',
       });
   }
 
