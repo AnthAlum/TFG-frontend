@@ -15,6 +15,8 @@ import { BackendMeetingsService } from '../backend-meetings.service';
 import * as moment from 'moment';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { saveAs } from 'file-saver';
+import { MatTable } from '@angular/material/table';
+import { MeetingFile } from '../meeting-file';
 
 const NOT_FOUND: number = -1;
 const ID_INDEX: number = 0;
@@ -94,7 +96,8 @@ export class MeetingDetailComponent implements OnInit {
   newKeyword: string = '';
 
   //Table variables
-  displayedColumns: string[] = ['name', 'type', 'delete'];
+  @ViewChild(MatTable) fileTable: MatTable<MeetingFile>;
+  displayedColumns: string[] = ['name', 'type', 'addDescription', 'delete'];
 
   constructor(
     public dialogRef: MatDialogRef<MeetingDetailComponent>,
@@ -438,12 +441,43 @@ export class MeetingDetailComponent implements OnInit {
   }
 
   fileInputChange(files: FileList) {
-    this.meetingService.postFile(this.data.idMeeting, files[0]).subscribe();
+    this.loadingService.show();
+    this.meetingService.postFile(this.data.idMeeting, files[0]).subscribe(newFile => {
+      this.data.files.files.push(newFile);
+      this.fileTable.renderRows();
+      this.loadingService.hide();
+    }, _ => this.loadingService.hide());
   }
 
-  downloadFile(idMeeting: number, idFile: number, fileName: string, fileType: string) {
+  isMp3(file: MeetingFile): boolean{
+    return file.fileType.localeCompare('mp3') === 0;
+  }
+
+  deleteFile(idMeeting: number, idFile: number, file: MeetingFile): void{
+    this.loadingService.show();
+    this.meetingService.deleteMeetingFile(idMeeting, idFile).subscribe(_ => {
+      this.data.files.files.splice(this.data.files.files.indexOf(file));
+      this.fileTable.renderRows();
+      this.loadingService.hide();
+    }, _ => this.loadingService.hide());
+  }
+
+  downloadFile(idMeeting: number, idFile: number, fileName: string, fileType: string): void{
+    this.loadingService.show();
     this.meetingService.getMeetingFileById(idMeeting, idFile).subscribe(data => {
-      saveAs(new Blob([data], {type: MYME_TYPES[fileType] }), fileName)
-    });
+      saveAs(new Blob([data], {type: MYME_TYPES[fileType] }), fileName);
+      this.data.files.files.push();
+      this.loadingService.hide();
+    }, _ => this.loadingService.hide() );
+  }
+
+  postDescriptionFromFile(idMeeting: number, idFile: number): void{
+    this.loadingService.show();
+    this.meetingService.postMeetingDescriptionFromFile(idMeeting, idFile).subscribe(meeting => {
+      this.data = meeting;
+      this.wordCloudData = this.buildWordCloudData();
+      this.formControl['description'].setValue(this.data.description);
+      this.loadingService.hide();
+    }, _ => this.loadingService.hide());
   }
 }

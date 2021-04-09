@@ -8,6 +8,7 @@ import { NewMerchantBody } from './backend.service';
 import { NewMeetingBody } from './new-meeting-body';
 import { CloudData } from 'angular-tag-cloud-module';
 import { WordCloudResponse } from './word-cloud-response';
+import { MeetingFile } from './meeting-file';
 
 const regexSet : {[key: string]: RegExp} = {
   matter: /^[A-zÀ-ú0-9]+(\s[A-zÀ-ú0-9]*)*$/,
@@ -56,8 +57,7 @@ export class BackendMeetingsService {
     return this.httpClient
       .get(url, {
         headers: new HttpHeaders({
-          'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3JyZW9AZXhhbXBsZS5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNjE3MDM0Mjk0LCJleHAiOjE2MTc4MzI4MDB9.MIvqcL52ByrSiZSPYysQW4lsdBIHvc3_55SSqMuyYckSJKr-YFQKoCVa9XEkrJ7aG2FhLt_cYFsl8EwAn3V5nw",
-
+          'Authorization': localStorage.getItem('token')!,
         }),
         responseType: 'blob',
       });
@@ -69,21 +69,25 @@ export class BackendMeetingsService {
       .get<MeetingPage>(url, this.httpOptions);
   }
 
-  postFile(idMeeting: number, file: File): Observable<{}>{
+  postFile(idMeeting: number, file: File): Observable<MeetingFile>{
     var fd = new FormData();
     fd.append('file', file);
 
     const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/files`;
     return this.httpClient
-      .post<{}>(url, fd,{
-        headers: new HttpHeaders({ 'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3JyZW9AZXhhbXBsZS5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNjE3MDM0Mjk0LCJleHAiOjE2MTc4MzI4MDB9.MIvqcL52ByrSiZSPYysQW4lsdBIHvc3_55SSqMuyYckSJKr-YFQKoCVa9XEkrJ7aG2FhLt_cYFsl8EwAn3V5nw" })
+      .post<MeetingFile>(url, fd,{
+        headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token')! })
       });
+  }
+
+  postMeetingDescriptionFromFile(idMeeting: number, idFile: number): Observable<Meeting>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/files/${idFile}`;
+    return this.httpClient.post<Meeting>(url, undefined , this.httpOptions);
   }
 
   postMeetingNewKeyword(idMeeting: number, keyword: string): Observable<{}>{
     const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/keywords`;
-    return this.httpClient.
-      post<{}>(url, {'keyword': keyword}, this.httpOptions);
+    return this.httpClient.post<{}>(url, {'keyword': keyword}, this.httpOptions);
   }
 
   postMeetingNewMerchant(idMeeting: number, idMerchant: number): Observable<{}>{
@@ -116,7 +120,6 @@ export class BackendMeetingsService {
 
   putMeetingNewDate(idMeeting: number, newValue: Date): Observable<{}>{
     const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/date`;
-    //newValue = newValue.replace(' ', 'T');
     let newDate: string = this.modifyMeetingDate(newValue);
     newDate = newDate.concat(':00.000');
     return this.httpClient
@@ -139,6 +142,11 @@ export class BackendMeetingsService {
     const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/clients/${idClient}`;
     return this.httpClient.
       delete<{}>(url, this.httpOptions);
+  }
+
+  deleteMeetingFile(idMeeting: number, idFile: number): Observable<{}>{
+    const url = `${this.backendUrl}/${this.meetingsUrl}/${idMeeting}/files/${idFile}`;
+    return this.httpClient.delete<{}>(url, this.httpOptions);
   }
 
   deleteMeeting(idMeeting: number): Observable<{}>{
