@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormControl, FormsModule, Validators} from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,11 @@ import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confi
 import { MatDialog } from '@angular/material/dialog';
 import { UsersessionService } from '../usersession.service';
 import { Merchant } from '../merchant';
+import { Meeting } from '../meeting';
+import { MeetingDetailComponent } from '../meeting-detail/meeting-detail.component';
+import { BackendMeetingsService } from '../backend-meetings.service';
+import { MatTable } from '@angular/material/table';
+import { MeetingSimplifiedResponse } from '../meeting-simplified-response';
 
 @Component({
   selector: 'app-put-merchant',
@@ -28,13 +33,17 @@ export class PutMerchantComponent implements OnInit {
     newPassword: new FormControl('', [Validators.required, Validators.min(4)]),
   };
 
-  merchant: any;
+  merchant: Merchant = null;
   checkoutForm = this.formBuilder.group({
     idRole: '',
     name: '',
     email: '',
     phone: '',
   });
+
+  //Meeting table variables
+  @ViewChild(MatTable) fileTable: MatTable<MeetingSimplifiedResponse>;
+  displayedColumns: string[] = ['matter', 'date', 'merchants', 'clients'];
 
   constructor(
     private backendService: BackendService,
@@ -44,12 +53,12 @@ export class PutMerchantComponent implements OnInit {
     private loadingService: LoadingService,
     private dialog: MatDialog,
     private usersessionService: UsersessionService,
+    private meetingsService: BackendMeetingsService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-    const routeParams = this.activatedRouter.snapshot.paramMap;
-    const merchantId = routeParams.get('merchantId');
+    const merchantId = this.activatedRouter.snapshot.paramMap.get('merchantId');
     if(parseInt(merchantId!) !== this.usersessionService.getId() && !this.usersessionService.isAdmin())
       this.router.navigateByUrl(`/merchants-modify/${this.usersessionService.getId()}`);
     if(merchantId)
@@ -100,17 +109,12 @@ export class PutMerchantComponent implements OnInit {
       this.changeRole('idRole');
     let value = this.getValue(attribute);
     if(this.backendService.verifyValue(attribute, value)){
-      this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value)
-        .subscribe(
-          _ => {
-            this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey");
-            this.loadingService.hide();
-            this.loadMerchant(this.merchant.idMerchant);
-          },_ => {
-            this.loadingService.hide();
-           }
-        );
       this.loadingService.show();
+      this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value).subscribe(_ => {
+        this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey");
+        this.loadingService.hide();
+        this.loadMerchant(`${this.merchant.idMerchant}`);
+      }, _ => this.loadingService.hide());
     }
   }
 
@@ -139,11 +143,10 @@ export class PutMerchantComponent implements OnInit {
           _ => {
             this.snackBar.openSnackBar("Your " + password + " has been changed", "Okey");
             this.loadingService.hide();
-          },(error: any) => {
+          }, _ => {
             this.snackBar.openSnackBar("The actual password doens't match", "Okey");
             this.loadingService.hide();
-          }
-        );
+          });
       this.loadingService.show();
     }
   }
@@ -187,8 +190,6 @@ export class PutMerchantComponent implements OnInit {
       return 'You must insert a ' + attribute;
     if(this.formControl[attribute].hasError('pattern'))
       return 'Not a valid ' + attribute;
-    if(this.getValue(attribute).localeCompare(this.merchant.password) !== 0)
-      return 'The password is incorrect';
     return '';
   }
 
@@ -207,5 +208,22 @@ export class PutMerchantComponent implements OnInit {
     this.formControl.email.setValue(this.merchant.email);
     this.formControl.phone.setValue(this.merchant.phone);
     this.formControl.idRole.setValue(this.merchant.idRole);
+  }
+
+  showData(meeting: Meeting): void{
+    this.loadingService.show();
+    this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(meetingUpdated => {
+      const dialogRef = this.dialog.open(MeetingDetailComponent, {
+        data: meetingUpdated,
+        height: '90%',
+        width: '100%',
+      });
+      dialogRef.afterClosed().subscribe(_ => {
+        this.backendService.getMerchantById(this.activatedRouter.snapshot.paramMap.get('merchantId')!).subscribe(merchant => {
+          this.merchant = merchant;
+          this.loadingService.hide();
+        }, _ => this.loadingService.hide()); //Error in this.merchantsService.getClientById
+      }, _ => this.loadingService.show()); //Error in dialogRef.afterClosed()
+    }, _ => this.loadingService.hide()); //Error in meetingsService.getMeetingById
   }
 }

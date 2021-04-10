@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormControl, FormsModule, Validators} from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +9,11 @@ import { BackendClientsService } from '../backend-clients.service';
 import { Client } from '../client';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
+import { Meeting } from '../meeting';
+import { MatTable } from '@angular/material/table';
+import { MeetingSimplifiedResponse } from '../meeting-simplified-response';
+import { BackendMeetingsService } from '../backend-meetings.service';
+import { MeetingDetailComponent } from '../meeting-detail/meeting-detail.component';
 
 @Component({
   selector: 'app-put-client',
@@ -26,13 +31,17 @@ export class PutClientComponent implements OnInit {
     company: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.company)]),
   };
 
-  client: Client;
+  client: Client = null;
   checkoutForm = this.formBuilder.group({
     company: '',
     name: '',
     email: '',
     phone: '',
   });
+
+  //Meeting table variables
+  @ViewChild(MatTable) fileTable: MatTable<MeetingSimplifiedResponse>;
+  displayedColumns: string[] = ['matter', 'date', 'merchants', 'clients'];
 
   constructor(
     private clientsService: BackendClientsService,
@@ -41,12 +50,11 @@ export class PutClientComponent implements OnInit {
     private snackBar: SnackbarMessageComponent,
     private loadingService: LoadingService,
     private dialog: MatDialog,
+    private meetingsService: BackendMeetingsService,
   ) { }
 
   ngOnInit(): void {
-    //TODO: Hay que mostrar algo si se accede a un ID no registrado
-    const routeParams = this.activatedRouter.snapshot.paramMap;
-    const clientId = routeParams.get('clientId');
+    const clientId = this.activatedRouter.snapshot.paramMap.get('clientId');
     if(clientId)
       this.clientsService.getClientById(clientId)
         .subscribe(
@@ -133,5 +141,22 @@ export class PutClientComponent implements OnInit {
     this.formControl.email.setValue(this.client.email);
     this.formControl.phone.setValue(this.client.phone);
     this.formControl.company.setValue(this.client.company);
+  }
+
+  showData(meeting: Meeting): void{
+    this.loadingService.show();
+    this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(meetingUpdated => {
+      const dialogRef = this.dialog.open(MeetingDetailComponent, {
+        data: meetingUpdated,
+        height: '90%',
+        width: '100%',
+      });
+      dialogRef.afterClosed().subscribe(_ => {
+        this.clientsService.getClientById(this.activatedRouter.snapshot.paramMap.get('clientId')!).subscribe(client => {
+          this.client = client;
+          this.loadingService.hide();
+        }, _ => this.loadingService.hide()); //Error in this.clientsService.getClientById
+      }, _ => this.loadingService.show()); //Error in dialogRef.afterClosed()
+    }, _ => this.loadingService.hide()); //Error in meetingsService.getMeetingById
   }
 }

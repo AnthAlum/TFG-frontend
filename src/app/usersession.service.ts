@@ -12,7 +12,7 @@ const JWT_PREFIX = "Bearer ";
 })
 export class UsersessionService {
 
-  jwt: string = "JWT";
+  jwt: string;
   role: string = "";
   id: number = 0;
   username: string;
@@ -25,36 +25,31 @@ export class UsersessionService {
   ) { }
 
   authenticationDone(): boolean{
-    if(this.loadJwt().localeCompare('JWT') !== 0 && this.loadUsername()){
+    if(localStorage.getItem('token') != null && localStorage.getItem('username') != null){ //Ha sido autenticado
+      this.loadJwt();
+      this.loadUsername();
       return true;
     }
-    if(this.jwt.localeCompare("JWT") === 0) //Si nuestro JWT no tiene un nuevo token asignado entonces es porque no estamos autenticados.
-      return false;
+    return false;
   }
 
-  loadJwt(): string{
-    if(localStorage.getItem('token') != null){
-      this.jwt = localStorage.getItem('token')!;
-      const tokenInfo = this.jwtHelperService.decodeToken(this.jwt.replace(JWT_PREFIX, "")); //TODO: HAY UN ERROR CON ESTO
-      this.role = tokenInfo.authorities[0].authority;
-      this.merchantsService.httpOptions.headers = this.merchantsService.httpOptions.headers.set('Authorization', this.jwt);
-      this.clientsService.httpOptions.headers = this.clientsService.httpOptions.headers.set('Authorization', this.jwt);
-      this.meetingsService.httpOptions.headers = this.meetingsService.httpOptions.headers.set('Authorization', this.jwt);
-      return this.jwt;
-    }
-    return "JWT";
+  loadJwt(): void{
+    this.jwt = localStorage.getItem('token')!;
+    const tokenInfo = this.jwtHelperService.decodeToken(this.jwt.replace(JWT_PREFIX, ""));
+    this.role = tokenInfo.authorities[0].authority;
+    this.merchantsService.httpOptions.headers = this.merchantsService.httpOptions.headers.set('Authorization', this.jwt);
+    this.clientsService.httpOptions.headers = this.clientsService.httpOptions.headers.set('Authorization', this.jwt);
+    this.meetingsService.httpOptions.headers = this.meetingsService.httpOptions.headers.set('Authorization', this.jwt);
+
   }
 
-  loadUsername(): string{
+  loadUsername(): void{
     this.username = localStorage.getItem('username')!;
     this.loadingService.show();
-    this.merchantsService.getMerchantByEmail(this.username).subscribe(
-      merchant => {
-        this.id = merchant.idMerchant;
-        this.loadingService.hide();
-      }
-    );
-    return this.username;
+    this.merchantsService.getMerchantByEmail(this.username).subscribe(merchant => {
+      this.id = merchant.idMerchant;
+      this.loadingService.hide();
+    });
   }
 
   postJwt(jwt: string): void{
@@ -67,6 +62,11 @@ export class UsersessionService {
 
   postUsername(username: string): void{
     localStorage.setItem('username', username);
+    this.loadingService.show();
+    this.merchantsService.getMerchantByEmail(this.username).subscribe(merchant => {
+      this.id = merchant.idMerchant;
+      this.loadingService.hide();
+    });
   }
 
   logout(): void{

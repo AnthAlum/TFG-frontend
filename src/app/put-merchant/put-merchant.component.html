@@ -1,5 +1,5 @@
 
-<mat-card>
+<mat-card  *ngIf="merchant !== null">
   <h1>Profile</h1>
   <form class="responsive" [formGroup]="checkoutForm">
     <h2>Personal information</h2>
@@ -12,10 +12,10 @@
       </mat-form-field>
       <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('name')"><span>
-        CHANGE 
+        CHANGE
         <mat-icon [inline]="true">send</mat-icon>
-      </span> 
-      </button>  
+      </span>
+      </button>
     </div>
     <div fxLayout="column">
       <mat-form-field fxFlexAlign="start" appearance="fill">
@@ -25,23 +25,23 @@
       </mat-form-field>
       <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('phone')"><span>
-        CHANGE 
+        CHANGE
         <mat-icon [inline]="true">send</mat-icon>
-      </span> 
+      </span>
       </button>
     </div>
-    <h2>Credentials</h2> 
+    <h2>Credentials</h2>
     <div fxLayout="column">
       <mat-form-field fxFlexAlign="start" appearance="fill">
         <mat-label>
           <mat-icon>email</mat-icon> Email</mat-label>
-        <input name="email" type="text" matInput [formControl]="formControl.email" formControlName="email"/> 
+        <input name="email" type="text" matInput [formControl]="formControl.email" formControlName="email"/>
       </mat-form-field>
       <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('email')"><span>
-        CHANGE 
+        CHANGE
         <mat-icon [inline]="true">send</mat-icon>
-      </span> 
+      </span>
       </button>
     </div>
     <div fxLayout="column">
@@ -56,11 +56,11 @@
         <input id="newPassword" name="newPassword" type="password" matInput />
       </mat-form-field>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="changePassword()"><span>
-        CHANGE 
+        CHANGE
         <mat-icon [inline]="true">send</mat-icon>
-      </span> 
+      </span>
       </button>
-    </div> 
+    </div>
     <div fxLayout="column">
       <mat-form-field id="putMerchant-idRole" appearance="fill">
         <mat-label>Role</mat-label>
@@ -71,14 +71,35 @@
       </mat-form-field>
       <mat-error *ngIf="formControl.idRole.invalid">{{getErrorMessage('idRole')}}</mat-error>
       <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('idRole')"><span>
-        CHANGE 
+        CHANGE
         <mat-icon [inline]="true">send</mat-icon>
-      </span> 
+      </span>
       </button>
     </div>
+    <ng-container>
+      <table class="meeting-table" mat-table [dataSource]="merchant.meetings.simplifiedList">
+        <ng-container matColumnDef="matter">
+          <th mat-header-cell *matHeaderCellDef> Matter </th>
+          <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.matter}} </td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.date}} </td>
+        </ng-container>
+        <ng-container matColumnDef="merchants">
+          <th mat-header-cell *matHeaderCellDef> Merchants </th>
+          <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.merchants}} </td>
+        </ng-container>
+        <ng-container matColumnDef="clients">
+          <th mat-header-cell *matHeaderCellDef> Clients </th>
+          <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.clients}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </ng-container>
   </form>
 </mat-card>
 
 
 <!-- HACER LAS TARJETAS SEA MOVIL -->
-<!-- HACER UN FILTRO -->
