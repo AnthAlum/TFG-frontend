@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'clients-add', component: PostClientComponent },
   { path: 'clients-modify/:clientId', component: PutClientComponent },
   { path: 'meetings', component: GetMeetingsComponent },
-  //{ path: 'meetings-modify/:meetingId', component: PutMeetingComponent },
+  { path: 'meetings-modify/:meetingId', component: PutMeetingComponent },
   //{ path: '',   redirectTo: '/login', pathMatch: 'full' },
   //{ path: '**', component: PageNotFoundComponent },
 ];

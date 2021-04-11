@@ -30,9 +30,9 @@
       </a>
     </div>
   </div>
-  <table mat-table [dataSource]="dataSource"  fxShow fxHide.xs="true" fxHide.sm="true">
+  <table mat-table [dataSource]="dataSource"  fxShow fxHide.xs="true" fxHide.sm="true" aria-describedby="Clients table">
     <ng-container matColumnDef="name">
-      <th  mat-header-cell *matHeaderCellDef>
+      <th scope="col" mat-header-cell *matHeaderCellDef>
         <span fxLayout="row" fxLayoutAlign="center center">
           Name <mat-icon [inline]="true">face</mat-icon>
         </span></th>
@@ -40,7 +40,7 @@
     </ng-container>
 
   <ng-container matColumnDef="phone">
-    <th  mat-header-cell *matHeaderCellDef>
+    <th scope="col" mat-header-cell *matHeaderCellDef>
       <span fxLayout="row" fxLayoutAlign="center center">
         Phone <mat-icon [inline]="true">call</mat-icon>
       </span></th>
@@ -55,7 +55,7 @@
   </ng-container>
 
   <ng-container matColumnDef="company">
-    <th  mat-header-cell *matHeaderCellDef>
+    <th scope="col" mat-header-cell *matHeaderCellDef>
       <span fxLayout="row" fxLayoutAlign="center center">
         Company <mat-icon [inline]="true">apartment</mat-icon>
       </span>
@@ -66,7 +66,7 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   <ng-container matColumnDef="modify">
-    <th  mat-header-cell *matHeaderCellDef>  </th>
+    <th scope="col" mat-header-cell *matHeaderCellDef>  </th>
     <td class="td-button" mat-cell *matCellDef="let element">
       <button mat-raised-button type="button" color="primary" (click)="goToModifyClient(element.idClient);" >
         <mat-icon aria-label="Side nav toggle icon">mode</mat-icon>
@@ -74,7 +74,7 @@
   </td>
   </ng-container>
   <ng-container matColumnDef="delete">
-    <th class="center-text" mat-header-cell *matHeaderCellDef> </th>
+    <th scope="col" class="center-text" mat-header-cell *matHeaderCellDef> </th>
     <td class="td-button" mat-cell *matCellDef="let element">
       <button
       mat-raised-button type="button" color="warn"
