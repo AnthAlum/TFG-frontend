@@ -165,7 +165,6 @@ export class GetMerchantsComponent implements OnInit {
     switch(action){
       case "get":
         return (<HTMLInputElement>document.getElementById("filter")).value;
-      break;
       case "reset":
         (<HTMLInputElement>document.getElementById("filter")).value = "";
       break;

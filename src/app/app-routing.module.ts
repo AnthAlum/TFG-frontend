@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'clients-modify/:clientId', component: PutClientComponent },
   { path: 'meetings', component: GetMeetingsComponent },
   { path: 'meetings-modify/:meetingId', component: PutMeetingComponent },
-  //{ path: '',   redirectTo: '/login', pathMatch: 'full' },
+  { path: '',   redirectTo: '/login', pathMatch: 'full' },
   //{ path: '**', component: PageNotFoundComponent },
 ];
 

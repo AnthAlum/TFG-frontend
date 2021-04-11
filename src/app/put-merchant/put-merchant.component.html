@@ -79,19 +79,19 @@
     <ng-container>
       <table class="meeting-table" mat-table [dataSource]="merchant.meetings.simplifiedList">
         <ng-container matColumnDef="matter">
-          <th mat-header-cell *matHeaderCellDef> Matter </th>
+          <th scope="col" mat-header-cell *matHeaderCellDef> Matter </th>
           <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.matter}} </td>
         </ng-container>
         <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <th scope="col" mat-header-cell *matHeaderCellDef> Date </th>
           <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.date}} </td>
         </ng-container>
         <ng-container matColumnDef="merchants">
-          <th mat-header-cell *matHeaderCellDef> Merchants </th>
+          <th scope="col" mat-header-cell *matHeaderCellDef> Merchants </th>
           <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.merchants}} </td>
         </ng-container>
         <ng-container matColumnDef="clients">
-          <th mat-header-cell *matHeaderCellDef> Clients </th>
+          <th scope="col" mat-header-cell *matHeaderCellDef> Clients </th>
           <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.clients}} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

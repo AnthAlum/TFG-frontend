@@ -48,7 +48,7 @@
   </ng-container>
 
   <ng-container matColumnDef="email">
-    <th  mat-header-cell *matHeaderCellDef> <span fxLayout="row" fxLayoutAlign="center center">
+    <th scope="col" mat-header-cell *matHeaderCellDef> <span fxLayout="row" fxLayoutAlign="center center">
       Email <mat-icon [inline]="true">email</mat-icon>
     </span></th>
     <td mat-cell *matCellDef="let element"> {{element.email}} </td>

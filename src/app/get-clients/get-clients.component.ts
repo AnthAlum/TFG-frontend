@@ -49,7 +49,7 @@ export class GetClientsComponent implements OnInit {
   getClients(): void{
     this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
       clients => this.updateValues(clients, false),
-      error => this.loadingService.hide()
+      _ => this.loadingService.hide()
     );
   }
 
@@ -135,10 +135,9 @@ export class GetClientsComponent implements OnInit {
     switch(action){
       case "get":
         return (<HTMLInputElement>document.getElementById("filter")).value;
-      break;
       case "reset":
         (<HTMLInputElement>document.getElementById("filter")).value = "";
-      break;
+        break;
     }
     return "";
   }

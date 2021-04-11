@@ -27,7 +27,7 @@ export class GetMeetingsComponent implements OnInit {
   queryDone: boolean = false;
   ready: boolean = false;
   displayedColumns: string[] = [ 'matter', 'date', 'merchants', 'clients', 'delete'];
-  @ViewChild(MatTable) table?: MatTable<any>;
+  @ViewChild(MatTable) table: MatTable<Meeting>;
   //Attributes for filtering:
   selectedField: string = "";
   reference: GetMeetingsComponent;
@@ -107,7 +107,8 @@ export class GetMeetingsComponent implements OnInit {
               updatedMeeting => {
                 meeting = updatedMeeting;
                 this.dataSource.data[rowIndex] = updatedMeeting;
-                this.dataSource.data = this.dataSource.data; // Without this line table doesn't update values lol.
+                //this.dataSource.data = this.dataSource.data; // Without this line table doesn't update values lol.
+                this.table.renderRows();
                 this.loadingService.hide();
         })});
         this.loadingService.hide();
