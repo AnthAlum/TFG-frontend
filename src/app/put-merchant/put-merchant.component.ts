@@ -133,15 +133,13 @@ export class PutMerchantComponent implements OnInit {
   }
 
   changePassword(): void{
-    let password: string = "password";
-    let newPassword: string = "newPassword";
-    let passwordValue = this.getValue(password);
-    let newPasswordValue = this.getValue(newPassword);
+    let passwordValue = this.getValue("password");
+    let newPasswordValue = this.getValue("newPassword");
     if(this.backendService.verifyValue(passwordValue, newPasswordValue)){
       this.backendService.putMerchantPassword(this.merchant.idMerchant, passwordValue, newPasswordValue)
         .subscribe(
           _ => {
-            this.snackBar.openSnackBar("Your " + password + " has been changed", "Okey");
+            this.snackBar.openSnackBar("Your password has been changed", "Okey");
             this.loadingService.hide();
           }, _ => {
             this.snackBar.openSnackBar("The actual password doens't match", "Okey");
@@ -222,8 +220,8 @@ export class PutMerchantComponent implements OnInit {
         this.backendService.getMerchantById(this.activatedRouter.snapshot.paramMap.get('merchantId')!).subscribe(merchant => {
           this.merchant = merchant;
           this.loadingService.hide();
-        }, _ => this.loadingService.hide()); //Error in this.merchantsService.getClientById
-      }, _ => this.loadingService.show()); //Error in dialogRef.afterClosed()
-    }, _ => this.loadingService.hide()); //Error in meetingsService.getMeetingById
+        }, errorMerchant => this.loadingService.hide()); //Error in this.merchantsService.getClientById
+      }, errorDialog => this.loadingService.show()); //Error in dialogRef.afterClosed()
+    }, errorMeeting => this.loadingService.hide()); //Error in meetingsService.getMeetingById
   }
 }

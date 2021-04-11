@@ -56,13 +56,13 @@
       </button>
     </div>
     <ng-container *ngIf="client !== null">
-      <table class="meeting-table" mat-table [dataSource]="client.meetings.simplifiedList">
+      <table class="meeting-table" mat-table [dataSource]="client.meetings.simplifiedList" aria-describedby="Meeting table">
         <ng-container matColumnDef="matter">
           <th scope="col" mat-header-cell *matHeaderCellDef> Matter </th>
           <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.matter}} </td>
         </ng-container>
         <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <th scope="col" mat-header-cell *matHeaderCellDef> Date </th>
           <td mat-cell *matCellDef="let meeting" (click)="showData(meeting)"> {{meeting.date}} </td>
         </ng-container>
         <ng-container matColumnDef="merchants">

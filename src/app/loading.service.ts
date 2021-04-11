@@ -14,9 +14,11 @@ export class LoadingService {
     private router: Router,
     private spinnerService: NgxSpinnerService
   ) {
+    //Comment
   }
 
   ngOnInit(): void {
+    //Comment
   }
 
   show(count?: number): void{

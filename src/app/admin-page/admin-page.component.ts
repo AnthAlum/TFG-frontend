@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 export class AdminPageComponent implements OnInit {
 
   constructor(
-    ) { }
+    ) {
+      //Comment
+     }
 
   ngOnInit(): void {
+    //Comment
   }
 
 }

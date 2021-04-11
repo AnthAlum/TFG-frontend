@@ -11,9 +11,12 @@ export class MerchantCardComponent implements OnInit {
 
   @Input() merchant: Merchant;
   @Input() reference: GetMerchantsComponent;
-  constructor() { }
+  constructor() {
+    //Comment
+   }
 
   ngOnInit(): void {
+    //Comment
   }
 
   goToModifyMerchant(): void{

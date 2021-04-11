@@ -29,7 +29,6 @@
           </mat-datepicker-actions>
         </mat-datepicker>
       </mat-form-field>
-      <!-- <mat-error *ngIf="formControl.date.invalid">{{getErrorMessage('date')}}</mat-error> -->
     </div>
     <div fxLayout="column">
       <input [ngxTimepicker]="pickerTime" [formControl]="formControl.time" formControlName="time" [format]="format">
@@ -42,15 +41,11 @@
     </div>
     <div fxLayout="column">
       <mat-form-field fxFlexAlign="start" appearance="fill">
-        <!-- <mat-label>
-          <mat-icon>group_work</mat-icon> Merchants</mat-label>
-        <input name="merchants" type="text" matInput [formControl]="formControl.merchants" formControlName="merchants"/> -->
         <mat-label>Merchants</mat-label>
         <mat-select [compareWith]="compareWith" [formControl]="formControl.merchants" formControlName="merchants" multiple >
           <mat-option *ngFor="let merchant of merchantList" [ngValue]="merchant">{{merchant.nameAndLastname + merchant.email}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <!-- <mat-error *ngIf="formControl.merchants.invalid">{{getErrorMessage('merchants')}}</mat-error> -->
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('merchants')"><span>
         CHANGE
         <mat-icon [inline]="true">send</mat-icon>

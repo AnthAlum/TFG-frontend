@@ -89,7 +89,6 @@ export class PutMeetingComponent implements OnInit {
   changeValue(attribute: string): void{
     switch(attribute){
       case 'merchants':
-        this.changeMerchants();
         return;
       case 'clients':
         return;
@@ -103,18 +102,6 @@ export class PutMeetingComponent implements OnInit {
         }, _ => this.loadingService.hide()
       );
     this.loadingService.show();
-  }
-
-  changeMerchants(): void{ //TODO: ver los merchants obtenidos
-    let value = this.getValue("merchants");
-    /*this.meetingsService.putMeetingNewValue(this.meeting.idMeeting, attribute, value)
-      .subscribe(
-        meeting => {
-          this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey");
-          this.loadingService.hide();
-        }, _ => this.loadingService.hide()
-      );
-    this.loadingService.show();*/
   }
 
   getValue(attribute: string): string{

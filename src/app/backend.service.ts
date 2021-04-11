@@ -202,7 +202,6 @@ export class BackendService {
 
   putMerchantIdRole(idMerchant: number, newValue: string): Observable<{}>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}/role`;
-    let idRole: number = parseInt(newValue);
     return this.httpClient
       .put<{}>(url, {"newRole" : newValue}, this.httpOptions);
   }

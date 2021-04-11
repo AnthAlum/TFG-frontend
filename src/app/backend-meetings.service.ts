@@ -161,7 +161,5 @@ export class BackendMeetingsService {
     let month = (dateISO.getMonth()+1) > 9 ? (dateISO.getMonth()+1) : '0' + (dateISO.getMonth()+1);
     let newDate = day + '-' + month + '-' + dateISO.getFullYear() + ' 00:00'; // Get the fiven date with 00:00 time
     return newDate;
-    //this.loadingService.show();
-    //this.meetingService.putMeetingNewValue(this.data.idMeeting, 'date', newDate).subscribe(_ => this.loadingService.hide(), _ => this.loadingService.hide());
   }
 }

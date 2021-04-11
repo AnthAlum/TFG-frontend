@@ -72,7 +72,6 @@ export class PutClientComponent implements OnInit {
     let action: string = "Modify";
     let order = [ `current ${attribute}`, `new ${attribute}` ]
     let information: {[key: string]: string}= {};
-    //information[`current ${attribute}`] = this.client[attribute];
     information[`new ${attribute}`] = this.getValue(attribute);
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
       data: [ information, order, action]
@@ -155,8 +154,8 @@ export class PutClientComponent implements OnInit {
         this.clientsService.getClientById(this.activatedRouter.snapshot.paramMap.get('clientId')!).subscribe(client => {
           this.client = client;
           this.loadingService.hide();
-        }, _ => this.loadingService.hide()); //Error in this.clientsService.getClientById
-      }, _ => this.loadingService.show()); //Error in dialogRef.afterClosed()
-    }, _ => this.loadingService.hide()); //Error in meetingsService.getMeetingById
+        }, errorClient => this.loadingService.hide()); //Error in this.clientsService.getClientById
+      }, errorDialog => this.loadingService.show()); //Error in dialogRef.afterClosed()
+    }, errorMeeting => this.loadingService.hide()); //Error in meetingsService.getMeetingById
   }
 }

@@ -11,9 +11,12 @@ export class SnackbarMessageComponent implements OnInit {
 
   constructor(
     private snackBar: MatSnackBar
-    ) { }
+    ) {
+      //Comment
+    }
 
   ngOnInit(): void {
+  //Comment
   }
 
   openSnackBar(message: string, action: string) {

@@ -107,7 +107,6 @@ export class GetMeetingsComponent implements OnInit {
               updatedMeeting => {
                 meeting = updatedMeeting;
                 this.dataSource.data[rowIndex] = updatedMeeting;
-                //this.dataSource.data = this.dataSource.data; // Without this line table doesn't update values lol.
                 this.table.renderRows();
                 this.loadingService.hide();
         })});
@@ -130,7 +129,7 @@ export class GetMeetingsComponent implements OnInit {
       case "matter":
         this.meetingsService.getMeetingsByMatter(newValue.target.value, this.paginationIndex, this.paginationSize).subscribe(
           meetings => this.updateValues(meetings),
-          error => this.loadingService.hide()
+          _ => this.loadingService.hide()
         );
         break;
       default:

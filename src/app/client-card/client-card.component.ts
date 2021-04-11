@@ -12,9 +12,11 @@ export class ClientCardComponent implements OnInit {
   @Input() client: Client;
   @Input() reference: GetClientsComponent;
   constructor() {
+    //Comment
   }
 
   ngOnInit(): void {
+    //Comment
   }
 
   goToModifyClient(): void{

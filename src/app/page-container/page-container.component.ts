@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageContainerComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    //Comment
+  }
 
   ngOnInit(): void {
+    //Comment
   }
 
 }
