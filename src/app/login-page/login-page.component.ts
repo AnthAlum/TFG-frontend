@@ -1,15 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { BackendService, JsonCredentials } from '../backend.service';
-import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatInput } from '@angular/material/input';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { BackendClientsService } from '../backend-clients.service';
-import { BackendMeetingsService } from '../backend-meetings.service';
 import { UsersessionService } from '../usersession.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { AbstractControl } from '@angular/forms';
-import { MerchantOption } from './merchant-option';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { MerchantSimplifiedListResponse } from './merchant-simplified-list-response';
 import { JwtResponse } from './jwt-response';
 import { Merchant } from './merchant';
@@ -21,7 +19,6 @@ export interface NewMerchantBody{
   phone: string
 }
 
-//TODO: ¿que hacemos con el password?
 const regexSet: { [key: string]: RegExp } = {
   name: /^[A-zÀ-ú]+(\s[A-zÀ-ú]*)*$/ ,
   email: /^[A-z0-9\._\+-]{4,}@[A-z0-9\-]{3,}(\.[a-z0-9\-]{2,})+$/ ,

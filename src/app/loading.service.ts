@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import {  Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'

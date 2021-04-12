@@ -87,12 +87,6 @@ export class PutMeetingComponent implements OnInit {
   }
 
   changeValue(attribute: string): void{
-    switch(attribute){
-      case 'merchants':
-        return;
-      case 'clients':
-        return;
-    }
     let value = this.getValue(attribute);
     this.meetingsService.putMeetingNewValue(this.meeting.idMeeting, attribute, value)
       .subscribe(

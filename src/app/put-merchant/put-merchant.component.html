@@ -61,7 +61,7 @@
       </span>
       </button>
     </div>
-    <div fxLayout="column">
+    <div fxLayout="column" *ngIf="usersessionService.isAdmin()">
       <mat-form-field id="putMerchant-idRole" appearance="fill">
         <mat-label>Role</mat-label>
         <mat-select formControlName="idRole">
@@ -69,7 +69,6 @@
           <mat-option value="1">MERCHANT</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-error *ngIf="formControl.idRole.invalid">{{getErrorMessage('idRole')}}</mat-error>
       <button  fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChangeValue('idRole')"><span>
         CHANGE
         <mat-icon [inline]="true">send</mat-icon>

@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { BackendService } from '../backend.service';
 import { Router } from '@angular/router';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatDialog } from '@angular/material/dialog';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
 import { PageEvent } from '@angular/material/paginator';
-import {MatSelectModule} from '@angular/material/select';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 import { BackendClientsService } from '../backend-clients.service';
 import { ClientPage } from '../client-page';
@@ -112,14 +110,14 @@ export class GetClientsComponent implements OnInit {
     this.loadingService.show();
     this.clientsService.getClientsByAttribute(field, term, this.paginationIndex, this.paginationSize).subscribe(
       clients => this.updateValues(clients, true),
-      error => this.loadingService.hide()
+      _ => this.loadingService.hide()
     );
   }
 
   updateValues(clients: ClientPage, isQuery?: boolean): void{
     this.clientsNumber = clients.paginationInfo.totalElements;
     this.originalClientsNumber = this.clientsNumber;
-    this.dataSource.data = clients.pages as Client[];
+    this.dataSource.data = clients.pages;
     this.ready = true;
     this.loadingService.hide();
     this.queryDone = isQuery!;

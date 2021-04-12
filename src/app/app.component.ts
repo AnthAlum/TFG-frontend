@@ -1,13 +1,9 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { BackendService } from './backend.service';
+import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { LoadingService } from './loading.service';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { BackendClientsService } from './backend-clients.service';
-import { BackendMeetingsService } from './backend-meetings.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UsersessionService } from './usersession.service';
 

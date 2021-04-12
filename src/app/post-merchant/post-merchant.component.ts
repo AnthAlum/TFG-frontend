@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { LoadingService } from '../loading.service';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
@@ -47,13 +47,13 @@ export class PostMerchantComponent implements OnInit {
     if(!this.isFormSendable())
       return;
     let action: string = "Create";
-    let order = ["name", "email", "phone", "idRole"];
+    let order = ["name", "email", "phone", "Role"];
     const information : { [key: string]: string } = {
       'name': this.checkoutForm.get('name')!.value,
       'phone': this.checkoutForm.get('phone')!.value,
       'email': this.checkoutForm.get('email')!.value,
       'password': this.checkoutForm.get('password')!.value,
-      'idRole': this.checkoutForm.get('idRole')!.value
+      'Role': this.checkoutForm.get('idRole')!.value === 0 ? "ADMIN" : "MERCHANT",
     };
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
       data: [ information, order, action]
@@ -77,20 +77,16 @@ export class PostMerchantComponent implements OnInit {
   }
 
   postMerchant(information: { [key: string]: string }): void{
-    if(this.backendService.verifyAllValues(information)){
-      this.loadingService.show();
-      this.backendService.postMerchant(information)
-        .subscribe(
-          _ => {
-            this.snackBar.openSnackBar("Merchant successfully created!", "Okey");
-            this.loadingService.hide();
-          },
-          error => {
-            this.proccessError(error);
-            this.loadingService.hide();
-          }
-        );
-    }
+    this.loadingService.show();
+    information['idRole'] = this.checkoutForm.get('idRole')!.value;
+    this.backendService.postMerchant(information).subscribe(_ => {
+      this.checkoutForm.reset();
+      this.snackBar.openSnackBar("Merchant successfully created!", "Okey");
+      this.loadingService.hide();
+    }, error => {
+      this.proccessError(error);
+      this.loadingService.hide();
+    });
   }
 
   proccessError(error: HttpErrorResponse): void{

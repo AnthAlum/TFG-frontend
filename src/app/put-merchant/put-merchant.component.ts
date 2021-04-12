@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormBuilder, FormControl, FormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import { BackendService } from '../backend.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 import { LoadingService } from '../loading.service';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';

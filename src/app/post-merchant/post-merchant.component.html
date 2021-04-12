@@ -18,13 +18,13 @@
       <mat-error *ngIf="checkoutForm.get('phone')?.invalid">{{getErrorMessage('phone')}}</mat-error>
     </mat-form-field>
   </div>
-  <h2>Credentials</h2> 
+  <h2>Credentials</h2>
   <div fxLayout="column">
     <mat-form-field appearance="fill">
       <mat-label>
         <mat-icon>email</mat-icon> Email</mat-label>
       <input name="email" type="text" matInput placeholder="email@example.com" formControlName="email" required>
-      <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error> 
+      <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="column">
@@ -35,7 +35,7 @@
       <mat-error *ngIf="checkoutForm.get('password')?.invalid">{{getErrorMessage('password')}}</mat-error>
     </mat-form-field>
   </div>
-  <div fxLayout="column">
+  <div fxLayout="column" >
     <mat-form-field appearance="fill" >
       <mat-label>Role</mat-label>
       <mat-select formControlName="idRole">
@@ -48,9 +48,9 @@
   <div  fxLayout="row" fxLayoutAlign="end">
     <button  mat-raised-button type="submit" color="primary">
       <span>
-        SUBMIT 
+        SUBMIT
         <mat-icon [inline]="true">send</mat-icon>
-      </span>  
+      </span>
     </button>
   </div>
 </form>

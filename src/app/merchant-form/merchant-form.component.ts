@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { BackendService } from '../backend.service';
 
@@ -24,7 +24,7 @@ export class MerchantFormComponent implements OnInit {
 
   constructor(
     private backendService: BackendService,
-    private formBuilder: FormBuilder, 
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit(): void {
@@ -42,14 +42,13 @@ export class MerchantFormComponent implements OnInit {
 
 
   getData(): any {
-    const information = [ 
-      this.checkoutForm.get('idRol'), 
-      this.checkoutForm.get('password'), 
+    return [
+      this.checkoutForm.get('idRol'),
+      this.checkoutForm.get('password'),
       this.checkoutForm.get('name'),
-      this.checkoutForm.get('email'), 
-      this.checkoutForm.get('phone') 
+      this.checkoutForm.get('email'),
+      this.checkoutForm.get('phone')
     ];
-    return information;
   }
 
   equals(val1: string, val2: string): boolean{

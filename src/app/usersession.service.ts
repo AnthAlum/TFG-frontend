@@ -44,9 +44,8 @@ export class UsersessionService {
   }
 
   loadUsername(): void{
-    this.username = localStorage.getItem('username')!;
     this.loadingService.show();
-    this.merchantsService.getMerchantByEmail(this.username).subscribe(merchant => {
+    this.merchantsService.getMerchantByEmail(localStorage.getItem('username')!).subscribe(merchant => {
       this.id = merchant.idMerchant;
       this.loadingService.hide();
     });
@@ -55,6 +54,8 @@ export class UsersessionService {
   postJwt(jwt: string): void{
     localStorage.setItem('token', jwt);
     this.jwt = jwt;
+    const tokenInfo = this.jwtHelperService.decodeToken(this.jwt.replace(JWT_PREFIX, ""));
+    this.role = tokenInfo.authorities[0].authority;
     this.merchantsService.httpOptions.headers = this.merchantsService.httpOptions.headers.set('Authorization', this.jwt);
     this.clientsService.httpOptions.headers = this.clientsService.httpOptions.headers.set('Authorization', this.jwt);
     this.meetingsService.httpOptions.headers = this.meetingsService.httpOptions.headers.set('Authorization', this.jwt);
@@ -63,7 +64,7 @@ export class UsersessionService {
   postUsername(username: string): void{
     localStorage.setItem('username', username);
     this.loadingService.show();
-    this.merchantsService.getMerchantByEmail(this.username).subscribe(merchant => {
+    this.merchantsService.getMerchantByEmail(localStorage.getItem('username')!).subscribe(merchant => {
       this.id = merchant.idMerchant;
       this.loadingService.hide();
     });

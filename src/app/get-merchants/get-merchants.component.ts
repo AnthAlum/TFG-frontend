@@ -2,13 +2,11 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { BackendService } from '../backend.service';
 import { Router } from '@angular/router';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatDialog } from '@angular/material/dialog';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
 import { PageEvent } from '@angular/material/paginator';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Merchant } from '../merchant';
-import {MatSelectModule} from '@angular/material/select';
 import { MerchantPage } from '../merchant-page';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 
@@ -26,7 +24,7 @@ export class GetMerchantsComponent implements OnInit {
   paginationIndex: number = 0;
   queryDone: boolean = false;
   displayedColumns: string[] = [ 'idRole', 'name', 'email', 'phone', 'modify', 'delete'];
-  @ViewChild(MatTable) table?: MatTable<any>;
+  @ViewChild(MatTable) table: MatTable<Merchant>;
   //Attributes for filtering:
   selectedField: string = "";
   reference: GetMerchantsComponent;
@@ -59,9 +57,9 @@ export class GetMerchantsComponent implements OnInit {
     this.getMerchants();
   }
 
-  askForDeleteMerchant(idMerchant: string, element: any): void{
+  askForDeleteMerchant(idMerchant: string, element: Merchant): void{
     let action: string = "Delete";
-    let order = ["name", "email", "phone", "idRole"]
+    let order = ["name", "email", "phone", "Role"]
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
       data: [ this.modifyRole(element), order, action]
     });
@@ -100,12 +98,12 @@ export class GetMerchantsComponent implements OnInit {
     );
   }
 
-  modifyRole(element: any): {[key: string]: any}{
+  modifyRole(element: Merchant): {[key: string]: any}{
     let elementModified: {[key: string]: any} = {...element};
     if(elementModified.idRole === 0)
-      elementModified.idRole = "Administrator";
+      elementModified.Role = "Administrator";
     if(element.idRole === 1)
-      elementModified.idRole = "Merchant";
+      elementModified.Role = "Merchant";
     return elementModified;
   }
 
@@ -121,25 +119,25 @@ export class GetMerchantsComponent implements OnInit {
       case "name":
         this.backendService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants, true),
-            error => this.loadingService.hide()
+            _ => this.loadingService.hide()
           );
         break;
       case "phone":
         this.backendService.getMerchantsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants, true),
-            error => this.loadingService.hide()
+            _ => this.loadingService.hide()
           );
         break;
       case "email":
         this.backendService.getMerchantsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
             merchants => this.updateValues(merchants, true),
-            error => this.loadingService.hide()
+            _ => this.loadingService.hide()
           );
         break;
       case "role":
         this.backendService.getMerchantsByIdRole(parseInt(term), this.paginationIndex, this.paginationSize).subscribe(
           merchants => this.updateValues(merchants, true),
-          error => this.loadingService.hide()
+          _ => this.loadingService.hide()
         );
         break;
       default:
@@ -150,7 +148,7 @@ export class GetMerchantsComponent implements OnInit {
   updateValues(merchants: MerchantPage, query?: boolean): void{
     this.merchantsNumber = merchants.paginationInfo.totalElements;
     this.originalMerchantsNumber = this.merchantsNumber;
-    this.dataSource.data = merchants.pages as Merchant[];
+    this.dataSource.data = merchants.pages;
     this.loadingService.hide();
     this.queryDone = query!;
   }
@@ -170,5 +168,11 @@ export class GetMerchantsComponent implements OnInit {
       break;
     }
     return "";
+  }
+
+  formatRole(idRole: number): string{
+    if(idRole === 0)
+      return "ADMIN";
+    return "MERCHANT";
   }
 }

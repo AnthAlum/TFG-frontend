@@ -36,7 +36,7 @@
         <span fxLayout="row" fxLayoutAlign="center center">
           Name <mat-icon [inline]="true">face</mat-icon>
         </span></th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element" > {{element.name}} </td>
     </ng-container>
 
   <ng-container matColumnDef="phone">
@@ -44,14 +44,14 @@
       <span fxLayout="row" fxLayoutAlign="center center">
         Phone <mat-icon [inline]="true">call</mat-icon>
       </span></th>
-    <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+    <td mat-cell *matCellDef="let element" class="center-text"> {{element.phone}} </td>
   </ng-container>
 
   <ng-container matColumnDef="email">
     <th scope="col" mat-header-cell *matHeaderCellDef> <span fxLayout="row" fxLayoutAlign="center center">
       Email <mat-icon [inline]="true">email</mat-icon>
     </span></th>
-    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    <td mat-cell *matCellDef="let element" class="center-text"> {{element.email}} </td>
   </ng-container>
 
   <ng-container matColumnDef="company">
@@ -60,7 +60,7 @@
         Company <mat-icon [inline]="true">apartment</mat-icon>
       </span>
     </th>
-    <td mat-cell *matCellDef="let element"> {{element.company}} </td>
+    <td mat-cell *matCellDef="let element" class="center-text"> {{element.company}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

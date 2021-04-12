@@ -42,8 +42,7 @@ import { PutClientComponent } from './put-client/put-client.component';
 import { ClientCardComponent } from './client-card/client-card.component';
 import { GetMeetingsComponent } from './get-meetings/get-meetings.component';
 import { MeetingDetailComponent } from './meeting-detail/meeting-detail.component';
-import { PutMeetingComponent } from './put-meeting/put-meeting.component';
-import { NgxMatDatetimePickerModule, NgxMatNativeDateAdapter, NgxMatTimepickerModule, NgxNativeDateModule } from '@angular-material-components/datetime-picker';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxNativeDateModule } from '@angular-material-components/datetime-picker';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -72,7 +71,6 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
     ClientCardComponent,
     GetMeetingsComponent,
     MeetingDetailComponent,
-    PutMeetingComponent,
     MeetingCreateComponent,
   ],
   imports: [
