@@ -1,14 +1,13 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipEvent, MatChipInputEvent } from '@angular/material/chips';
+import { MatChipEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { BackendClientsService } from '../backend-clients.service';
 import { BackendMeetingsService } from '../backend-meetings.service';
 import { BackendService } from '../backend.service';
 import { LoadingService } from '../loading.service';
-import { Merchant } from '../merchant';
 import { NewMeetingBody } from '../new-meeting-body';
 
 const NOT_FOUND: number = -1;
@@ -145,15 +144,14 @@ export class MeetingCreateComponent implements OnInit {
    * @returns Body with the form data.
    */
   buildPostBody(): NewMeetingBody{
-    const body: NewMeetingBody = {
+    return {
       matter: this.formControl["matter"].value,
-        date: this.formControl['date'].value.toLocaleDateString('en-GB').replaceAll('/', '-') + ' 00:00',
-        description: this.formControl["description"].value,
-        merchants: this.merchantIds,
-        clients: this.clientIds,
-        keywords: this.actualKeywords,
+      date: this.formControl['date'].value.toLocaleDateString('en-GB').replaceAll('/', '-') + ' 00:00',
+      description: this.formControl["description"].value,
+      merchants: this.merchantIds,
+      clients: this.clientIds,
+      keywords: this.actualKeywords,
     };
-    return body;
   }
 
 /**
@@ -179,7 +177,6 @@ export class MeetingCreateComponent implements OnInit {
     subjects.forEach(subject => {
       if(email.localeCompare(subject.split('/')[EMAIL_INDEX]) === 0){
           outputId = parseInt(subject.split('/')[ID_INDEX]);
-          return;
     }});
     return outputId;
   }

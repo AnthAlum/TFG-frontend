@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
 import { BackendMeetingsService } from '../backend-meetings.service';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
@@ -62,7 +61,7 @@ export class GetMeetingsComponent implements OnInit {
 
   updateValues(meetings: MeetingPage, isQuery?: boolean): void{
     this.meetingsNumber = meetings.paginationInfo.totalElements;
-    this.dataSource.data = meetings.pages as Meeting[];
+    this.dataSource.data = meetings.pages;
     this.ready = true;
     this.loadingService.hide();
     this.queryDone = isQuery!;

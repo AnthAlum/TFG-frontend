@@ -1,14 +1,11 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { MeetingPage } from './meeting-page';
 import { Meeting } from './meeting';
-import { NewMerchantBody } from './backend.service';
-import { NewMeetingBody } from './new-meeting-body';
-import { CloudData } from 'angular-tag-cloud-module';
 import { WordCloudResponse } from './word-cloud-response';
 import { MeetingFile } from './meeting-file';
+import { NewMeetingBody } from './new-meeting-body';
 
 const regexSet : {[key: string]: RegExp} = {
   matter: /^[A-zÀ-ú0-9]+(\s[A-zÀ-ú0-9]*)*$/,
@@ -159,7 +156,6 @@ export class BackendMeetingsService {
   modifyMeetingDate(dateISO: Date): string{
     let day = dateISO.getDate() > 9 ? dateISO.getDate() : '0' + dateISO.getDate();
     let month = (dateISO.getMonth()+1) > 9 ? (dateISO.getMonth()+1) : '0' + (dateISO.getMonth()+1);
-    let newDate = day + '-' + month + '-' + dateISO.getFullYear() + ' 00:00'; // Get the fiven date with 00:00 time
-    return newDate;
+    return day + '-' + month + '-' + dateISO.getFullYear() + ' 00:00'; // Get the fiven date with 00:00 time
   }
 }
