@@ -57,11 +57,11 @@ export class PutMerchantComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const merchantId = this.activatedRouter.snapshot.paramMap.get('merchantId');
-    if(parseInt(merchantId!) !== this.usersessionService.getId() && !this.usersessionService.isAdmin())
+    const merchantId = parseInt(this.activatedRouter.snapshot.paramMap.get('merchantId')!);
+    if(merchantId !== this.usersessionService.getId() && !this.usersessionService.isAdmin())
       this.router.navigateByUrl(`/merchants-modify/${this.usersessionService.getId()}`);
-    if(merchantId)
-      this.loadMerchant(merchantId);
+    if(merchantId === this.usersessionService.getId())
+      this.loadMerchant(`${merchantId}`);
   }
 
   loadMerchant(merchantId: string): void{

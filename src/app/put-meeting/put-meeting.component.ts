@@ -1,7 +1,5 @@
-import { NgxMatDatetimePicker } from '@angular-material-components/datetime-picker';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -11,7 +9,6 @@ import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confi
 import { LoadingService } from '../loading.service';
 import { Meeting } from '../meeting';
 import { MerchantOption } from '../merchant-option';
-import { MerchantSimplifiedListResponse } from '../merchant-simplified-list-response';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
 
 @Component({

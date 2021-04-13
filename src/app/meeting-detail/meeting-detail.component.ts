@@ -3,12 +3,12 @@ import { Component, ElementRef, Inject, OnInit, Optional, ViewChild } from '@ang
 import {  FormControl,  Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {  Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LoadingService } from '../loading.service';
 import { Meeting } from '../meeting';
 import { ENTER, SPACE} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
-import {MatChipEvent, MatChipInputEvent, MatChipList, MatChipListChange} from '@angular/material/chips';
+import {MatChipEvent, MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { BackendClientsService } from '../backend-clients.service';
 import { BackendService } from '../backend.service';
 import { BackendMeetingsService } from '../backend-meetings.service';
@@ -350,10 +350,9 @@ export class MeetingDetailComponent implements OnInit {
     let email = nameAndEmail.split('/')[EMAIL_INDEX]; //Get email from selected option
     let outputId = NOT_FOUND;
     subjects.forEach(subject => {
-      if(email.localeCompare(subject.split('/')[EMAIL_INDEX]) === 0){
-          outputId = parseInt(subject.split('/')[ID_INDEX]);
-          return;
-    }});
+      if(email.localeCompare(subject.split('/')[EMAIL_INDEX]) === 0)
+        outputId = parseInt(subject.split('/')[ID_INDEX]);
+    });
     return outputId;
   }
 

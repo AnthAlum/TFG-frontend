@@ -1,5 +1,6 @@
+import { BlockScrollStrategy } from '@angular/cdk/overlay';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { BackendMeetingsService } from '../backend-meetings.service';
@@ -115,15 +116,9 @@ export class GetMeetingsComponent implements OnInit {
 
   searchByField(term: string): void {
     this.loadingService.show();
-    switch(this.selectedField){
-      case "matter":
-        this.meetingsService.getMeetingsByMatter(term, this.paginationIndex, this.paginationSize).subscribe(
-          meetings => this.updateValues(meetings),
-          _ => this.loadingService.hide()
-        );
-        break;
-      default:
-        break;
-    }
+    this.meetingsService.getMeetingsByMatter(term, this.paginationIndex, this.paginationSize).subscribe(
+      meetings => this.updateValues(meetings),
+      _ => this.loadingService.hide()
+    );
   }
 }

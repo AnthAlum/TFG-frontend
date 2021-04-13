@@ -74,7 +74,7 @@ export class GetMerchantsComponent implements OnInit {
 
   deleteMerchant(idMerchant: string, element: any):void{
     this.backendService.deleteMerchant(idMerchant).subscribe(_ => {
-      this.deleteRow(element);
+      this.getMerchants();
       this.loadingService.hide();
       this.snackBar.openSnackBar("Merchant successfully deleted!", "Okey")
     });
@@ -88,13 +88,6 @@ export class GetMerchantsComponent implements OnInit {
   goToModifyMerchant(id: number): void{
     this.router.navigateByUrl(`/merchants-modify/${id}`);
     this.loadingService.show();
-  }
-
-  deleteRow(row: any):void {
-    this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => this.updateValues(merchants),
-      _ => this.loadingService.hide()
-    );
   }
 
   modifyRole(element: Merchant): {[key: string]: any}{
