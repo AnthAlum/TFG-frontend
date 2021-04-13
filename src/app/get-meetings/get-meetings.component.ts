@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { BackendMeetingsService } from '../backend-meetings.service';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { LoadingService } from '../loading.service';
@@ -23,16 +22,13 @@ export class GetMeetingsComponent implements OnInit {
   meetingsNumber: number = 0;
   paginationSize: number = 5;
   paginationIndex: number = 0;
-  queryDone: boolean = false;
-  ready: boolean = false;
   displayedColumns: string[] = [ 'matter', 'date', 'merchants', 'clients', 'delete'];
   @ViewChild(MatTable) table: MatTable<Meeting>;
   //Attributes for filtering:
-  selectedField: string = "";
+  selectedField: string = "matter";
   reference: GetMeetingsComponent;
   constructor(
     private meetingsService: BackendMeetingsService,
-    private router: Router,
     public dialog: MatDialog,
     public loadingService: LoadingService,
     private snackBar: SnackbarMessageComponent,
@@ -48,7 +44,7 @@ export class GetMeetingsComponent implements OnInit {
     this.loadingService.show();
     this.meetingsService.getMeetings(this.paginationIndex, this.paginationSize).subscribe(
       meetings => this.updateValues(meetings, false),
-      error => this.loadingService.hide()
+      _ => this.loadingService.hide()
     );
   }
 
@@ -62,9 +58,7 @@ export class GetMeetingsComponent implements OnInit {
   updateValues(meetings: MeetingPage, isQuery?: boolean): void{
     this.meetingsNumber = meetings.paginationInfo.totalElements;
     this.dataSource.data = meetings.pages;
-    this.ready = true;
     this.loadingService.hide();
-    this.queryDone = isQuery!;
   }
 
   askForDeleteMeeting(idMeeting: number, meeting: Meeting): void{
@@ -92,24 +86,21 @@ export class GetMeetingsComponent implements OnInit {
 
   showData(rowIndex: number, meeting: Meeting): void{
     this.loadingService.show();
-    this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(
-      meetingUpdated => {
-        const dialogRef = this.dialog.open(MeetingDetailComponent, {
-          data: meetingUpdated,
-          height: '90%',
-          width: '100%',
-        });
-        dialogRef.afterClosed().subscribe(
-          _ => {
-            this.loadingService.show();
-            this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(
-              updatedMeeting => {
-                meeting = updatedMeeting;
-                this.dataSource.data[rowIndex] = updatedMeeting;
-                this.table.renderRows();
-                this.loadingService.hide();
-        })});
-        this.loadingService.hide();
+    this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(meetingUpdated => {
+      const dialogRef = this.dialog.open(MeetingDetailComponent, {
+        data: meetingUpdated,
+        height: '90%',
+        width: '100%',
+      });
+      dialogRef.afterClosed().subscribe(_ => {
+        this.loadingService.show();
+        this.meetingsService.getMeetingById(meeting.idMeeting).subscribe(updatedMeeting => {
+          meeting = updatedMeeting;
+          this.dataSource.data[rowIndex] = updatedMeeting;
+          this.table.renderRows()
+          this.loadingService.hide();
+      })});
+      this.loadingService.hide();
       }
     );
   }
@@ -122,11 +113,11 @@ export class GetMeetingsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(_ => this.getMeetings()); //Update the meeting list
   }
 
-  search(newValue): void {
+  searchByField(term: string): void {
     this.loadingService.show();
     switch(this.selectedField){
       case "matter":
-        this.meetingsService.getMeetingsByMatter(newValue.target.value, this.paginationIndex, this.paginationSize).subscribe(
+        this.meetingsService.getMeetingsByMatter(term, this.paginationIndex, this.paginationSize).subscribe(
           meetings => this.updateValues(meetings),
           _ => this.loadingService.hide()
         );

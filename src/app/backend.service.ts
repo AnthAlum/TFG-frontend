@@ -160,8 +160,8 @@ export class BackendService {
       .post<any>(url, newMerchant, this.httpOptions);
   }
 
-  putMerchantNewValue(idMerchant: number, attribute: string, newValue: string): Observable<{}>{
-    let response: Observable<{}>;
+  putMerchantNewValue(idMerchant: number, attribute: string, newValue: string): any{
+    let response;
     switch(attribute){
       case "name":
         response = this.putMerchantName(idMerchant, newValue);

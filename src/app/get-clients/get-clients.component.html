@@ -1,12 +1,9 @@
 <mat-card>
   <h1>Clients</h1>
   <div class="row-button" fxLayout="row" fxLayoutAlign="end">
-    <button *ngIf="queryDone" mat-raised-button type="button" color="warn" style="margin-right: 5px;" (click)="cancelFiltering();" fxFlexAlign="center">
-      <mat-icon>cancel</mat-icon>
-    </button>
     <mat-form-field class="input-style">
       <mat-label>Field</mat-label>
-      <mat-select id="field" [required]="true" [(value)]="selectedField">
+      <mat-select [(value)]="selectedField">
         <mat-option value="name">Name</mat-option>
         <mat-option value="email">Email</mat-option>
         <mat-option value="phone">Phone</mat-option>
@@ -15,13 +12,8 @@
     </mat-form-field>
     <mat-form-field class="input-style">
       <mat-label>Term</mat-label>
-      <input id="filter" type="text" matInput style="width: 150px;text-align: start;" placeholder="Term"/>
+      <input type="text" matInput style="width: 150px;text-align: start;" placeholder="Term" (input)="searchByField($event.target.value)"/>
     </mat-form-field>
-    <div fxLayout="row">
-      <button mat-raised-button type="button" color="primary" style="margin-right: 5px;" (click)="search();" fxFlexAlign="center">
-        <mat-icon aria-label="Side nav toggle icon">person_search</mat-icon>
-      </button>
-    </div>
     <div fxLayout="row">
       <a [routerLink]="['/clients-add']" style="margin-right: 5px;" fxFlexAlign="center">
         <button mat-raised-button type="button" color="primary">

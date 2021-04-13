@@ -18,8 +18,6 @@ import { Client } from '../client';
 export class GetClientsComponent implements OnInit {
 
   public dataSource = new MatTableDataSource<Client>();
-  queryDone: boolean = false;
-  ready: boolean = false;
   originalClientsNumber: number = 0;
   clientsNumber: number = 0;
   paginationSize: number = 5;
@@ -28,7 +26,7 @@ export class GetClientsComponent implements OnInit {
   @ViewChild(MatTable) table?: MatTable<any>;
   reference: GetClientsComponent;
   //Attributes for filtering:
-  selectedField: string = "";
+  selectedField: string = "name";
   constructor(
     private clientsService: BackendClientsService,
     private router:Router,
@@ -46,7 +44,7 @@ export class GetClientsComponent implements OnInit {
 
   getClients(): void{
     this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
-      clients => this.updateValues(clients, false),
+      clients => this.updateValues(clients),
       _ => this.loadingService.hide()
     );
   }
@@ -99,28 +97,19 @@ export class GetClientsComponent implements OnInit {
     return elementModified;
   }
 
-  search(): void {
-    let filterTerm: string = this.filterInput("get");
-    if(filterTerm.localeCompare("") !== 0)
-      this.searchByField(this.selectedField, filterTerm);
-  }
 
-  searchByField(field: string, term: string): void{
-    term = term.replace('+', '%2B'); //Spring recibe ' ' en lugar de '+' si no hacemos este cambio.
+  searchByField(term: string): void{
     this.loadingService.show();
-    this.clientsService.getClientsByAttribute(field, term, this.paginationIndex, this.paginationSize).subscribe(
-      clients => this.updateValues(clients, true),
+    this.clientsService.getClientsByAttribute(this.selectedField, term, this.paginationIndex, this.paginationSize).subscribe(
+      clients => this.updateValues(clients),
       _ => this.loadingService.hide()
     );
   }
 
-  updateValues(clients: ClientPage, isQuery?: boolean): void{
+  updateValues(clients: ClientPage): void{
     this.clientsNumber = clients.paginationInfo.totalElements;
-    this.originalClientsNumber = this.clientsNumber;
     this.dataSource.data = clients.pages;
-    this.ready = true;
     this.loadingService.hide();
-    this.queryDone = isQuery!;
   }
 
   cancelFiltering(): void{

@@ -57,7 +57,7 @@ export class PutMeetingComponent implements OnInit {
     const routeParams = this.activatedRouter.snapshot.paramMap;
     const meetingId = routeParams.get('meetingId');
     if(meetingId)
-      this.meetingsService.getMeetingById(meetingId)
+      this.meetingsService.getMeetingById(parseInt(meetingId))
         .subscribe(
           meeting => {
             this.setValues(meeting);
@@ -99,7 +99,7 @@ export class PutMeetingComponent implements OnInit {
   }
 
   getValue(attribute: string): string{
-    let value = undefined;
+    let value = '';
     switch(attribute){
       case "matter":
         value = this.checkoutForm.value.matter;

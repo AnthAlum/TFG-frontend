@@ -55,6 +55,7 @@ export class BackendClientsService {
   }
 
   getClientsByAttribute(attribute: string, value: string, pageNumber: number, pageSize: number): Observable<ClientPage>{
+    value = value.replace('+', '%2B'); //Spring recibe ' ' en lugar de '+' si no hacemos este cambio.
     const url = `${this.backendUrl}/${this.clientsUrl}/findby${attribute}?${attribute}=${value}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
       .get<ClientPage>(url, this.httpOptions);

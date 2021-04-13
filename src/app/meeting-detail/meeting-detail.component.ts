@@ -71,7 +71,7 @@ export class MeetingDetailComponent implements OnInit {
 
   //Merchant chips variables
   moreThanOneMerchants = true;
-  filteredMerchants: Observable<any[]>;
+  filteredMerchants: any;
   actualMerchants: string[] = []; //Actual merchants
   availableMerchants: string[] = []; //Available merchants
   @ViewChild('merchantInput') merchantInput: ElementRef<HTMLInputElement>;
@@ -80,7 +80,7 @@ export class MeetingDetailComponent implements OnInit {
   //Client chips variables
   moreThanOneClients = true;
   clientError: string;
-  filteredClients: Observable<any[]>;
+  filteredClients: any;
   actualClients: string[] = []; //Actual clients
   availableClients: string[] = []; //Available clients
   @ViewChild('clientInput') clientInput: ElementRef<HTMLInputElement>;
@@ -124,7 +124,8 @@ export class MeetingDetailComponent implements OnInit {
     //Assign form values:
     this.formControl['matter'].setValue(this.data.matter);
     this.formControl['description'].setValue(this.data.description);
-    this.date = moment(this.data.date.replaceAll('-', '/'), "DD/MM/YYYY").toDate();
+    let d: any = this.data.date;
+    this.date = moment(d.replaceAll('-', '/'), "DD/MM/YYYY").toDate();
     this.formControl['date'].setValue(this.date);
   }
 
@@ -177,7 +178,7 @@ export class MeetingDetailComponent implements OnInit {
   * @param availableSubjects List of available subjects that user can associate(this has the previously associated subjects).
   * @param actualSubjects Actual associated subjects, they have to be removed from the availableSubjects list.
   */
-  removeActuals(availableSubjects: Observable<any[]>, actualSubjects: string[]){
+  removeActuals(availableSubjects: any[], actualSubjects: string[]){
     //Search indexes to the elements to remove
     let indexes: number[] = []; // Indexes to remove
     actualSubjects.forEach(actualSubject => { // actualSubjects has strings like : "Armando/armando@gmail.com"

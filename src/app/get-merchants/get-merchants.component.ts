@@ -22,12 +22,11 @@ export class GetMerchantsComponent implements OnInit {
   merchantsNumber: number = 0;
   paginationSize: number = 5;
   paginationIndex: number = 0;
-  queryDone: boolean = false;
   displayedColumns: string[] = [ 'idRole', 'name', 'email', 'phone', 'modify', 'delete'];
   @ViewChild(MatTable) table: MatTable<Merchant>;
   //Attributes for filtering:
-  selectedField: string = "";
-  reference: GetMerchantsComponent;
+  selectedField: string = "name";
+  reference: GetMerchantsComponent; // This is used for merchant-card component.
   constructor(
     private backendService: BackendService,
     private router:Router,
@@ -45,7 +44,7 @@ export class GetMerchantsComponent implements OnInit {
 
   getMerchants(): void{
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
-      merchants => this.updateValues(merchants, false),
+      merchants => this.updateValues(merchants),
       _ => this.loadingService.hide()
     );
   }
@@ -94,7 +93,7 @@ export class GetMerchantsComponent implements OnInit {
   deleteRow(row: any):void {
     this.backendService.getMerchants(this.paginationIndex, this.paginationSize).subscribe(
       merchants => this.updateValues(merchants),
-      error => this.loadingService.hide()
+      _ => this.loadingService.hide()
     );
   }
 
@@ -107,56 +106,37 @@ export class GetMerchantsComponent implements OnInit {
     return elementModified;
   }
 
-  search(): void {
-    let filterTerm: string = this.filterInput("get");
-    if(filterTerm.localeCompare('')!==0)
-      this.searchByField(this.selectedField, filterTerm);
-  }
-
-  searchByField(field: string, term: string): void{
+  searchByField(filterTerm: string): void {
     this.loadingService.show();
-    switch(field){
+    switch(this.selectedField){
       case "name":
-        this.backendService.getMerchantsByName(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants, true),
-            _ => this.loadingService.hide()
-          );
+        this.backendService.getMerchantsByName(filterTerm, this.paginationIndex, this.paginationSize).subscribe(
+            merchants => this.updateValues(merchants),
+            _ => this.loadingService.hide());
         break;
       case "phone":
-        this.backendService.getMerchantsByPhone(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants, true),
-            _ => this.loadingService.hide()
-          );
+        this.backendService.getMerchantsByPhone(filterTerm, this.paginationIndex, this.paginationSize).subscribe(
+            merchants => this.updateValues(merchants),
+            _ => this.loadingService.hide());
         break;
       case "email":
-        this.backendService.getMerchantsByEmail(term, this.paginationIndex, this.paginationSize).subscribe(
-            merchants => this.updateValues(merchants, true),
-            _ => this.loadingService.hide()
-          );
+        this.backendService.getMerchantsByEmail(filterTerm, this.paginationIndex, this.paginationSize).subscribe(
+            merchants => this.updateValues(merchants),
+            _ => this.loadingService.hide());
         break;
       case "role":
-        this.backendService.getMerchantsByIdRole(parseInt(term), this.paginationIndex, this.paginationSize).subscribe(
-          merchants => this.updateValues(merchants, true),
-          _ => this.loadingService.hide()
-        );
-        break;
-      default:
+        this.backendService.getMerchantsByIdRole(parseInt(filterTerm), this.paginationIndex, this.paginationSize).subscribe(
+          merchants => this.updateValues(merchants),
+          _ => this.loadingService.hide());
         break;
     }
   }
 
-  updateValues(merchants: MerchantPage, query?: boolean): void{
+  updateValues(merchants: MerchantPage): void{
     this.merchantsNumber = merchants.paginationInfo.totalElements;
     this.originalMerchantsNumber = this.merchantsNumber;
     this.dataSource.data = merchants.pages;
     this.loadingService.hide();
-    this.queryDone = query!;
-  }
-
-  cancelFiltering(): void{
-    this.loadingService.show();
-    this.getMerchants();
-    this.filterInput("reset");
   }
 
   filterInput(action: string): string{

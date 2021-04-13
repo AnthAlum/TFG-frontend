@@ -29,7 +29,7 @@ export class PutClientComponent implements OnInit {
     company: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.company)]),
   };
 
-  client: Client = null;
+  client: any = null;
   checkoutForm = this.formBuilder.group({
     company: '',
     name: '',
@@ -100,7 +100,7 @@ export class PutClientComponent implements OnInit {
   }
 
   getValue(attribute: string): string{
-    let value = undefined;
+    let value;
     switch(attribute){
       case "name":
         value = this.checkoutForm.value.name;

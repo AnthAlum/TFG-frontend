@@ -49,6 +49,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import { MeetingCreateComponent } from './meeting-create/meeting-create.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
+import { MeetingCardComponent } from './meeting-card/meeting-card.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
     GetMeetingsComponent,
     MeetingDetailComponent,
     MeetingCreateComponent,
+    MeetingCardComponent,
   ],
   imports: [
     MatChipsModule,

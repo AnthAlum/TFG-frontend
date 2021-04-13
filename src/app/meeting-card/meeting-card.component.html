@@ -1,0 +1,11 @@
+<mat-card class="margin-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayout="column" class="full-width" (click)="showMeetingDetail()">
+    <span><mat-icon [inline]="true">article</mat-icon>{{meeting.matter}}</span>
+    <span><mat-icon [inline]="true">today</mat-icon>{{meeting.date}}</span>
+    <span><mat-icon [inline]="true">engineering</mat-icon>{{meeting.merchants.Merchants.length}}</span>
+    <span><mat-icon [inline]="true">badge</mat-icon>{{meeting.clients.Clients.length}}</span>
+  </div>
+  <button mat-raised-button type="button" color="warn" (click)="askForDeleteMeeting();">
+    <mat-icon>delete</mat-icon>
+  </button>
+</mat-card>

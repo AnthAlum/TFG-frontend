@@ -26,4 +26,10 @@ export class MerchantCardComponent implements OnInit {
   askForDeleteMerchant(): void{
     this.reference.deleteMerchant(this.merchant.idMerchant.toString(), this.merchant);
   }
+
+  formatRole(idRole: number): string{
+    if(idRole === 0)
+      return "ADMIN";
+    return "MERCHANT";
+  }
 }

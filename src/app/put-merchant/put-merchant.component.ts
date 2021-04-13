@@ -32,7 +32,7 @@ export class PutMerchantComponent implements OnInit {
     newPassword: new FormControl('', [Validators.required, Validators.min(4)]),
   };
 
-  merchant: Merchant = null;
+  merchant: any = null;
   checkoutForm = this.formBuilder.group({
     idRole: '',
     name: '',

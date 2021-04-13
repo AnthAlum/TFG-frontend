@@ -40,7 +40,7 @@ export class MeetingCreateComponent implements OnInit {
   //Merchant chips variables
   errorMerchants = '';
   oneOrMoreMerchants: boolean = false;
-  filteredMerchants: Observable<any[]>;
+  filteredMerchants: any;
   actualMerchants: string[] = []; //Actual merchants
   merchantIds: number[] = [];
   availableMerchants: string[] = []; //Available merchants
@@ -50,7 +50,7 @@ export class MeetingCreateComponent implements OnInit {
   //Client chips variables
   errorClients = '';
   oneOrMoreClients: boolean = false;
-  filteredClients: Observable<any[]>;
+  filteredClients: any;
   actualClients: string[] = []; //Actual clients
   clientIds: number[] = [];
   availableClients: string[] = []; //Available clients
@@ -295,7 +295,7 @@ export class MeetingCreateComponent implements OnInit {
   * @param availableSubjects List of available subjects that user can associate(this has the previously associated subjects).
   * @param actualSubjects Actual associated subjects, they have to be removed from the availableSubjects list.
   */
-  removeActuals(availableSubjects: Observable<any[]>, actualSubjects: string[]){
+  removeActuals(availableSubjects: any, actualSubjects: string[]){
     //Search indexes to the elements to remove
     let indexes: number[] = []; // Indexes to remove
     actualSubjects.forEach(actualSubject => { // actualSubjects has strings like : "Armando/armando@gmail.com"
