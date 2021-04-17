@@ -9,6 +9,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { Merchant } from '../merchant';
 import { MerchantPage } from '../merchant-page';
 import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.component';
+import { MeetingListResponse } from '../meeting-list-response';
+import { MeetingSimplifiedListResponse } from '../meeting-simplified-list-response';
 
 @Component({
   selector: 'app-get-merchants',
@@ -65,14 +67,14 @@ export class GetMerchantsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadingService.show();
       if(result.event === action)
-        this.deleteMerchant(idMerchant, element);
+        this.deleteMerchant(idMerchant);
       else
         this.loadingService.hide();
     });
   }
 
 
-  deleteMerchant(idMerchant: string, element: any):void{
+  deleteMerchant(idMerchant: string):void{
     this.backendService.deleteMerchant(idMerchant).subscribe(_ => {
       this.getMerchants();
       this.loadingService.hide();
@@ -90,8 +92,8 @@ export class GetMerchantsComponent implements OnInit {
     this.loadingService.show();
   }
 
-  modifyRole(element: Merchant): {[key: string]: any}{
-    let elementModified: {[key: string]: any} = {...element};
+  modifyRole(element: Merchant): {[key: string]: string | number | MeetingSimplifiedListResponse}{
+    let elementModified: {[key: string]: string | number | MeetingSimplifiedListResponse} = {...element};
     if(elementModified.idRole === 0)
       elementModified.Role = "Administrator";
     if(element.idRole === 1)

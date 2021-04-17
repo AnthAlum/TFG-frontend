@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { MerchantSimplifiedListResponse } from './merchant-simplified-list-response';
 import { JwtResponse } from './jwt-response';
 import { Merchant } from './merchant';
+import { MerchantPage } from './merchant-page';
 
 export interface JsonCredentials{
   username: string,
@@ -89,16 +90,16 @@ export class BackendService {
       );
   }
 
-  getMerchants(pageNumber: number, pageSize: number): Observable<any>{
+  getMerchants(pageNumber: number, pageSize: number): Observable<MerchantPage>{
     const url = `${this.backendUrl}/${this.merchantsUrl}?page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
-      .get<any>(url, this.httpOptions);
+      .get<MerchantPage>(url, this.httpOptions);
   }
 
-  getMerchantById(id: string): Observable<any>{
+  getMerchantById(id: string): Observable<Merchant>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${id}`;
     return this.httpClient
-      .get<any>(url, this.httpOptions)
+      .get<Merchant>(url, this.httpOptions)
       .pipe(
         catchError((error) => {return throwError(error);})
       );
@@ -116,38 +117,38 @@ export class BackendService {
       .get<MerchantSimplifiedListResponse>(url, this.httpOptions);
   }
 
-  getMerchantsByName(name: string, pageNumber: number, pageSize: number): Observable<any>{
+  getMerchantsByName(name: string, pageNumber: number, pageSize: number): Observable<MerchantPage>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/findbyname?name=${name}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
-      .get<any>(url, this.httpOptions);
+      .get<MerchantPage>(url, this.httpOptions);
   }
 
-  getMerchantsByEmail(email: string, pageNumber: number, pageSize: number): Observable<any>{
+  getMerchantsByEmail(email: string, pageNumber: number, pageSize: number): Observable<MerchantPage>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/findbyemail?email=${email}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
-      .get<any>(url, this.httpOptions);
+      .get<MerchantPage>(url, this.httpOptions);
   }
 
-  getMerchantsByPhone(phone: string, pageNumber: number, pageSize: number): Observable<any>{
+  getMerchantsByPhone(phone: string, pageNumber: number, pageSize: number): Observable<MerchantPage>{
     phone = phone.replace('+', '%2B');
     const url = `${this.backendUrl}/${this.merchantsUrl}/findbyphone?phone=${phone}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
-      .get<any>(url, this.httpOptions);
+      .get<MerchantPage>(url, this.httpOptions);
   }
 
-  getMerchantsByIdRole(idRole: number, pageNumber: number, pageSize: number): Observable<any>{
+  getMerchantsByIdRole(idRole: number, pageNumber: number, pageSize: number): Observable<MerchantPage>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/findbyidRole?idRole=${idRole}&page=${pageNumber}&size=${pageSize}`;
     return this.httpClient
-      .get<any>(url, this.httpOptions);
+      .get<MerchantPage>(url, this.httpOptions);
   }
 
-  deleteMerchant(idMerchant: string): Observable<any>{
+  deleteMerchant(idMerchant: string): Observable<{}>{
     const url = `${this.backendUrl}/${this.merchantsUrl}/${idMerchant}`;
     return this.httpClient
-      .delete<any>(url, this.httpOptions);
+      .delete<{}>(url, this.httpOptions);
   }
 
-  postMerchant(body: { [key: string]: string }): Observable<any>{
+  postMerchant(body: { [key: string]: string }): Observable<{}>{
     const newMerchant = {
       name: body.name,
       phone: body.phone,
@@ -157,10 +158,10 @@ export class BackendService {
     } as NewMerchantBody;
     const url = `${this.backendUrl}/${this.merchantsUrl}`;
     return this.httpClient
-      .post<any>(url, newMerchant, this.httpOptions);
+      .post<{}>(url, newMerchant, this.httpOptions);
   }
 
-  putMerchantNewValue(idMerchant: number, attribute: string, newValue: string): any{
+  putMerchantNewValue(idMerchant: number, attribute: string, newValue: string): Observable<{}>{
     let response;
     switch(attribute){
       case "name":

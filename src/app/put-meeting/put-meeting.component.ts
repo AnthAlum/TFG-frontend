@@ -19,12 +19,10 @@ import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.c
 export class PutMeetingComponent implements OnInit {
 
   regex = this.meetingsService.getValuesRegex();
-  selectedMerchants: any;
+  selectedMerchants: MerchantOption[];
   meeting: Meeting;
   merchantList: MerchantOption[];
   //DateTimePicker variables
-  @ViewChild('picker') pickerDate: any;
-  @ViewChild('picker') pickerTime: any;
   format: number = 24;
   formControl: { [key: string]: FormControl } = {
     date: new FormControl('', [Validators.required]),

@@ -9,6 +9,7 @@ import { SnackbarMessageComponent } from '../snackbar-message/snackbar-message.c
 import { BackendClientsService } from '../backend-clients.service';
 import { ClientPage } from '../client-page';
 import { Client } from '../client';
+import { MeetingSimplifiedListResponse } from '../meeting-simplified-list-response';
 
 @Component({
   selector: 'app-get-clients',
@@ -23,7 +24,7 @@ export class GetClientsComponent implements OnInit {
   paginationSize: number = 5;
   paginationIndex: number = 0;
   displayedColumns: string[] = ['name', 'phone', 'email', 'company', 'modify', 'delete'];
-  @ViewChild(MatTable) table?: MatTable<any>;
+  @ViewChild(MatTable) table?: MatTable<Client>;
   reference: GetClientsComponent;
   //Attributes for filtering:
   selectedField: string = "name";
@@ -65,15 +66,15 @@ export class GetClientsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadingService.show();
       if(result.event === action)
-        this.deleteMerchant(idClient, element);
+        this.deleteClient(idClient);
       else
         this.loadingService.hide();
     });
   }
 
 
-  deleteMerchant(idMerchant: string, element: any):void{
-    this.clientsService.deleteClient(parseInt(idMerchant)).subscribe(_ => {
+  deleteClient(idClient: string):void{
+    this.clientsService.deleteClient(parseInt(idClient)).subscribe(_ => {
       this.getClients();
       this.loadingService.hide();
       this.snackBar.openSnackBar("Client successfully deleted!", "Okey")
@@ -91,8 +92,8 @@ export class GetClientsComponent implements OnInit {
   }
 
 
-  modify(element: any): {[key: string]: any}{
-    let elementModified: {[key: string]: any} = {...element};
+  modify(element: Client ): {[key: string]: string | number | MeetingSimplifiedListResponse}{
+    let elementModified: {[key: string]: string | number | MeetingSimplifiedListResponse} = {...element};
     delete elementModified['idClient'];
     return elementModified;
   }

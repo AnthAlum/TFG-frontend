@@ -1,13 +1,14 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipEvent } from '@angular/material/chips';
-import { Observable } from 'rxjs';
 import { BackendClientsService } from '../backend-clients.service';
 import { BackendMeetingsService } from '../backend-meetings.service';
 import { BackendService } from '../backend.service';
+import { Client } from '../client';
 import { LoadingService } from '../loading.service';
+import { Merchant } from '../merchant';
 import { NewMeetingBody } from '../new-meeting-body';
 
 const NOT_FOUND: number = -1;
@@ -36,11 +37,11 @@ export class MeetingCreateComponent implements OnInit {
   visible = true;
   selectable = true;
   removable = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
   //Merchant chips variables
   errorMerchants = '';
   oneOrMoreMerchants: boolean = false;
-  filteredMerchants: any;
+  filteredMerchants: Merchant[];
   actualMerchants: string[] = []; //Actual merchants
   merchantIds: number[] = [];
   availableMerchants: string[] = []; //Available merchants
@@ -50,7 +51,7 @@ export class MeetingCreateComponent implements OnInit {
   //Client chips variables
   errorClients = '';
   oneOrMoreClients: boolean = false;
-  filteredClients: any;
+  filteredClients: Client[];
   actualClients: string[] = []; //Actual clients
   clientIds: number[] = [];
   availableClients: string[] = []; //Available clients
@@ -58,7 +59,7 @@ export class MeetingCreateComponent implements OnInit {
   @ViewChild('autoClient') matAutocompleteClients: MatAutocomplete;
 
   //Keyword chips variables
-  filteredKeywords: Observable<any[]>;
+  filteredKeywords: string[];
   actualKeywords: string[] = []; //Actual clients
   availableKeywords: string[] = []; //Available clients
   @ViewChild('keywordInput') keywordInput: ElementRef<HTMLInputElement>;
@@ -220,8 +221,8 @@ export class MeetingCreateComponent implements OnInit {
     this.oneOrMoreClients = true;
   }
 
-  addKeyword(event: any): void{
-    this.actualKeywords.push(event.value);
+  addKeyword(keyword: string): void{
+    this.actualKeywords.push(keyword);
     this.clearAndResetInput(this.formControl['keywordsCtrl'], 'keywordInput');
   }
 
@@ -295,7 +296,7 @@ export class MeetingCreateComponent implements OnInit {
   * @param availableSubjects List of available subjects that user can associate(this has the previously associated subjects).
   * @param actualSubjects Actual associated subjects, they have to be removed from the availableSubjects list.
   */
-  removeActuals(availableSubjects: any, actualSubjects: string[]){
+  removeActuals(availableSubjects: Merchant[] | Client[], actualSubjects: string[]){
     //Search indexes to the elements to remove
     let indexes: number[] = []; // Indexes to remove
     actualSubjects.forEach(actualSubject => { // actualSubjects has strings like : "Armando/armando@gmail.com"
@@ -322,7 +323,7 @@ export class MeetingCreateComponent implements OnInit {
   }
 
   getErrorMessageMerchants(): void{
-    this.errorMerchants = this.merchantIds.length === 0 ? 'You must enter one client at least' : '';
+    this.errorMerchants = this.merchantIds.length === 0 ? 'You must enter one merchant at least' : '';
   }
 
   getErrorMessageClients(): void{

@@ -48,6 +48,7 @@
         <mat-label>
           <mat-icon>apartment</mat-icon>Company</mat-label>
         <input matInput [formControl]="formControl.company" formControlName="company"/>
+        <mat-error *ngIf="formControl.company.invalid">{{getErrorMessage('company')}}</mat-error>
       </mat-form-field>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('company')"><span>
         CHANGE
@@ -55,7 +56,6 @@
       </span>
       </button>
     </div>
-    <ng-container *ngIf="client !== null">
       <h2>Related meetings</h2>
       <table class="meeting-table" mat-table [dataSource]="client.meetings.simplifiedList" aria-describedby="Meeting table">
         <ng-container matColumnDef="matter">
@@ -77,7 +77,6 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-    </ng-container>
   </form>
 </mat-card>
 

@@ -32,7 +32,7 @@ export class PutMerchantComponent implements OnInit {
     newPassword: new FormControl('', [Validators.required, Validators.min(4)]),
   };
 
-  merchant: any = null;
+  merchant: Merchant | null = null;
   checkoutForm = this.formBuilder.group({
     idRole: '',
     name: '',
@@ -70,7 +70,7 @@ export class PutMerchantComponent implements OnInit {
       merchant => {
           this.setValues(merchant);
           this.loadingService.hide();
-        }, error => {
+        }, _ => {
           console.log("Error");
           this.loadingService.hide();
         });
@@ -82,13 +82,13 @@ export class PutMerchantComponent implements OnInit {
     let action: string = "Modify";
     let order = [ `current ${attribute}`, `new ${attribute}` ]
     let information: {[key: string]: string}= {};
-    information[`current ${attribute}`] = this.merchant[attribute];
+    information[`current ${attribute}`] = this.merchant![attribute];
     if(attribute.localeCompare('idRole') === 0){
-      information[`current idRole`] = this.merchant.idRole === 0 ? "ADMIN" : "MERCHANT";
+      information[`current idRole`] = this.merchant!.idRole === 0 ? "ADMIN" : "MERCHANT";
       information[`new idRole`] = this.getValue('idRole').localeCompare("0") === 0 ? "ADMIN" : "MERCHANT";
     }
     else{
-      information[`current ${attribute}`] = this.merchant[attribute];
+      information[`current ${attribute}`] = this.merchant![attribute];
       information[`new ${attribute}`] = this.getValue(attribute);
     }
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
@@ -109,10 +109,10 @@ export class PutMerchantComponent implements OnInit {
     let value = this.getValue(attribute);
     if(this.backendService.verifyValue(attribute, value)){
       this.loadingService.show();
-      this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value).subscribe(_ => {
+      this.backendService.putMerchantNewValue(this.merchant!.idMerchant, attribute, value).subscribe(_ => {
         this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey");
         this.loadingService.hide();
-        this.loadMerchant(`${this.merchant.idMerchant}`);
+        this.loadMerchant(`${this.merchant!.idMerchant}`);
       }, _ => this.loadingService.hide());
     }
   }
@@ -120,7 +120,7 @@ export class PutMerchantComponent implements OnInit {
   changeRole(attribute: string): void{
     let value = this.getValue(attribute);
     if(this.backendService.verifyValue(attribute, value)){
-      this.backendService.putMerchantNewValue(this.merchant.idMerchant, attribute, value)
+      this.backendService.putMerchantNewValue(this.merchant!.idMerchant, attribute, value)
         .subscribe(
           _ => {
             this.snackBar.openSnackBar("Your " + attribute + " has been changed", "Okey");
@@ -135,7 +135,7 @@ export class PutMerchantComponent implements OnInit {
     let passwordValue = this.getValue("password");
     let newPasswordValue = this.getValue("newPassword");
     if(this.backendService.verifyValue(passwordValue, newPasswordValue)){
-      this.backendService.putMerchantPassword(this.merchant.idMerchant, passwordValue, newPasswordValue)
+      this.backendService.putMerchantPassword(this.merchant!.idMerchant, passwordValue, newPasswordValue)
         .subscribe(
           _ => {
             this.snackBar.openSnackBar("Your password has been changed", "Okey");

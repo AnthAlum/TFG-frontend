@@ -6,6 +6,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { LoadingService } from './loading.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UsersessionService } from './usersession.service';
+import { Merchant } from './merchant';
 
 const JWT_PREFIX = "Bearer ";
 
@@ -16,7 +17,6 @@ const JWT_PREFIX = "Bearer ";
 })
 export class AppComponent implements OnInit{
   title = 'PYMES application';
-  merchants: any = undefined;
   postOption: boolean = false;
   putOption: boolean = false;
   hideElement: boolean = false;

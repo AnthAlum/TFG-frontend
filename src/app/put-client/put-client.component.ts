@@ -26,10 +26,10 @@ export class PutClientComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
     name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)]),
-    company: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.company)]),
+    company: new FormControl('', [Validators.required]),
   };
 
-  client: any = null;
+  client: Client | null = null;
   checkoutForm = this.formBuilder.group({
     company: '',
     name: '',
@@ -86,7 +86,7 @@ export class PutClientComponent implements OnInit {
   changeValue(attribute: string): void{
     let value = this.getValue(attribute);
     if(this.clientsService.verifyValue(attribute, value)){
-      this.clientsService.putClientNewValue(this.client.idClient, attribute, value)
+      this.clientsService.putClientNewValue(this.client!.idClient, attribute, value)
         .subscribe(
           (client: any) => {
             this.snackBar.openSnackBar("The client's " + attribute + " has been changed", "Okey");

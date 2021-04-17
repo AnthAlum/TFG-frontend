@@ -17,6 +17,8 @@ import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { saveAs } from 'file-saver';
 import { MatTable } from '@angular/material/table';
 import { MeetingFile } from '../meeting-file';
+import { Merchant } from '../merchant';
+import { Client } from '../client';
 
 const NOT_FOUND: number = -1;
 const ID_INDEX: number = 0;
@@ -42,11 +44,7 @@ const MYME_TYPES = {
 })
 export class MeetingDetailComponent implements OnInit {
 
-  fontSize: string = "25px";
-  format: number = 24;
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
-  @ViewChild('picker') pickerDate: any;
-  @ViewChild('picker') pickerTime: any;
+  fontSize: string = "25px"; //Size of textarea
   formControl: {[key: string]: FormControl} = {
     matter: new FormControl('', [Validators.required]),
     date: new FormControl(new Date(), [Validators.required]),
@@ -71,7 +69,7 @@ export class MeetingDetailComponent implements OnInit {
 
   //Merchant chips variables
   moreThanOneMerchants = true;
-  filteredMerchants: any;
+  filteredMerchants: Merchant[];
   actualMerchants: string[] = []; //Actual merchants
   availableMerchants: string[] = []; //Available merchants
   @ViewChild('merchantInput') merchantInput: ElementRef<HTMLInputElement>;
@@ -80,7 +78,7 @@ export class MeetingDetailComponent implements OnInit {
   //Client chips variables
   moreThanOneClients = true;
   clientError: string;
-  filteredClients: any;
+  filteredClients: Client[];
   actualClients: string[] = []; //Actual clients
   availableClients: string[] = []; //Available clients
   @ViewChild('clientInput') clientInput: ElementRef<HTMLInputElement>;
@@ -88,7 +86,7 @@ export class MeetingDetailComponent implements OnInit {
   @ViewChild('autoClient') matAutocompleteClients: MatAutocomplete;
 
   //Keyword chips variables
-  filteredKeywords: Observable<any[]>;
+  filteredKeywords: string[];
   actualKeywords: string[] = []; //Actual clients
   availableKeywords: string[] = []; //Available clients
   @ViewChild('keywordInput') keywordInput: ElementRef<HTMLInputElement>;
@@ -124,8 +122,8 @@ export class MeetingDetailComponent implements OnInit {
     //Assign form values:
     this.formControl['matter'].setValue(this.data.matter);
     this.formControl['description'].setValue(this.data.description);
-    let d: any = this.data.date;
-    this.date = moment(d.replaceAll('-', '/'), "DD/MM/YYYY").toDate();
+    let d: string = this.data.date;
+    this.date = moment(d.split('-').join('/'), "DD/MM/YYYY").toDate();
     this.formControl['date'].setValue(this.date);
   }
 
@@ -178,7 +176,7 @@ export class MeetingDetailComponent implements OnInit {
   * @param availableSubjects List of available subjects that user can associate(this has the previously associated subjects).
   * @param actualSubjects Actual associated subjects, they have to be removed from the availableSubjects list.
   */
-  removeActuals(availableSubjects: any[], actualSubjects: string[]){
+  removeActuals(availableSubjects: Merchant[] | Client[], actualSubjects: string[]){
     //Search indexes to the elements to remove
     let indexes: number[] = []; // Indexes to remove
     actualSubjects.forEach(actualSubject => { // actualSubjects has strings like : "Armando/armando@gmail.com"

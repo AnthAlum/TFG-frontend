@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { AbstractControl, FormBuilder } from '@angular/forms';
 import { BackendService } from '../backend.service';
 
 @Component({
@@ -41,14 +41,13 @@ export class MerchantFormComponent implements OnInit {
   }
 
 
-  getData(): any {
-    return [
-      this.checkoutForm.get('idRol'),
-      this.checkoutForm.get('password'),
-      this.checkoutForm.get('name'),
-      this.checkoutForm.get('email'),
-      this.checkoutForm.get('phone')
-    ];
+  getData(): { [key: string]: string }{
+    return {
+      'idRole': this.checkoutForm.get('idRol')?.value,
+      'password': this.checkoutForm.get('password')?.value,
+      'name': this.checkoutForm.get('name')?.value,
+      'email': this.checkoutForm.get('email')?.value,
+      'phone': this.checkoutForm.get('phone')?.value };
   }
 
   equals(val1: string, val2: string): boolean{

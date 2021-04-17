@@ -97,13 +97,9 @@
     [formControl]="formControl.keywordsCtrl"
     [matChipInputFor]="chipKeywordList"
     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-    (matChipInputTokenEnd)="addKeyword($event)">
+    (matChipInputTokenEnd)="addKeyword($event.value)">
     </mat-chip-list>
   </mat-form-field>
-  <div style="width: 50%;">
-    <input #fileInput type="file" hidden="true" (change)="fileInputChange($event.target.files)" accept=".mp3"/>
-    <button mat-flat-button color="primary" (click)="fileInput.click()">Choose Audio File (MP3)</button>
-  </div>
   <div  fxLayout="row" fxLayoutAlign="end">
     <button  mat-raised-button type="submit" color="primary" (click)="postMeeting()">
       <span>

@@ -11,17 +11,17 @@ export class DialogConfirmationComponent implements OnInit {
   event: string = "";
   lastField: number = 0;
 
-  information: { [key: string]: string} = {};
-  fields: string[] = [];
-  action: string = "";
+  information: string | string[] | { [key: string]: string} = {};
+  fields: string | string[] | { [key: string]: string} = [];
+  action: string | string[] | { [key: string]: string} = "";
 
   constructor(
     public dialogRef: MatDialogRef<DialogConfirmationComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ( { [key: string]: string} |string[] | string)[],
     private loadingService: LoadingService
   ) {
   }
-  
+
   ngOnInit(): void {
     this.dialogRef.disableClose = true;
     this.event = "Cancel";
@@ -41,5 +41,11 @@ export class DialogConfirmationComponent implements OnInit {
       event: "Cancel"
     });
     this.loadingService.hide();
+  }
+
+  toLowerCase(action: string | string[] | { [key: string]: string}): string{
+    if(typeof action === 'string')
+      return action.toLowerCase();
+    return '';
   }
 }

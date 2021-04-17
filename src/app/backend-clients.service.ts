@@ -8,7 +8,7 @@ const regexSet: { [key: string]: RegExp } = {
   name: /^[A-zÀ-ú]+(\s[A-zÀ-ú]*)*$/ ,
   email: /^[A-z0-9\._\+-]{4,}@[A-z0-9\-]{3,}(\.[a-z0-9\-]{2,})+$/ ,
   phone: /^(\+\d{1,3})?[\s\d]{5,}$/ ,
-  company: /^[A-zÀ-ú]+(\s[A-zÀ-ú]*)*$/
+  company: /^[A-zÀ-ú'0-9]+(\s[A-zÀ-ú0-9]*)*$/
 };
 
 @Injectable({
@@ -67,13 +67,13 @@ export class BackendClientsService {
       .get<ClientPage>(url, this.httpOptions);
   }
 
-  deleteClient(idClient: number): Observable<ClientPage>{
+  deleteClient(idClient: number): Observable<{}>{
     const url = `${this.backendUrl}/${this.clientsUrl}/${idClient}`;
     return this.httpClient
-      .delete<ClientPage>(url, this.httpOptions);
+      .delete<{}>(url, this.httpOptions);
   }
 
-  postClient(body: { [key: string]: string }): Observable<any>{
+  postClient(body: { [key: string]: string }): Observable<{}>{
     const newClient = {
       name: body.name,
       phone: body.phone,
@@ -82,17 +82,17 @@ export class BackendClientsService {
     } as Client;
     const url = `${this.backendUrl}/${this.clientsUrl}`;
     return this.httpClient
-      .post<any>(url, newClient, this.httpOptions);
+      .post<{}>(url, newClient, this.httpOptions);
   }
 
-  putClientNewValue(idClient: number, attribute: string, newValue: string): Observable<any>{
+  putClientNewValue(idClient: number, attribute: string, newValue: string): Observable<{}>{
     const url = `${this.backendUrl}/${this.clientsUrl}/${idClient}/${attribute}`;
     let attributeName = 'new' + attribute;
     attributeName = attributeName.substr(0, 3) + attributeName[3].toUpperCase() + attributeName.substr(4);
     let body :{[key: string]: string} = {};
     body[`${attributeName}`] = `${newValue}`;
     return this.httpClient
-      .put<any>(url, body, this.httpOptions);
+      .put<{}>(url, body, this.httpOptions);
   }
 
   //Este metodo comprueba que los datos recibidos cumplan con las regex permitidas.

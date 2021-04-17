@@ -34,7 +34,7 @@ export class LoginPageComponent implements OnInit {
   matcher = new MyErrorStateMatcher(); //Para la validacion del email
   helper = new JwtHelperService(); //Para el desencriptar los JWTs.
 
-  loginErrorMessage : any = undefined;
+  loginErrorMessage : string = '';
 
   emailFormControl = new FormControl('', [
     Validators.required,

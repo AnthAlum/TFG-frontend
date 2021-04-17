@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
-import { AdminPageComponent } from './admin-page/admin-page.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatIconModule} from '@angular/material/icon';
@@ -29,7 +28,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { PageContainerComponent } from './page-container/page-container.component';
 import { MerchantCardComponent } from './merchant-card/merchant-card.component';
 import { MerchantFormComponent } from './merchant-form/merchant-form.component';
-import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { MatDialogModule} from '@angular/material/dialog';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { SnackbarMessageComponent } from './snackbar-message/snackbar-message.component';
@@ -55,14 +53,12 @@ import { MeetingCardComponent } from './meeting-card/meeting-card.component';
   declarations: [
     AppComponent,
     LoginPageComponent,
-    AdminPageComponent,
     GetMerchantsComponent,
     PostMerchantComponent,
     PutMerchantComponent,
     PageContainerComponent,
     MerchantCardComponent,
     MerchantFormComponent,
-    DeleteConfirmationComponent,
     DialogConfirmationComponent,
     SnackbarMessageComponent,
     GetClientsComponent,
