@@ -95,7 +95,7 @@ export class MeetingDetailComponent implements OnInit {
 
   //Table variables
   @ViewChild(MatTable) fileTable: MatTable<MeetingFile>;
-  displayedColumns: string[] = ['name', 'type', 'addDescription', 'delete'];
+  displayedColumns: string[] = ['name', 'type', 'downloadFile', 'addDescription', 'delete'];
 
   constructor(
     public dialogRef: MatDialogRef<MeetingDetailComponent>,
