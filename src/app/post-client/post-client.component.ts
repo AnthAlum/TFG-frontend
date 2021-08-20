@@ -16,9 +16,10 @@ export class PostClientComponent implements OnInit {
   regexSet = this.clientsService.getValuesRegex();
 
   checkoutForm: FormGroup = this.formBuilder.group({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.email)]),
     company: new FormControl('', [Validators.required, Validators.min(4)]),
     phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
+    remind: new FormControl('',[Validators.required, Validators.pattern(this.regexSet.remind)]),
     name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)])
   });
 
@@ -38,12 +39,13 @@ export class PostClientComponent implements OnInit {
     if(!this.isFormSendable())
       return;
     let action: string = "Create";
-    let order = ["name", "email", "phone", "company"];
+    let order = ["name", "email", "phone", "company", "remind"];
     const information : { [key: string]: string } = {
       'name': this.checkoutForm.get('name')!.value,
       'phone': this.checkoutForm.get('phone')!.value,
       'email': this.checkoutForm.get('email')!.value,
-      'company': this.checkoutForm.get('company')!.value
+      'company': this.checkoutForm.get('company')!.value,
+      'remind': this.checkoutForm.get('remind')!.value,
     };
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
       data: [ information, order, action]
@@ -51,7 +53,7 @@ export class PostClientComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadingService.show();
       if(result.event === action)
-        this.postMerchant(information);
+        this.postClient(information);
       else
         this.loadingService.hide();
     });
@@ -66,7 +68,7 @@ export class PostClientComponent implements OnInit {
     return true;
   }
 
-  postMerchant(information: { [key: string]: string }): void{
+  postClient(information: { [key: string]: string }): void{
     if(this.clientsService.verifyAllValues(information)){
       this.loadingService.show();
       this.clientsService.postClient(information)

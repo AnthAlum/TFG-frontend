@@ -47,6 +47,7 @@ export class UsersessionService {
     this.loadingService.show();
     this.merchantsService.getMerchantByEmail(localStorage.getItem('username')!).subscribe(merchant => {
       this.id = merchant.idMerchant;
+      this.role = merchant.idRole === 0 ? 'ROLE_ADMIN' : 'ROLE_USER';
       this.loadingService.hide();
     });
   }

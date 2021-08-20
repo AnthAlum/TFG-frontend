@@ -7,16 +7,16 @@
       <span class="center-text">Application</span>
     </mat-toolbar>
     <mat-nav-list>
-      <a *ngIf="usersessionService.role==='ROLE_ADMIN'" class="padding20" mat-list-item routerLink="/merchants" (click)="drawer.toggle(); showLoading()">
+      <a *ngIf="usersessionService.role==='ROLE_ADMIN'" class="padding20" mat-list-item routerLink="/merchants" (click)="drawer.toggle();">
         <mat-icon class="padding5" aria-label="Side nav toggle icon">manage_accounts</mat-icon>Users
       </a>
       <a class="padding20" mat-list-item (click)="drawer.toggle(); goToModifyMerchant()">
         <mat-icon class="padding5" aria-label="Side nav toggle icon">account_box</mat-icon>My profile
       </a>
-      <a class="padding20" mat-list-item routerLink="/clients" (click)="drawer.toggle(); showLoading()">
+      <a class="padding20" mat-list-item routerLink="/clients" (click)="drawer.toggle(); ">
         <mat-icon class="padding5" aria-label="Side nav toggle icon">badge</mat-icon>Clients
       </a>
-      <a class="padding20" mat-list-item routerLink="/meetings" (click)="drawer.toggle(); showLoading()">
+      <a class="padding20" mat-list-item routerLink="/meetings" (click)="drawer.toggle();">
         <mat-icon class="padding5" aria-label="Side nav toggle icon">groups</mat-icon>Meetings
       </a>
       <a class="padding20" mat-list-item routerLink="/login" (click)="drawer.toggle(); exit()">

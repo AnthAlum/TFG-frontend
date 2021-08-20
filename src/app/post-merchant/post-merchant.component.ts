@@ -21,8 +21,8 @@ export class PostMerchantComponent implements OnInit {
   regexSet = this.backendService.getValuesRegex();
 
   checkoutForm: FormGroup = this.formBuilder.group({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.min(4)]),
+    email: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.email)]),
+    password: new FormControl('', [Validators.required, Validators.min(8)]),
     phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
     name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)]),
     idRole: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.idRole)])
@@ -102,6 +102,14 @@ export class PostMerchantComponent implements OnInit {
       return 'You must insert a ' + attribute;
     if(this.checkoutForm.get(attribute)!.hasError('pattern'))
       return 'Not a valid ' + attribute;
+    return '';
+  }
+
+  getErrorMessagePassword(): string{
+    if(this.checkoutForm.get('password')?.hasError('required'))
+      return 'You must insert a password';
+    if(this.checkoutForm.get('password')?.hasError('min'))
+      return 'Password minimum length is 8 letters';
     return '';
   }
 }

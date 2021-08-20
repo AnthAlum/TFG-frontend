@@ -6,5 +6,6 @@ export interface Client {
   email: string,
   phone: string,
   company: string,
+  remind: number,
   meetings: MeetingSimplifiedListResponse,
 }

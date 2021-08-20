@@ -18,13 +18,12 @@
       <mat-error *ngIf="checkoutForm.get('phone')?.invalid">{{getErrorMessage('phone')}}</mat-error>
     </mat-form-field>
   </div>
-  <h2>Credentials</h2> 
   <div fxLayout="column">
     <mat-form-field appearance="fill">
       <mat-label>
         <mat-icon>email</mat-icon> Email</mat-label>
       <input name="email" type="text" matInput placeholder="email@example.com" formControlName="email" required>
-      <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error> 
+      <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="column">
@@ -35,12 +34,21 @@
       <mat-error *ngIf="checkoutForm.get('company')?.invalid">{{getErrorMessage('company')}}</mat-error>
     </mat-form-field>
   </div>
+  <h2>Notifications</h2>
+  <div fxLayout="column">
+    <mat-form-field appearance="fill">
+      <mat-label>
+        <mat-icon>notification_important</mat-icon>Remind after days</mat-label>
+        <input name="remind" matInput formControlName="remind" required type="number">
+      <mat-error *ngIf="checkoutForm.get('remind')?.invalid">{{getErrorMessage('remind')}}</mat-error>
+    </mat-form-field>
+  </div>
   <div  fxLayout="row" fxLayoutAlign="end">
     <button  mat-raised-button type="submit" color="primary">
       <span>
-        SUBMIT 
+        SUBMIT
         <mat-icon [inline]="true">send</mat-icon>
-      </span>  
+      </span>
     </button>
   </div>
 </form>

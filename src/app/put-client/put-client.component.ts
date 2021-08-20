@@ -22,19 +22,13 @@ export class PutClientComponent implements OnInit {
 
   regexSet = this.clientsService.getValuesRegex();
 
-  formControl: { [key: string]: FormControl } = {
-    email: new FormControl('', [Validators.required, Validators.email]),
+  client: Client | null = null;
+  checkoutForm = this.formBuilder.group({
+    email: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.email)]),
     phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
     name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)]),
     company: new FormControl('', [Validators.required]),
-  };
-
-  client: Client | null = null;
-  checkoutForm = this.formBuilder.group({
-    company: '',
-    name: '',
-    email: '',
-    phone: '',
+    remind: new FormControl('',[Validators.required, Validators.pattern(this.regexSet.remind)]),
   });
 
   //Meeting table variables
@@ -67,9 +61,12 @@ export class PutClientComponent implements OnInit {
   }
 
   askForChange(attribute: string): void{
+    if(this.getErrorMessage(attribute).localeCompare('') !== 0)
+      return;
     let action: string = "Modify";
     let order = [ `current ${attribute}`, `new ${attribute}` ]
     let information: {[key: string]: string}= {};
+    information[`current ${attribute}`] = this.client![attribute];
     information[`new ${attribute}`] = this.getValue(attribute);
     const dialogRef = this.dialog.open(DialogConfirmationComponent,{
       data: [ information, order, action]
@@ -114,30 +111,35 @@ export class PutClientComponent implements OnInit {
       case "company":
         value = this.checkoutForm.value.company;
         break;
+      case "remind":
+        value = this.checkoutForm.value.remind;
+        break;
     }
     return value;
   }
 
   getErrorMessage(attribute: string): string{
-    if(this.formControl[attribute].hasError('required'))
+    if(this.checkoutForm.get(attribute)!.hasError('required'))
       return 'You must insert a ' + attribute;
-    if(this.formControl[attribute].hasError('pattern'))
+    if(this.checkoutForm.get(attribute)!.hasError('pattern'))
       return 'Not a valid ' + attribute;
     return '';
   }
 
   setValues(client: Client): void{
-    this.client = client;
+    this.client = this.changeDates(client);
     this.checkoutForm.setValue({
       'name': this.client.name,
       'phone': this.client.phone,
       'email': this.client.email,
       'company': this.client.company,
+      'remind': this.client.remind,
     });
-    this.formControl.name.setValue(this.client.name);
-    this.formControl.email.setValue(this.client.email);
-    this.formControl.phone.setValue(this.client.phone);
-    this.formControl.company.setValue(this.client.company);
+  }
+
+  changeDates(client: Client): Client{
+    client.meetings.simplifiedList.forEach(meeting => meeting.date = meeting.date.substr(0, 10));
+    return client;
   }
 
   showData(meeting: Meeting): void{

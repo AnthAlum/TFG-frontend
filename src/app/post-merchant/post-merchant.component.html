@@ -32,7 +32,7 @@
       <mat-label>
         <mat-icon>password</mat-icon> Password</mat-label>
       <input name="password" type="password" matInput formControlName="password" required>
-      <mat-error *ngIf="checkoutForm.get('password')?.invalid">{{getErrorMessage('password')}}</mat-error>
+      <mat-error *ngIf="checkoutForm.get('password')?.invalid">{{getErrorMessagePassword()}}</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="column" >

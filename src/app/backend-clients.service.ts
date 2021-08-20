@@ -8,7 +8,8 @@ const regexSet: { [key: string]: RegExp } = {
   name: /^[A-zÀ-ú]+(\s[A-zÀ-ú]*)*$/ ,
   email: /^[A-z0-9\._\+-]{4,}@[A-z0-9\-]{3,}(\.[a-z0-9\-]{2,})+$/ ,
   phone: /^(\+\d{1,3})?[\s\d]{5,}$/ ,
-  company: /^[A-zÀ-ú'0-9]+(\s[A-zÀ-ú0-9]*)*$/
+  company: /^[A-zÀ-ú'0-9]+(\s[A-zÀ-ú0-9]*)*$/ ,
+  remind: /^[1-9][0-9]*$/
 };
 
 @Injectable({
@@ -78,7 +79,8 @@ export class BackendClientsService {
       name: body.name,
       phone: body.phone,
       email: body.email,
-      company: body.company
+      company: body.company,
+      remind: parseInt(body.remind),
     } as Client;
     const url = `${this.backendUrl}/${this.clientsUrl}`;
     return this.httpClient

@@ -23,21 +23,14 @@ export class PutMerchantComponent implements OnInit {
 
   regexSet = this.backendService.getValuesRegex();
 
-  formControl: { [key: string]: FormControl } = {
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
-    name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)]),
-    idRole: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.idRole)]),
-    password: new FormControl('', [Validators.required, Validators.min(4)]),
-    newPassword: new FormControl('', [Validators.required, Validators.min(4)]),
-  };
-
   merchant: Merchant | null = null;
   checkoutForm = this.formBuilder.group({
-    idRole: '',
-    name: '',
-    email: '',
-    phone: '',
+    email: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.email)]),
+    password: new FormControl('', [Validators.required, Validators.min(8)]),
+    newPassword: new FormControl('', [Validators.required, Validators.min(8)]),
+    phone: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.phone)]),
+    name: new FormControl('', [Validators.required, Validators.pattern(this.regexSet.name), Validators.min(4)]),
+    idRole: new FormControl(''),
   });
 
   //Meeting table variables
@@ -58,10 +51,11 @@ export class PutMerchantComponent implements OnInit {
 
   ngOnInit(): void {
     const merchantId = parseInt(this.activatedRouter.snapshot.paramMap.get('merchantId')!);
-    if(merchantId !== this.usersessionService.getId() && !this.usersessionService.isAdmin())
-      this.router.navigateByUrl(`/merchants-modify/${this.usersessionService.getId()}`);
-    if(merchantId === this.usersessionService.getId())
+    if(merchantId === this.usersessionService.getId() || this.usersessionService.isAdmin())
       this.loadMerchant(`${merchantId}`);
+    else
+      this.router.navigateByUrl(`/merchants-modify/${this.usersessionService.getId()}`);
+
   }
 
   loadMerchant(merchantId: string): void{
@@ -77,6 +71,8 @@ export class PutMerchantComponent implements OnInit {
   }
 
   askForChangeValue(attribute: string): void{
+    if(this.getErrorMessage(attribute).localeCompare('') !== 0)
+      return;
     if(attribute.localeCompare("password") === 0)
       this.changePassword();
     let action: string = "Modify";
@@ -134,7 +130,7 @@ export class PutMerchantComponent implements OnInit {
   changePassword(): void{
     let passwordValue = this.getValue("password");
     let newPasswordValue = this.getValue("newPassword");
-    if(this.backendService.verifyValue(passwordValue, newPasswordValue)){
+    if(!this.checkoutForm.get('password')?.invalid || !this.checkoutForm.get('newPassword')?.invalid){
       this.backendService.putMerchantPassword(this.merchant!.idMerchant, passwordValue, newPasswordValue)
         .subscribe(
           _ => {
@@ -164,33 +160,31 @@ export class PutMerchantComponent implements OnInit {
         value = this.checkoutForm.value.idRole;
         break;
       case "password":
-        value = (<HTMLInputElement>document.getElementById('password')).value;
+        value = this.checkoutForm.value.password;
         break;
       case "newPassword":
-        value = (<HTMLInputElement>document.getElementById('newPassword')).value;
+        value = this.checkoutForm.value.newPassword;
         break;
     }
     return value;
   }
 
   getErrorMessage(attribute: string): string{
-    if(this.formControl[attribute].hasError('required'))
+    if(this.checkoutForm.get(attribute)!.hasError('required'))
       return 'You must insert a ' + attribute;
-    if(this.formControl[attribute].hasError('pattern'))
+    if(this.checkoutForm.get(attribute)!.hasError('pattern'))
       return 'Not a valid ' + attribute;
     return '';
   }
 
-  getErrorMessagePassword(): string {
-    let attribute = "password";
-    if(this.formControl[attribute].hasError('required'))
-      return 'You must insert a ' + attribute;
-    if(this.formControl[attribute].hasError('pattern'))
-      return 'Not a valid ' + attribute;
-    return '';
+  getErrorMessagePassword(attribute: string): string{
+    if(this.checkoutForm.get(attribute)?.hasError('min'))
+      return 'Password minimum length is 8 letters';
+    return ''
   }
 
   setValues(merchant: Merchant): void{
+    merchant = this.changeDates(merchant);
     this.merchant = merchant;
     let role: string = "0";
     if(this.merchant.idRole === 1)
@@ -200,11 +194,14 @@ export class PutMerchantComponent implements OnInit {
       'phone': this.merchant.phone,
       'email': this.merchant.email,
       'idRole': role,
+      'password': '',
+      'newPassword': '',
     });
-    this.formControl.name.setValue(this.merchant.name);
-    this.formControl.email.setValue(this.merchant.email);
-    this.formControl.phone.setValue(this.merchant.phone);
-    this.formControl.idRole.setValue(this.merchant.idRole);
+  }
+
+  changeDates(merchant: Merchant): Merchant{
+    merchant.meetings.simplifiedList.forEach(meeting => meeting.date = meeting.date.substr(0, 10));
+    return merchant;
   }
 
   showData(meeting: Meeting): void{

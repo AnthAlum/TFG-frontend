@@ -8,9 +8,9 @@
         <mat-label>
           <mat-icon>face</mat-icon>Name
         </mat-label>
-        <input name="name" type="text" matInput [formControl]="formControl.name" formControlName="name"/>
+        <input name="name" type="text" matInput formControlName="name"/>
       </mat-form-field>
-      <mat-error *ngIf="formControl.name.invalid">{{getErrorMessage('name')}}</mat-error>
+      <mat-error *ngIf="checkoutForm.get('name')?.invalid">{{getErrorMessage('name')}}</mat-error>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('name')"><span>
         CHANGE
         <mat-icon [inline]="true">send</mat-icon>
@@ -21,9 +21,9 @@
       <mat-form-field fxFlexAlign="start" appearance="fill">
         <mat-label>
           <mat-icon>call</mat-icon> Phone</mat-label>
-        <input name="phone" type="text" matInput [formControl]="formControl.phone" formControlName="phone"/>
+        <input name="phone" type="text" matInput formControlName="phone"/>
       </mat-form-field>
-      <mat-error *ngIf="formControl.phone.invalid">{{getErrorMessage('phone')}}</mat-error>
+      <mat-error *ngIf="checkoutForm.get('phone')?.invalid">{{getErrorMessage('phone')}}</mat-error>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('phone')"><span>
         CHANGE
         <mat-icon [inline]="true">send</mat-icon>
@@ -34,9 +34,9 @@
       <mat-form-field fxFlexAlign="start" appearance="fill">
         <mat-label>
           <mat-icon>email</mat-icon> Email</mat-label>
-        <input name="email" type="text" matInput [formControl]="formControl.email" formControlName="email"/>
+        <input name="email" type="text" matInput formControlName="email"/>
       </mat-form-field>
-      <mat-error *ngIf="formControl.email.invalid">{{getErrorMessage('email')}}</mat-error>
+      <mat-error *ngIf="checkoutForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('email')"><span>
         CHANGE
         <mat-icon [inline]="true">send</mat-icon>
@@ -47,10 +47,24 @@
       <mat-form-field fxFlexAlign="start" appearance="fill">
         <mat-label>
           <mat-icon>apartment</mat-icon>Company</mat-label>
-        <input matInput [formControl]="formControl.company" formControlName="company"/>
-        <mat-error *ngIf="formControl.company.invalid">{{getErrorMessage('company')}}</mat-error>
+        <input matInput formControlName="company"/>
       </mat-form-field>
+      <mat-error *ngIf="checkoutForm.get('company')?.invalid">{{getErrorMessage('company')}}</mat-error>
       <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('company')"><span>
+        CHANGE
+        <mat-icon [inline]="true">send</mat-icon>
+      </span>
+      </button>
+    </div>
+  <h2>Notifications</h2>
+    <div fxLayout="column">
+      <mat-form-field fxFlexAlign="start" appearance="fill">
+        <mat-label>
+          <mat-icon>notification_important</mat-icon>Remind after days</mat-label>
+        <input matInput formControlName="remind" type="number"/>
+      </mat-form-field>
+      <mat-error *ngIf="checkoutForm.get('remind')?.invalid">{{getErrorMessage('remind')}}</mat-error>
+      <button fxFlexAlign="end" mat-raised-button color="primary" (click)="askForChange('remind')"><span>
         CHANGE
         <mat-icon [inline]="true">send</mat-icon>
       </span>

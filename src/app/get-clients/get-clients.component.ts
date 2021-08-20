@@ -44,6 +44,7 @@ export class GetClientsComponent implements OnInit {
   }
 
   getClients(): void{
+    this.loadingService.show();
     this.clientsService.getClients(this.paginationIndex, this.paginationSize).subscribe(
       clients => this.updateValues(clients),
       _ => this.loadingService.hide()
